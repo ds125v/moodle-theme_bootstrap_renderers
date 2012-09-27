@@ -1,9 +1,11 @@
 <?php
 /* renderers to align Moodle's HTML with that expected by Bootstrap */
+
 class html {
     // html utility functions
+
     public static function moodle_icon($name) {
-        return bootstrap::icon(bootstrap::$icons[$name]);
+        return bootstrap::moodle_to_bootstrap_icon($name);
     }
 
     public static function a($attributes, $content) {
@@ -25,15 +27,14 @@ class html {
         return '<ul>'.implode($lis).'</ul>';
     }
 
+    public static function classes($classes) {
+        // don't know what this does, but it sounds useful
+        return renderer_base::prepare_classes($classes);
+    }
+
 }
 class bootstrap {
     // bootstrap utility functions
-
-    static $icons_ignore = array(
-            'icon' => '?',      // all the module icons have this name
-            't/groups' => '?',
-            't/groupn' => '?',
-            't/groupv' => '?' );
 
     static $icons = array(
             'docs' => 'question-sign',
@@ -73,7 +74,20 @@ class bootstrap {
             'i/users' => 'user',
             'i/publish' => 'publish',
             'i/navigationitem' => 'chevron-right' );
-    
+
+    public static function moodle_to_bootstrap_icon($name) {
+        return self::icon(self::$icons[$name]);    
+    }
+    public static function icon($name) {
+        return "<i class=icon-$name></i>";
+    }
+    public static function icon_help() {
+        return self::icon('question-sign');
+    } 
+    public static function icon_spacer() {
+        return self::icon('spacer');
+        // no actual spacer icon provided by bootstrap, but magically it still works
+    } 
 
     public static function label($type, $text) {
         if ($type != '') {
@@ -154,9 +168,10 @@ class bootstrap {
     }
 
 
-    public static function icon($name) {
-        return "<i class=icon-$name></i>";
+    public static function initialism($full, $short) {
+        return "<abbr title=\"$full\" class=\"initialism\">$short</abbr>";
     }
+
 
     public static function unstyled_ul($items) {
         $lis = array();
@@ -168,31 +183,28 @@ class bootstrap {
 }
 
 class theme_bootstrap_renderers_core_renderer extends core_renderer {
+    // trying to keep the order of definition the same as
+    // the source file, lib/outputrenderers.php
 
-    public function icon_help() {
-        return bootstrap::icon('question-sign');
-    } 
-    public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
-        if (!($url instanceof moodle_url)) {
-            $url = new moodle_url($url);
-        }
-        $attributes = (array)$attributes;
-
-        if (empty($attributes['class'])) {
-            // let ppl override the class via $options
-            $attributes['class'] = 'action-icon';
-        }
-
-        $icon = $this->render($pixicon);
-
-        if ($linktext) {
-            $text = $pixicon->attributes['alt'];
-        } else {
-            $text = '';
-        }
-
-        return $this->action_link($url, $text.$icon, $action, $attributes);
+    public function doctype() {
+        $this->contenttype = 'text/html; charset=utf-8';
+        return "<!DOCTYPE html>";
     }
+    public function htmlattributes() {
+        return get_html_lang(true);
+    }
+    // public function standard_head_html() {}
+    // lots of stuff going on here, should really be split up
+
+    // public function standard_footer_html() {}
+    // same as head, should be split
+
+    // public function main_content() {}
+    // could be a chance to wrap the main_content
+
+    // public function login_info() {}
+    // this should be done, some of the bootstrap examples can be copied
+
     public function home_link() {
         global $CFG, $SITE;
         $text = '';
@@ -222,112 +234,372 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return html::div($div_attributes, $text . html::a($a_attributes, $linktext));
     }
 
-    protected function render_pix_icon(pix_icon $icon) {
+    //public function redirect_message($encodedurl, $message, $delay, $debugdisableredirect) {
+    // there's an error message that could be bootstrapped, but it's buried
+    // under a lot of other stuff, low priority I think
 
-        if (isset(bootstrap::$icons_ignore[$icon->pix])) {
-            return parent::render_pix_icon($icon);
-        } else if (isset(bootstrap::$icons[$icon->pix])) {
-            return bootstrap::icon(bootstrap::$icons[$icon->pix]);
-        } else {
-            return parent::render_pix_icon($icon);
-            //return '<i class=icon-not-assigned data-debug-icon="'.$icon->pix.'"></i>';
-        }
-
-
-    }
-    protected function render_custom_menu(custom_menu $menu) {
-        if (!$menu->has_children()) {
-            return '';
-        }
-        $content  = '<div class="navbar navbar-fixed-top">' .
-        '<div class=navbar-inner>' .
-        '<div class=container>' .
-        '<ul class=nav>';
-
-        foreach ($menu->get_children() as $item) {
-            $content .= $this->render_custom_menu_item($item);
-        }
-        $content .= '</ul></div></div><div>'; 
-        return $content;
-    }
-
-    protected function render_custom_menu_item(custom_menu_item $menunode) {
-        // Required to ensure we get unique trackable id's
-        static $submenucount = 0;
-
-        if ($menunode->has_children()) {
-            $content = '<li class=dropdown>';
-            // If the child has menus render it as a sub menu
-            $submenucount++;
-            if ($menunode->get_url() !== null) {
-                $url = $menunode->get_url();
-            } else {
-                $url = '#cm_submenu_'.$submenucount;
-            }
-
-            //$content .= html_writer::link($url, $menunode->get_text(), array('title'=>,));
-            $content .= '<a href="'.$url.'" class=dropdown-toggle data-toggle=dropdown>';
-            $content .= $menunode->get_title();
-            $content .= '<b class=caret></b></a>';
-            $content .= '<ul class=dropdown-menu>';
-            foreach ($menunode->get_children() as $menunode) {
-                $content .= $this->render_custom_menu_item($menunode);
-            }
-            $content .= '</ul>';
-        } else {
-            $content = '<li>';
-            // The node doesn't have children so produce a final menuitem
-
-            if ($menunode->get_url() !== null) {
-                $url = $menunode->get_url();
-            } else {
-                $url = '#';
-            }
-            $content .= html_writer::link($url, $menunode->get_text(), array('title'=>$menunode->get_title()));
-        }
-        $content .= '<li>';
-        return $content;
-    }
     public function block_controls($controls) {
         if (empty($controls)) {
             return '';
         }
         $controlshtml = array();
         foreach ($controls as $control) {
-            $controlshtml[] = self::a(array('href'=>$control['url'], 'title'=>$control['caption']), self::moodle_icon($control['icon']));
+            $controlshtml[] = html::a(array('href'=>$control['url'], 'title'=>$control['caption']), html::moodle_icon($control['icon']));
         }
-        return html::div(array('class'=>'commands'), implode($controlshtml));
+        return html::div(array('class'=>'commands'), implode($controlshtml, ' '));
     }
+
+    public function block(block_contents $bc, $region) {
+        $bc = clone($bc); // Avoid messing up the object passed in.
+        if (empty($bc->blockinstanceid) || !strip_tags($bc->title)) {
+            $bc->collapsible = block_contents::NOT_HIDEABLE;
+        }
+        if ($bc->collapsible == block_contents::HIDDEN) {
+            $bc->add_class('hidden');
+        }
+        if (!empty($bc->controls)) {
+            $bc->add_class('block_with_controls');
+        }
+        $bc->add_class('well'); // bootstrap style
+
+        $skiptitle = strip_tags($bc->title);
+        if (empty($skiptitle)) {
+            $output = '';
+            $skipdest = '';
+        } else {
+            $output = html_writer::tag('a', get_string('skipa', 'access', $skiptitle), array('href' => '#sb-' . $bc->skipid, 'class' => 'skip-block'));
+            $skipdest = html_writer::tag('span', '', array('id' => 'sb-' . $bc->skipid, 'class' => 'skip-block-to'));
+        }
+
+        $output .= html_writer::start_tag('div', $bc->attributes);
+
+        $output .= $this->block_header($bc);
+        $output .= $this->block_content($bc);
+
+        $output .= html_writer::end_tag('div');
+
+        $output .= $this->block_annotation($bc);
+
+        $output .= $skipdest;
+
+        $this->init_block_hider_js($bc);
+        return $output;
+    }
+
+    protected function block_header(block_contents $bc) {
+        $title = '';
+        if ($bc->title) {
+            $title = html_writer::tag('h2', $bc->title, array('class'=>'nav-header'));
+        }
+
+        $controlshtml = $this->block_controls($bc->controls);
+
+        $output = '';
+        if ($title || $controlshtml) {
+            $output .= html_writer::tag('div', html_writer::tag('div', html_writer::tag('div', '', array('class'=>'block_action')). $title . $controlshtml, array('class' => 'title')), array('class' => 'header'));
+        }
+        return $output;
+    }
+
+    // protected function block_content(block_contents $bc) {
+    // might be a clash with .content
 
     public function list_block_contents($icons, $items) {
         return bootstrap::unstyled_ul($items);
+        // currently just ditches icons rather
+        // than convert them to bootstrap style
     }
+
+    public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
+        if (!($url instanceof moodle_url)) {
+            $url = new moodle_url($url);
+        }
+        $attributes = (array)$attributes;
+
+        if (empty($attributes['class'])) {
+            // let ppl override the class via $options
+            $attributes['class'] = 'action-icon';
+        }
+
+        $icon = $this->render($pixicon);
+
+        $attributes['title'] = $pixicon->attributes['alt'];
+        // bootstrap icons aren't img tags, so don't have alt tags
+        // add the alt text as title to surrounding a tag instead
+
+        if ($linktext) {
+            $text = $pixicon->attributes['alt'];
+        } else {
+            $text = '';
+        }
+
+        return $this->action_link($url, $text.$icon, $action, $attributes);
+    }
+
+    public function confirm($message, $continue, $cancel) {
+        // changed this but not sure where it's used so not tested
+
+        if ($continue instanceof single_button) {
+            // ok
+        } else if (is_string($continue)) {
+            $continue = new single_button(new moodle_url($continue), get_string('continue'), 'post');
+        } else if ($continue instanceof moodle_url) {
+            $continue = new single_button($continue, get_string('continue'), 'post');
+        } else {
+            throw new coding_exception('The continue param to $OUTPUT->confirm() must be either a URL (string/moodle_url) or a single_button instance.');
+        }
+
+        if ($cancel instanceof single_button) {
+            // ok
+        } else if (is_string($cancel)) {
+            $cancel = new single_button(new moodle_url($cancel), get_string('cancel'), 'get');
+        } else if ($cancel instanceof moodle_url) {
+            $cancel = new single_button($cancel, get_string('cancel'), 'get');
+        } else {
+            throw new coding_exception('The cancel param to $OUTPUT->confirm() must be either a URL (string/moodle_url) or a single_button instance.');
+        }
+
+        return bootstrap::alert_box("<p>$message</p>" .  
+            html::div( $this->render($continue) . $this->render($cancel))
+        );
+    }
+
+    protected function render_single_button(single_button $button) {
+        $attributes = array('type'     => 'submit',
+                'class'    => 'btn',
+                'value'    => $button->label,
+                'disabled' => $button->disabled ? 'disabled' : null,
+                'title'    => $button->tooltip);
+
+        if ($button->actions) {
+            $id = html_writer::random_id('single_button');
+            $attributes['id'] = $id;
+            foreach ($button->actions as $action) {
+                $this->add_action_handler($action, $id);
+            }
+        }
+
+        // first the input element
+        $output = html_writer::empty_tag('input', $attributes);
+
+        // then hidden fields
+        $params = $button->url->params();
+        if ($button->method === 'post') {
+            $params['sesskey'] = sesskey();
+        }
+        foreach ($params as $var => $val) {
+            $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $var, 'value' => $val));
+        }
+
+        // then div wrapper for xhtml strictness
+        $output = html_writer::tag('div', $output);
+
+        // now the form itself around it
+        if ($button->method === 'get') {
+
+            $url = $button->url->out_omit_querystring(true); // url without params, the anchor part allowed
+        } else {
+            $url = $button->url->out_omit_querystring();     // url without params, the anchor part not allowed
+        }
+        if ($url === '') {
+            $url = '#'; // there has to be always some action
+        }
+        $attributes = array('method' => $button->method,
+                'class' => 'form-inline',
+                'action' => $url,
+                'id'     => $button->formid);
+        $output = html_writer::tag('form', $output, $attributes);
+
+        return html::div(array('class' => $button->class), $output);
+    }
+
+    protected function render_single_select(single_select $select) {
+        $select = clone($select);
+        if (empty($select->formid)) {
+            $select->formid = html_writer::random_id('single_select_f');
+        }
+
+        $output = '';
+        $params = $select->url->params();
+        if ($select->method === 'post') {
+            $params['sesskey'] = sesskey();
+        }
+        foreach ($params as $name=>$value) {
+            $output .= html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>$name, 'value'=>$value));
+        }
+
+        if (empty($select->attributes['id'])) {
+            $select->attributes['id'] = html_writer::random_id('single_select');
+        }
+
+        if ($select->disabled) {
+            $select->attributes['disabled'] = 'disabled';
+        }
+
+        if ($select->tooltip) {
+            $select->attributes['title'] = $select->tooltip;
+        }
+
+        if ($select->label) {
+            $output .= html_writer::label($select->label, $select->attributes['id'], false, $select->labelattributes);
+        }
+
+        if ($select->helpicon instanceof help_icon) {
+            $output .= $this->render($select->helpicon);
+        } else if ($select->helpicon instanceof old_help_icon) {
+            $output .= $this->render($select->helpicon);
+        }
+        $output .= html_writer::select($select->options, $select->name, $select->selected, $select->nothing, $select->attributes);
+
+        $go = html_writer::empty_tag('input', array('class'=>'btn','type'=>'submit', 'value'=>get_string('go')));
+        $output .= html_writer::tag('noscript', html_writer::tag('div', $go), array('style'=>'inline'));
+
+        $nothing = empty($select->nothing) ? false : key($select->nothing);
+        $this->page->requires->js_init_call('M.util.init_select_autosubmit', array($select->formid, $select->attributes['id'], $nothing));
+
+        // then div wrapper for xhtml strictness
+        $output = html_writer::tag('div', $output);
+
+        // now the form itself around it
+        if ($select->method === 'get') {
+            $url = $select->url->out_omit_querystring(true); // url without params, the anchor part allowed
+        } else {
+            $url = $select->url->out_omit_querystring();     // url without params, the anchor part not allowed
+        }
+        $formattributes = array('method' => $select->method,
+                                'class' => 'form-inline',
+                                'action' => $url,
+                                'id'     => $select->formid);
+        $output = html_writer::tag('form', $output, $formattributes);
+
+        // and finally one more wrapper with class
+        return html_writer::tag('div', $output, array('class' => $select->class));
+    }
+
+    // protected function render_url_select(url_select $select) {
+    // probably needs a .form-inline for the 'go' button
+    // but too scary to deal with right now
 
     public function doc_link($path, $text = '') {
         $attributes['href'] = new moodle_url(get_docs_url($path));
         if ($text == '') {
-            $linktext = $this->icon_help();
+            $linktext = bootstrap::icon_help();
         } else {
-            $linktext = $this->icon_help().' '.$text; }
+            $linktext = bootstrap::icon_help().' '.$text; }
         return html::a($attributes, $linktext);
     }
 
-    public function icon_spacer(array $attributes = null, $br = false) {
-        return bootstrap::icon('spacer', '');
-        // don't output br's or attributes
+    protected function render_pix_icon(pix_icon $icon) {
+
+        if (isset(bootstrap::$icons[$icon->pix])) {
+            return bootstrap::icon(bootstrap::$icons[$icon->pix]);
+            // currently throws away any attributes attached to
+            // the icon, like alt, which could be rendered
+            // using .hide-text image replacement technique
+
+            // also doesn't look at the $icon->component, so all mod
+            // icons for example look the same as pix == 'icon'
+        } else {
+            return parent::render_pix_icon($icon);
+        }
     }
+
+    // function render_rating(rating $rating) {
+    // theres some buttons and form labels in here that
+    // could be restyled with .btn and .form-inline probably
+
+    public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
+        if ($icon) {
+            // should be done via CSS, if at all
+        }
+
+        $help = '';
+        if ($helpidentifier) {
+            $help = $this->help_icon($helpidentifier, $component);
+        }
+
+        return "<h2>$text $help</h2";
+    }
+
+    protected function render_help_icon(help_icon $helpicon) {
+        global $CFG;
+
+        $title = get_string($helpicon->identifier, $helpicon->component);
+
+        if (empty($helpicon->linktext)) {
+            $alt = get_string('helpprefix2', '', trim($title, ". \t"));
+        } else {
+            $alt = get_string('helpwiththis');
+        }
+
+        $output = bootstrap::icon_help();
+
+        // add the link text if given
+        if (!empty($helpicon->linktext)) {
+            $output .= ' '.$helpicon->linktext;
+        }
+
+        // now create the link around it - we need https on loginhttps pages
+        $url = new moodle_url($CFG->httpswwwroot.'/help.php', array('component' => $helpicon->component, 'identifier' => $helpicon->identifier, 'lang'=>current_language()));
+
+        // note: this title is displayed only if JS is disabled, otherwise the link will have the new ajax tooltip
+        $title = get_string('helpprefix2', '', trim($title, ". \t"));
+
+        $attributes = array('href'=>$url, 'title'=>$title);
+        $id = html_writer::random_id('helpicon');
+        $attributes['id'] = $id;
+        $output = html_writer::tag('a', $output, $attributes);
+
+        $this->page->requires->js_init_call('M.util.help_icon.add', array(array('id'=>$id, 'url'=>$url->out(false))));
+
+        // and finally span
+        return html_writer::tag('span', $output, array('class' => 'helplink'));
+        // final span probably unnecessary but leaving it in case the js needs it
+    }
+
+    public function spacer(array $attributes = null, $br = false) {
+        return bootstrap::icon_spacer();
+        // don't bother outputting br's or attributes
+    }
+
+    // protected function render_user_picture(user_picture $userpicture) {
+    // could add a nice frame effect on the image
+
+    // public function render_file_picker(file_picker $fp) {
+    // there's a button in here, but it appears to be display:none'd
+
     public function error_text($message) {
+        // default implementation uses a span, not a div
+        // maybe this maps better to a bootstrap .label?
+
         if (empty($message)) { return ''; }
-        return html::span(array('class'=>'label label-important'), $message);
+        return bootstrap::alert_error($message);
     }
+
+    // public function fatal_error($message, $moreinfourl, $link, $backtrace, $debuginfo = null) {
+    // there's some error notices that could be put in alerts here
+
     public function notification($message, $classes = 'notifyproblem') {
         // TODO rewrite recognized classnames to bootstrap alert equivalent 
-        if ($classes = 'notifyproblem') { $classes = 'alert-error';}
-        if ($classes = 'notifysuccess') { $classes = 'alert-success';}
-        return html::div(array('class'=>'alert '.$classes), clean_text($message));
+        // only two are mentioned in documentation, there may be more
+
+        $message = clean_text($message);
+
+        if ($classes = 'notifyproblem') {
+            return bootstrap::alert_error($message);
+        }
+        if ($classes = 'notifysuccess') {
+            return bootstrap::alert_success($message);
+        }
     }
+
+    // public function continue_button($url) {
+    // not sure we need a class on this,
+    // but doesn't seem worth rewriting just for that
+
     protected function render_paging_bar(paging_bar $pagingbar) {
         // this is more complicated than it needs to be, see MDL-35367 
+
         $pagingbar->maxdisplay = 11; // odd number for symmetry
         $pagingbar = clone($pagingbar);
         $pagingbar->prepare($this, $this->page, $this->target);
@@ -401,139 +673,93 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             return $output."</ul></div>";
         }
     }
+    // public function skip_link_target($id = null) {
+    // I think this should usually point to an id on the actual
+    // content rather than an extra span stuck in before it, but
+    // that's not really Bootstrap related
+
+    // public function heading($text, $level = 2, $classes = 'main', $id = null) {
+    // might be nice to allow Bootstrap-style sub-headings using <small>
+    // or maybe that works anyway if you put the tags in the header text?
+
+    //public function box($contents, $classes = 'generalbox', $id = null) {
+    // 99% of these could probably be replaced with a classless div
+    // maybe only output classes and ids if specified?
+
+    // public function container($contents, $classes = null, $id = null) {
+    // not sure of semantic difference between container, box and div
+
+
+    // public function tree_block_contents($items, $attrs = array()) {
+    // looks important, but a lot going on
 
     public function navbar() {
-        $items = $this->page->navbar->get_items();
-        $htmlblocks = array();
-        //$divider = '<span class="divider">'.get_separator().'</span>';
-        $divider = html::span(array('class'=>'divider'), '/');
-        $navbarcontent = '<ul class=breadcrumb>';
-        $itemcount = count($items);
-        $lis = array();
-        for ($i=1;$i <= $itemcount;$i++) {
-            $item = $items[$i-1];
-            $item->hideicon = true;
-            if ($i===$itemcount) {
-                $li= "<li>".$this->render($item)."</li>";
-            } else {
-                $li= "<li>".$this->render($item)." $divider</li>";
-            }
-            $lis[] = $li;
-        }
+        // bit of a nameclash, Bootstrap calls the navbar the breadcrumb and
+        // also have a sperate thing called navbar that sticks to the top of the page
 
-        $navbarcontent .= join('', $lis).'</ul>';
+        $items = $this->page->navbar->get_items();
+        foreach ($items as $item) {
+            $item->hideicon = true;
+            $links[] = $this->render($item);
+        }
+        $divider = '<span class=divider>/</span>';
+        return '<ul class=breadcrumb><li>' . join($links, " $divider</li><li>") . '</li></ul>';
         return $navbarcontent;
     }
-    protected function render_single_button(single_button $button) {
-        $attributes = array('type'     => 'submit',
-                'class'    => 'btn',
-                'value'    => $button->label,
-                'disabled' => $button->disabled ? 'disabled' : null,
-                'title'    => $button->tooltip);
 
-        if ($button->actions) {
-            $id = html_writer::random_id('single_button');
-            $attributes['id'] = $id;
-            foreach ($button->actions as $action) {
-                $this->add_action_handler($action, $id);
+    protected function render_custom_menu(custom_menu $menu) {
+        if (!$menu->has_children()) {
+            return '';
+        }
+        $content  = '<div class="navbar navbar-fixed-top">' .
+        '<div class=navbar-inner>' .
+        '<div class=container>' .
+        '<ul class=nav>';
+
+        foreach ($menu->get_children() as $item) {
+            $content .= $this->render_custom_menu_item($item);
+        }
+        $content .= '</ul></div></div><div>'; 
+        return $content;
+    }
+
+    protected function render_custom_menu_item(custom_menu_item $menunode) {
+        // Required to ensure we get unique trackable id's
+        static $submenucount = 0;
+
+        if ($menunode->has_children()) {
+            $content = '<li class=dropdown>';
+            // If the child has menus render it as a sub menu
+            $submenucount++;
+            if ($menunode->get_url() !== null) {
+                $url = $menunode->get_url();
+            } else {
+                $url = '#cm_submenu_'.$submenucount;
             }
-        }
 
-        // first the input element
-        $output = html_writer::empty_tag('input', $attributes);
-
-        // then hidden fields
-        $params = $button->url->params();
-        if ($button->method === 'post') {
-            $params['sesskey'] = sesskey();
-        }
-        foreach ($params as $var => $val) {
-            $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $var, 'value' => $val));
-        }
-
-        // then div wrapper for xhtml strictness
-        $output = html_writer::tag('div', $output);
-
-        // now the form itself around it
-        if ($button->method === 'get') {
-
-            $url = $button->url->out_omit_querystring(true); // url without params, the anchor part allowed
+            //$content .= html_writer::link($url, $menunode->get_text(), array('title'=>,));
+            $content .= '<a href="'.$url.'" class=dropdown-toggle data-toggle=dropdown>';
+            $content .= $menunode->get_title();
+            $content .= '<b class=caret></b></a>';
+            $content .= '<ul class=dropdown-menu>';
+            foreach ($menunode->get_children() as $menunode) {
+                $content .= $this->render_custom_menu_item($menunode);
+            }
+            $content .= '</ul>';
         } else {
-            $url = $button->url->out_omit_querystring();     // url without params, the anchor part not allowed
-        }
-        if ($url === '') {
-            $url = '#'; // there has to be always some action
-        }
-        $attributes = array('method' => $button->method,
-                'class' => 'form-inline',
-                'action' => $url,
-                'id'     => $button->formid);
-        $output = html_writer::tag('form', $output, $attributes);
+            $content = '<li>';
+            // The node doesn't have children so produce a final menuitem
 
-        return html::div(array('class' => $button->class), $output);
+            if ($menunode->get_url() !== null) {
+                $url = $menunode->get_url();
+            } else {
+                $url = '#';
+            }
+            $content .= html_writer::link($url, $menunode->get_text(), array('title'=>$menunode->get_title()));
+        }
+        $content .= '<li>';
+        return $content;
     }
-    protected function render_single_select(single_select $select) {
-        $select = clone($select);
-        if (empty($select->formid)) {
-            $select->formid = html_writer::random_id('single_select_f');
-        }
-        $output = '';
-        $params = $select->url->params();
-        if ($select->method === 'post') {
-            $params['sesskey'] = sesskey();
-        }
-        foreach ($params as $name=>$value) {
-            $output .= html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>$name, 'value'=>$value));
-        }
-
-        if (empty($select->attributes['id'])) {
-            $select->attributes['id'] = html_writer::random_id('single_select');
-        }
-
-        if ($select->disabled) {
-            $select->attributes['disabled'] = 'disabled';
-        }
-
-        if ($select->tooltip) {
-            $select->attributes['title'] = $select->tooltip;
-        }
-
-        if ($select->label) {
-            $output .= html_writer::label($select->label, $select->attributes['id'], false, $select->labelattributes);
-        }
-
-        if ($select->helpicon instanceof help_icon) {
-            $output .= $this->render($select->helpicon);
-        } else if ($select->helpicon instanceof old_help_icon) {
-            $output .= $this->render($select->helpicon);
-        }
-        $output .= html_writer::select($select->options, $select->name, $select->selected, $select->nothing, $select->attributes);
-
-        $go = html_writer::empty_tag('input', array('type'=>'submit', 'value'=>get_string('go')));
-        $output .= html_writer::tag('noscript', $go);
-
-        $nothing = empty($select->nothing) ? false : key($select->nothing);
-        $this->page->requires->js_init_call('M.util.init_select_autosubmit', array($select->formid, $select->attributes['id'], $nothing));
-
-        // then div wrapper for xhtml strictness
-        $output = html_writer::tag('div', $output);
-
-        // now the form itself around it
-        if ($select->method === 'get') {
-            $url = $select->url->out_omit_querystring(true); // url without params, the anchor part allowed
-        } else {
-            $url = $select->url->out_omit_querystring();     // url without params, the anchor part not allowed
-        }
-        $formattributes = array('method' => $select->method,
-                'class' => 'form-inline',
-                'action' => $url,
-                'id'     => $select->formid);
-        $output = html_writer::tag('form', $output, $formattributes);
-
-        // and finally one more wrapper with class
-        return html::div(array('class' => $select->class), $output);
-    }
-    protected function init_block_hider_js(block_contents $bc) { }
 
 }
 
@@ -919,7 +1145,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                 if ($this->page->theme->resolve_image_location('icon', $plugin->type . '_' . $plugin->name)) {
                     $icon = $this->output->pix_icon('icon', '', $plugin->type . '_' . $plugin->name, array('class' => 'smallicon pluginicon'));
                 } else {
-                    //$icon = this::icon_spacer();
+                    $icon = bootstrap::icon_spacer();
                 }
                 $displayname  = $icon . ' ' . $plugin->displayname;
                 $displayname = new html_table_cell($displayname);

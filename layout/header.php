@@ -1,7 +1,5 @@
-<!doctype html public>
-<html dir="ltr">
 <?php
-$throwaway =  $OUTPUT->doctype(); // needs to be called to prevent moodle echoing old doctype
+$OUTPUT->doctype();
 
 $hasheading = ($PAGE->heading);
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
@@ -93,7 +91,7 @@ if ($hascustommenu) {
         
         
         <?php if ($hasnavbar) { ?>
-            <div class="stickynav">
+            <div>
                 <?php echo $OUTPUT->navbar(); ?>
                 <div class="navbutton"> <?php echo $PAGE->button; ?></div>
             </div>
