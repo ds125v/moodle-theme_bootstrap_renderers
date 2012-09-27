@@ -46,36 +46,24 @@ if ($hascustommenu) {
 </head>
 
 
-<body id="<?php echo $PAGE->bodyid ?>" class="<?php echo $PAGE->bodyclasses?>"
-<div id="page">
- <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="<?php echo new moodle_url("/")?>">Moodle</a>
-          <div class="nav-collapse collapse">
+<body id="<?php echo $PAGE->bodyid ?>" class="<?php echo $PAGE->bodyclasses?>">
+<div class="container">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <a class="brand" href="<?php echo new moodle_url("/")?>">Moodle (short?)name here</a>
             <ul class="nav">
               <li class="active"><a href="<?php echo new moodle_url("/")?>">Home</a></li>
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
+            <form class="navbar-form pull-right navbar-text">
               <?php echo $OUTPUT->login_info() ?> 
-              <!--
-            <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="username">
-              <input class="span2" type="password" placeholder="password">
-              <button type="submit" class="btn">Sign in</button>
-            </form> -->
-          </div><!--/.nav-collapse -->
+              <!-- // add this to login_info renderer?
+              -->
+            </form> 
         </div>
-      </div>
     </div>
 
-<div role="main" class="container">
 
 <?php if ($hasheading || $hasnavbar) : ?>
 <!- PAGE HEADING -->
