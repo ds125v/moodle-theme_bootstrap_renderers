@@ -1,7 +1,33 @@
 <?php
 /* renderers to align Moodle's HTML with that expected by Bootstrap */
+class html {
+    // html utility functions
+    public static function moodle_icon($name) {
+        return bootstrap::icon(bootstrap::$icons[$name]);
+    }
 
-class theme_bootstrap_renderers_core_renderer extends core_renderer {
+    public static function a($attributes, $content) {
+        return html_writer::tag('a', $content, $attributes);
+    }
+
+    public static function div($attributes, $content) {
+        return html_writer::tag('div', $content, $attributes);
+    }
+
+    public static function span($attributes, $content) {
+        return html_writer::tag('span', $content, $attributes);
+    }
+    public static function ul($items) {
+        $lis = array();
+        foreach ($items as $key => $string) {
+            $lis[] = "<li>$string</li>";
+        }
+        return '<ul>'.implode($lis).'</ul>';
+    }
+
+}
+class bootstrap {
+    // bootstrap utility functions
 
     static $icons_ignore = array(
             'icon' => '?',      // all the module icons have this name
@@ -47,36 +73,105 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             'i/users' => 'user',
             'i/publish' => 'publish',
             'i/navigationitem' => 'chevron-right' );
+    
+
+    public static function label($type, $text) {
+        if ($type != '') {
+            $type = ' label-' . $type;
+        }
+        // bootstrap label classes can be added to other things
+        // but are usually spans (or a tags for clickable links)
+        return "<span class=\"label$type\">$text</i>";
+    }
+    public static function label_default($text) {
+        return self::label('', $text);
+    }
+    public static function label_success($text) {
+        return self::label('success', $text);
+    }
+    public static function label_warning($text) {
+        return self::label('warning', $text);
+    }
+    public static function label_important($text) {
+        return self::label('important', $text);
+    }
+    public static function label_info($text) {
+        return self::label('info', $text);
+    }
+    public static function label_inverse($text) {
+        return self::label('inverse', $text);
+    }
 
 
-    protected static function icon($name, $text=null) {
-        if (!$text) {$text = $name;}
-        return "<i class=icon-$name>$text</i>";
+    public static function badge($type, $text) {
+        if ($type != '') {
+            $type = ' badge-' . $type;
+        }
+        // bootstrap badge classes can be added to other things
+        // but are usually spans (or a tags for clickable links)
+        return "<span class=\"badge$type\">$text</i>";
     }
-    protected static function moodle_icon($name) {
-        return self::icon(self::$icons[$name]);
+    public static function badge_default($text) {
+        return self::badge('', $text);
     }
-    public function icon_help() {
-        return self::icon('question-sign');
-    } 
+    public static function badge_success($text) {
+        return self::badge('success', $text);
+    }
+    public static function badge_warning($text) {
+        return self::badge('warning', $text);
+    }
+    public static function badge_important($text) {
+        return self::badge('important', $text);
+    }
+    public static function badge_info($text) {
+        return self::badge('info', $text);
+    }
+    public static function badge_inverse($text) {
+        return self::badge('inverse', $text);
+    }
+    
 
-    protected static function a($attributes, $content) {
-        return html_writer::tag('a', $content, $attributes);
+    public static function alert($type, $text) {
+        if ($type != '') {
+            $type = ' alert-' . $type;
+        }
+        return "<div class=\"alert$type\">$text</i>";
     }
-    protected static function div($attributes, $content) {
-        return html_writer::tag('div', $content, $attributes);
+    public static function alert_default($text) {
+        return self::alert('', $text);
     }
-    protected static function span($attributes, $content) {
-        return html_writer::tag('span', $content, $attributes);
+    public static function alert_success($text) {
+        return self::alert('success', $text);
+    }
+    public static function alert_error($text) {
+        return self::alert('error', $text);
+    }
+    public static function alert_block($text) {
+        return self::alert('block', $text);
+    }
+    public static function alert_info($text) {
+        return self::alert('info', $text);
     }
 
-    protected static function ul($items) {
+
+    public static function icon($name) {
+        return "<i class=icon-$name></i>";
+    }
+
+    public static function unstyled_ul($items) {
         $lis = array();
         foreach ($items as $key => $string) {
             $lis[] = "<li>$string</li>";
         }
         return '<ul class=unstyled>'.implode($lis).'</ul>';
     }
+}
+
+class theme_bootstrap_renderers_core_renderer extends core_renderer {
+
+    public function icon_help() {
+        return bootstrap::icon('question-sign');
+    } 
     public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
         if (!($url instanceof moodle_url)) {
             $url = new moodle_url($url);
@@ -124,15 +219,15 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $linktext = format_string($this->page->course->shortname, true, array('context' => $this->page->context));
             $a_attributes['href'] = $CFG->wwwroot . '/course/view.php?id=' . $this->page->course->id;
         }
-        return self::div($div_attributes, $text . self::a($a_attributes, $linktext));
+        return html::div($div_attributes, $text . html::a($a_attributes, $linktext));
     }
 
     protected function render_pix_icon(pix_icon $icon) {
 
-        if (isset(self::$icons_ignore[$icon->pix])) {
+        if (isset(bootstrap::$icons_ignore[$icon->pix])) {
             return parent::render_pix_icon($icon);
-        } else if (isset(self::$icons[$icon->pix])) {
-            return self::icon(self::$icons[$icon->pix]);
+        } else if (isset(bootstrap::$icons[$icon->pix])) {
+            return bootstrap::icon(bootstrap::$icons[$icon->pix]);
         } else {
             return parent::render_pix_icon($icon);
             //return '<i class=icon-not-assigned data-debug-icon="'.$icon->pix.'"></i>';
@@ -201,11 +296,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         foreach ($controls as $control) {
             $controlshtml[] = self::a(array('href'=>$control['url'], 'title'=>$control['caption']), self::moodle_icon($control['icon']));
         }
-        return self::div(array('class'=>'commands'), implode($controlshtml));
+        return html::div(array('class'=>'commands'), implode($controlshtml));
     }
 
     public function list_block_contents($icons, $items) {
-        return self::ul($items);
+        return bootstrap::unstyled_ul($items);
     }
 
     public function doc_link($path, $text = '') {
@@ -214,22 +309,22 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $linktext = $this->icon_help();
         } else {
             $linktext = $this->icon_help().' '.$text; }
-        return self::a($attributes, $linktext);
+        return html::a($attributes, $linktext);
     }
 
     public function icon_spacer(array $attributes = null, $br = false) {
-        return self::icon('spacer', '');
+        return bootstrap::icon('spacer', '');
         // don't output br's or attributes
     }
     public function error_text($message) {
         if (empty($message)) { return ''; }
-        return self::span(array('class'=>'label label-important'), $message);
+        return html::span(array('class'=>'label label-important'), $message);
     }
     public function notification($message, $classes = 'notifyproblem') {
         // TODO rewrite recognized classnames to bootstrap alert equivalent 
         if ($classes = 'notifyproblem') { $classes = 'alert-error';}
         if ($classes = 'notifysuccess') { $classes = 'alert-success';}
-        return self::div(array('class'=>'alert '.$classes), clean_text($message));
+        return html::div(array('class'=>'alert '.$classes), clean_text($message));
     }
     protected function render_paging_bar(paging_bar $pagingbar) {
         // this is more complicated than it needs to be, see MDL-35367 
@@ -311,7 +406,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $items = $this->page->navbar->get_items();
         $htmlblocks = array();
         //$divider = '<span class="divider">'.get_separator().'</span>';
-        $divider = self::span(array('class'=>'divider'), '/');
+        $divider = html::span(array('class'=>'divider'), '/');
         $navbarcontent = '<ul class=breadcrumb>';
         $itemcount = count($items);
         $lis = array();
@@ -361,6 +456,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         // now the form itself around it
         if ($button->method === 'get') {
+
             $url = $button->url->out_omit_querystring(true); // url without params, the anchor part allowed
         } else {
             $url = $button->url->out_omit_querystring();     // url without params, the anchor part not allowed
@@ -374,7 +470,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 'id'     => $button->formid);
         $output = html_writer::tag('form', $output, $attributes);
 
-        return self::div(array('class' => $button->class), $output);
+        return html::div(array('class' => $button->class), $output);
     }
     protected function render_single_select(single_select $select) {
         $select = clone($select);
@@ -435,7 +531,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $output = html_writer::tag('form', $output, $formattributes);
 
         // and finally one more wrapper with class
-        return self::div(array('class' => $select->class), $output);
+        return html::div(array('class' => $select->class), $output);
     }
     protected function init_block_hider_js(block_contents $bc) { }
 
