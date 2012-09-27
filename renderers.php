@@ -20,11 +20,7 @@ class html {
         return html_writer::tag('span', $content, $attributes);
     }
     public static function ul($items) {
-        $lis = array();
-        foreach ($items as $key => $string) {
-            $lis[] = "<li>$string</li>";
-        }
-        return '<ul>'.implode($lis).'</ul>';
+        return '<ul><li>'.implode($items, '</li><li>').'</li></ul>';
     }
 
     public static function classes($classes) {
@@ -174,11 +170,7 @@ class bootstrap {
 
 
     public static function unstyled_ul($items) {
-        $lis = array();
-        foreach ($items as $key => $string) {
-            $lis[] = "<li>$string</li>";
-        }
-        return '<ul class=unstyled>'.implode($lis).'</ul>';
+        return '<ul class=unstyled>'.implode($items, '</li><li>').'</ul>';
     }
 }
 
@@ -604,7 +596,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $help = $this->help_icon($helpidentifier, $component);
         }
 
-        return "<h2>$text $help</h2";
+        return "<h2>$text $help</h2>";
     }
 
     protected function render_help_icon(help_icon $helpicon) {
