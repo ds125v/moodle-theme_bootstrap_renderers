@@ -202,7 +202,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // by default, probably want to do entirely different
         // things in each place
 
-        global $USER, $CFG, $DB, $SESSION;
+        global $USER, $CFG, $DB, $SESSION, $OUTPUT;
 
         if (during_initial_install()) {
             return '';
@@ -244,18 +244,19 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                     $rolename = ': '.format_string($role->name);
                 }
                 $loggedinas = get_string('loggedinas', 'moodle', $username).$rolename.
-                          " (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".sesskey()."\" class=navbar-link>".get_string('switchrolereturn').'</a>)';
-            } else {
-                $loggedinas = $realuserinfo.get_string('loggedinas', 'moodle', $username).' '.
-                          " (<a href=\"$CFG->wwwroot/login/logout.php?sesskey=".sesskey()."\" class=navbar-link>".get_string('logout').'</a>)';
+                    " (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".sesskey()."\" class=navbar-link>".get_string('switchrolereturn').'</a>)';
+            } else { // normal user
+                $userpic = $OUTPUT->user_picture( $USER, array('size'=>26, 'link'=>FALSE, 'class'=>'img-circle'));
+                $loggedinas = $userpic . ' ' .$realuserinfo.get_string('loggedinas', 'moodle', $username).' '.
+                    " (<a href=\"$CFG->wwwroot/login/logout.php?sesskey=".sesskey()."\" class=navbar-link>".get_string('logout').'</a>)';
             }
         } else {
             if ($loginpage) {
                 $loggedinas = get_string('loggedinnot', 'moodle');
             } else {
                 $loggedinas .= '<input class="span2" type="text" placeholder="username">
-              <input class="span2" type="password" placeholder="password">
-              <button type="submit" class="btn">'.get_string('login').'</button>';
+                    <input class="span2" type="password" placeholder="password">
+                    <button type="submit" class="btn">'.get_string('login').'</button>';
             }
         }
 
@@ -272,7 +273,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                         }
                         if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
                             $loggedinas .= ' (<a href="'.$CFG->wwwroot.'/report/log/index.php'.
-                                                 '?chooselog=1&amp;id=1&amp;modid=site_errors" class=navbar-link>'.get_string('logs').'</a>)';
+                                '?chooselog=1&amp;id=1&amp;modid=site_errors" class=navbar-link>'.get_string('logs').'</a>)';
                         }
                         $loggedinas .= '</div>';
                     }
@@ -317,6 +318,43 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     //public function redirect_message($encodedurl, $message, $delay, $debugdisableredirect) {
     // there's an error message that could be bootstrapped, but it's buried
     // under a lot of other stuff, low priority I think
+
+    public function lang_menu() {
+        global $CFG;
+
+        $output = '';
+
+        if (empty($CFG->langmenu)) {
+            return $output;
+        }
+
+        if ($this->page->course != SITEID and !empty($this->page->course->lang)) {
+            return $output;
+        }
+
+        $currlang = current_language();
+        $langs = get_string_manager()->get_list_of_translations();
+        $langcount = count($langs);
+
+        if ($langcount < 2) {
+            return $output;
+        } else {
+            $output .= html_writer::tag('li', '', array('class'=>'divider'));
+            $output .= html_writer::tag('li', 'STRING: TITLE(RENDERER)', array('class'=>'nav-header'));
+            foreach ($langs as $code => $title) {
+                $link = new moodle_url($this->page->url, array('lang'=>$code));
+                $output .= html_writer::start_tag('li', array('class'=>'navbar-text'));
+                if ($code !== $currlang) {
+                    $output .= html_writer::link($link, $title, array('class'=>'langlink ' . $code,'title'=>$title));
+                } else {
+	                $output .= html_writer::tag('span', $title, array('class'=>'currlang ' . $code));
+                }
+                $output .= html_writer::end_tag('li');
+            }
+        }
+
+        return $output;
+    }
 
     public function block_controls($controls) {
         if (empty($controls)) {
@@ -465,10 +503,17 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     protected function render_single_button(single_button $button) {
         $attributes = array('type'     => 'submit',
-                'class'    => 'btn',
+                'title'    => $button->tooltip .':'. $button->class,
+                'class'    => $button->class . 'btn',
                 'value'    => $button->label,
-                'disabled' => $button->disabled ? 'disabled' : null,
-                'title'    => $button->tooltip);
+                'disabled' => $button->disabled ? 'disabled' : null);
+
+        // should look at button->class and translate to Bootstrap
+        // button types e.g. primary, info, success, warning, danger, inverse
+        // and sizes like large, small, mini, block-level, or link
+        // not sure how best to get a comprehensive list of button classes
+        // in moodle, so for now appending their class to tooltip
+        // maybe their id, type or value might work better?
 
         if ($button->actions) {
             $id = html_writer::random_id('single_button');
