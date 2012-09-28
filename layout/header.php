@@ -1,5 +1,4 @@
 <?php
-$OUTPUT->doctype();
 
 $hasheading = ($PAGE->heading);
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
@@ -25,7 +24,8 @@ if ($showsidepre && !$showsidepost) {
 if ($hascustommenu) {
     $bodyclasses[] = 'has_custom_menu';
 }
-?>
+echo $OUTPUT->doctype() ?>
+<html <?php echo $OUTPUT->htmlattributes() ?>>
 <head>
 	<meta charset="utf-8">
  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

@@ -184,6 +184,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
     public function htmlattributes() {
         return get_html_lang(true);
+        // I'd quite like to strip out the xml:lang="xx" that this returns,
+        // but maybe that's being overfussy
     }
     // public function standard_head_html() {}
     // lots of stuff going on here, should really be split up
