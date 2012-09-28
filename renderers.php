@@ -345,6 +345,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $bc->add_class('block_with_controls');
         }
         $bc->add_class('well'); // bootstrap style
+        $bc->attributes['style'] = 'padding: 8px 0;'; // bit strange of bootstrap to hard code this but that's what the example does
 
         $skiptitle = strip_tags($bc->title);
         if (empty($skiptitle)) {
