@@ -1,0 +1,74 @@
+/* some very targetted corrections to roll back nameclashes between
+ * Moodle and Bootstrap like .row, .label, .content, .controls
+ *
+ * This file should come first in CSS as the YUI one needs to go before
+ * Bootstrap, so that Bootstrap can then restyle the same target. With
+ * the others rely on more specific CSS to overrule the Bootstrap styles
+ */
+
+/* YUI vs tables
+ * 
+ * It seems a bit crazy but YUI appears to be adding ugly borders to
+ * all table cells,.
+ */
+th,td {
+        border: none;
+        padding: 0;
+      }
+
+/* .label vs .label
+ */
+
+li.activity.label,
+.file-picker td.label,
+.userprofile th.label {
+  background: inherit;
+  color: inherit;
+  border: inherit;
+  text-shadow: none;
+  padding: 4px 8px;
+}
+.file-picker td.label,
+.userprofile table.list tr th.label {
+  text-align: right;
+}
+
+/* invisible vs .invisible
+ *
+ * uses .invisible where the rest of Moodle uses .dimmed
+ * fixible in block renderer?
+ */
+
+block.invisible {
+  visibility: visible;
+}
+
+/* .row vs .row
+ * 
+ * very tricky to track down this when it goes wrong,
+ * since the styles are applied to generated content
+ *
+ * basically if you see things shifted left or right compared
+ * with where they should be check for a .row
+ */
+
+#turnitintool_style .row,
+.forumpost .row {
+  margin-left: 0 !important;
+  /* not sure if this needs !important, or if this rule
+   * is needed at all actually, might be the next one
+   * that does all the work */
+}
+#turnitintool_style .row:before, 
+#turnitintool_style .row:after,
+.forumpost .row:before,
+.forumpost .row:after {
+  content: none;
+}
+
+/* .controls vs .controls
+ *
+ * in expanding course list, can be fixed in rendrer though
+ */
+
+
