@@ -1,3 +1,6 @@
+output of :
+find -name renderer.php -exec wc -l {} \;
+
 91 ./user/renderer.php
 90 ./rss/renderer.php
 348 ./message/renderer.php
