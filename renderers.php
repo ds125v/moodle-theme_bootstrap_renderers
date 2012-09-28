@@ -334,6 +334,9 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // then if content is a list just join on and close the ul in the footer
         // don't know if it'll work, Boostrap just expects simple lists
 
+        // rename class invisible to dimmed
+        $bc->attributes['class'] = str_replace ('invisible', 'dimmed', $bc->attributes['class']);
+
         $bc = clone($bc); // Avoid messing up the object passed in.
         if (empty($bc->blockinstanceid) || !strip_tags($bc->title)) {
             $bc->collapsible = block_contents::NOT_HIDEABLE;

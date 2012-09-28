@@ -45,12 +45,17 @@ li.activity.label,
  * collapses them, 'visible' if you have the right role and in 
  * different circumstances different sections of a block can
  * be 'visible' or not.
- *
- */
+
+ currently worked around in renderers.php function block{}
+ by rewriting the class name "invisible" to "dimmed",
+ though the blocks don't look particularly different apart
+ from their contents disappearing.
 
 block.invisible {
   visibility: visible;
 }
+
+*/
 
 /* .row vs .row
  * 
