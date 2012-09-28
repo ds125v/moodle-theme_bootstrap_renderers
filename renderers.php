@@ -165,7 +165,7 @@ class bootstrap {
 
 
     public static function initialism($full, $short) {
-        return "<abbr title=\"$full\" class=initialism>$short</abbr>";
+        return "<abbr class=initialism title=\"$full\">$short</abbr>";
     }
 
 
