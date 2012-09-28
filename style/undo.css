@@ -37,6 +37,15 @@ li.activity.label,
  *
  * uses .invisible where the rest of Moodle uses .dimmed
  * fixible in block renderer?
+ *
+ * There's seems to be even more naming confusion here since,
+ * blocks can be actually 'visible' (or not) to students,
+ * marked 'visible' but really just dimmed to indicate to editors
+ * that students can't see them or  'visible' to the user who 
+ * collapses them, 'visible' if you have the right role and in 
+ * different circumstances different sections of a block can
+ * be 'visible' or not.
+ *
  */
 
 block.invisible {
