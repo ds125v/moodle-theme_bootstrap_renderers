@@ -504,7 +504,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     protected function render_single_button(single_button $button) {
         $attributes = array('type'     => 'submit',
                 'title'    => $button->tooltip .':'. $button->class,
-                'class'    => $button->class . 'btn',
+                'class'    => $button->class . ' btn',
                 'value'    => $button->label,
                 'disabled' => $button->disabled ? 'disabled' : null);
 
@@ -514,6 +514,9 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // not sure how best to get a comprehensive list of button classes
         // in moodle, so for now appending their class to tooltip
         // maybe their id, type or value might work better?
+        // 
+        // found so far:
+        // .singlebutton
 
         if ($button->actions) {
             $id = html_writer::random_id('single_button');
