@@ -8,16 +8,23 @@ class html {
         return bootstrap::moodle_to_bootstrap_icon($name);
     }
 
+    public static function classy_tag($tag, $attributes, $content) {
+        if (is_string($attributes)) {
+           $attributes = array('class'=>$attributes); 
+        }
+        return html_writer::tag($tag, $content, $attributes);
+    }
+
     public static function a($attributes, $content) {
-        return html_writer::tag('a', $content, $attributes);
+        return html::classy_tag('a', $content, $attributes);
     }
 
     public static function div($attributes, $content) {
-        return html_writer::tag('div', $content, $attributes);
+        return html::classy_tag('div', $content, $attributes);
     }
 
     public static function span($attributes, $content) {
-        return html_writer::tag('span', $content, $attributes);
+        return html::classy_tag('span', $content, $attributes);
     }
     public static function ul($items) {
         return '<ul><li>'.implode($items, '</li><li>').'</li></ul>';
@@ -327,31 +334,31 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $output = '';
 
         if (empty($CFG->langmenu)) {
-            return $output;
+            return '';
         }
 
         if ($this->page->course != SITEID and !empty($this->page->course->lang)) {
-            return $output;
+            return '';
         }
 
-        $currlang = current_language();
         $langs = get_string_manager()->get_list_of_translations();
         $langcount = count($langs);
 
         if ($langcount < 2) {
-            return $output;
+            return '';
         } else {
-            $output .= html_writer::tag('li', '', array('class'=>'divider'));
-            $output .= html_writer::tag('li', 'STRING: TITLE(RENDERER)', array('class'=>'nav-header'));
+            $currlang = current_language();
+            $output .= html::li('divider', '');
+            $output .= html::li('nav-header', 'STRING: TITLE(RENDERER)');
             foreach ($langs as $code => $title) {
-                $link = new moodle_url($this->page->url, array('lang'=>$code));
-                $output .= html_writer::start_tag('li', array('class'=>'navbar-text'));
+                $href = new moodle_url($this->page->url, array('lang'=>$code));
+                $lang = '';
                 if ($code !== $currlang) {
-                    $output .= html_writer::link($link, $title, array('class'=>'langlink ' . $code,'title'=>$title));
+                    $lang = html_writer::link($href, $title, array('class'=>'langlink ' . $code,'title'=>$title));
                 } else {
-	                $output .= html_writer::tag('span', $title, array('class'=>'currlang ' . $code));
+	                $lang = html::span('currlang ' . $code, $title);
                 }
-                $output .= html_writer::end_tag('li');
+                $output .= html::li('navbar-text', $lang);
             }
         }
 
@@ -366,7 +373,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         foreach ($controls as $control) {
             $controlshtml[] = html::a(array('href'=>$control['url'], 'title'=>$control['caption']), html::moodle_icon($control['icon']));
         }
-        return html::div(array('class'=>'commands'), implode($controlshtml, ' '));
+        return html::div('commands', implode($controlshtml, ' '));
     }
 
     public function block(block_contents $bc, $region) {
@@ -559,7 +566,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 'id'     => $button->formid);
         $output = html_writer::tag('form', $output, $attributes);
 
-        return html::div(array('class' => $button->class), $output);
+        return html::div($button->class, $output);
     }
 
     protected function render_single_select(single_select $select) {
@@ -622,7 +629,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $output = html_writer::tag('form', $output, $formattributes);
 
         // and finally one more wrapper with class
-        return html_writer::tag('div', $output, array('class' => $select->class));
+        return html::div($select->class, $output);
     }
 
     // protected function render_url_select(url_select $select) {
@@ -702,7 +709,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $this->page->requires->js_init_call('M.util.help_icon.add', array(array('id'=>$id, 'url'=>$url->out(false))));
 
         // and finally span
-        return html_writer::tag('span', $output, array('class' => 'helplink'));
+        return html::span('helplink', $output);
         // final span probably unnecessary but leaving it in case the js needs it
     }
 
@@ -950,10 +957,10 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         $output = '';
         $output .= $this->header();
         $output .= $this->heading(get_string('upgradestalefiles', 'admin'));
-        $output .= $this->box_start('generalbox', 'notice');
+        $output .= $this->box_start('generalbox', 'notice'); // TODO replace with alert or something
         $output .= format_text(get_string('upgradestalefilesinfo', 'admin', get_docs_url('Upgrading')), FORMAT_MARKDOWN);
-        $output .= html_writer::empty_tag('br');
-        $output .= html_writer::tag('div', $this->single_button($this->page->url, get_string('reload'), 'get'), array('class' => 'buttons'));
+        $output .= html_writer::empty_tag('br'); //TODO replace this with div or something
+        $output .= html::div('buttons', $this->single_button($this->page->url, get_string('reload'), 'get'));
         $output .= $this->box_end();
         $output .= $this->footer();
 
@@ -1126,7 +1133,8 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
      */
     protected function warning($message, $type = '') {
         if ($type == 'error') { $type = ' alert-error';}
-        return html_writer::tag('div', $message, array('class'=>('alert' . $type)));
+        // what other types are there?
+        return html::div('alert' . $type, $message);
     }
 
 
@@ -1162,7 +1170,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                          'and <a href="http://docs.moodle.org/dev/Credits">many other contributors</a>.</p>'.
                          '<p><a href="http://docs.moodle.org/dev/License">GNU Public License</a><p>';
         //////////////////////////////////////////////////////////////////////////////////////////////////
-        return html_writer::tag('div', $copyrighttext, array('class'=>'alert alert-info copyright'));
+        return html::div('alert alert-info copyright', $copyrighttext);
     }
 
     /**
@@ -1418,9 +1426,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
             } else {
                 $class = 'requires-failed';
             }
-            $requires[] = html_writer::tag('li',
-                get_string('moodleversion', 'core_plugin', $plugin->versionrequires),
-                array('class' => $class));
+            $requires[] = html::li($class, get_string('moodleversion', 'core_plugin', $plugin->versionrequires));
         }
 
         foreach ($plugin->get_other_required_plugins() as $component => $requiredversion) {
@@ -1444,10 +1450,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
             } else {
                 $str = 'otherplugin';
             }
-            $requires[] = html_writer::tag('li',
-                    get_string($str, 'core_plugin',
-                            array('component' => $component, 'version' => $requiredversion)),
-                    array('class' => $class));
+            $requires[] = html::li($class, get_string($str, 'core_plugin', array('component' => $component, 'version' => $requiredversion)));
         }
 
         if (!$requires) {
@@ -1495,7 +1498,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
             $info[] = html_writer::tag('span', get_string('numupdatable', 'core_plugin', $numupdatable), array('class' => 'info updatable'));
         }
 
-        return $this->output->box(implode(html_writer::tag('span', ' ', array('class' => 'separator')), $info), '', 'plugins-overview-panel');
+        return $this->output->box(implode(html::span('separator', ' '), $info), '', 'plugins-overview-panel');
     }
 
     /**
