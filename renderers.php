@@ -444,11 +444,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function block_footer(block_contents $bc) {
-        $output = '';
         if ($bc->footer) {
-            $output .= html_writer::tag('li', $bc->footer);
+            return "<li>$bc->footer</li></ul>";
+        } else {
+            return '</ul>';
         }
-        return $output . '</ul>';
     }
 
     public function list_block_contents($icons, $items) {
