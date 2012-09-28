@@ -50,6 +50,10 @@ li.activity.label,
  by rewriting the class name "invisible" to "dimmed",
  though the blocks don't look particularly different apart
  from their contents disappearing.
+ 
+ dimming all the edit icons apart from unhide, might be a 
+ nice effect, though they'd still be active. Maybe reverse
+ it to white?
 
 block.invisible {
   visibility: visible;
