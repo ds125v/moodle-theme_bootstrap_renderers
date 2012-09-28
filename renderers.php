@@ -52,7 +52,7 @@ class bootstrap {
             't/editstring' => 'tag',
             't/delete' => 'remove',
             'i/edit' => 'pencil',
-            't/copy' => 'copy', // created png from font awesome
+            't/copy' => 'copy', // in font awesome
             'i/settings' => 'list-alt',
             'i/grades' => 'grades',
             'i/group' => 'user',
@@ -199,7 +199,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // bit confusing at the moment
         //
         // also gets outputted in header and footer
-        // by default, probaly want to do entirely different
+        // by default, probably want to do entirely different
         // things in each place
 
         global $USER, $CFG, $DB, $SESSION;
@@ -292,6 +292,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $div_attributes['class'] = "sitelink";
             $text = 'Made with ';
             $a_attributes['href'] = 'http://moodle.org/';
+            $a_attributes['class'] = 'label';
+            $a_attributes['style'] = 'background-color: orange;';
         } else if (!empty($CFG->target_release) &&
                 $CFG->target_release != $CFG->release) {
             // Special case for during install/upgrade.
@@ -328,6 +330,10 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     public function block(block_contents $bc, $region) {
+        // trying to make each block a list, first item the header, second items controls,
+        // then if content is a list just join on and close the ul in the footer
+        // don't know if it'll work, Boostrap just expects simple lists
+
         $bc = clone($bc); // Avoid messing up the object passed in.
         if (empty($bc->blockinstanceid) || !strip_tags($bc->title)) {
             $bc->collapsible = block_contents::NOT_HIDEABLE;
@@ -365,27 +371,38 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function block_header(block_contents $bc) {
-        $title = '';
+        $output = '<ul class="nav nav-list">';
+
         if ($bc->title) {
-            $title = html_writer::tag('h2', $bc->title, array('class'=>'nav-header'));
+            $output .= "<li class=nav-header>$bc->title</li>";
         }
 
-        $controlshtml = $this->block_controls($bc->controls);
-
-        $output = '';
-        if ($title || $controlshtml) {
-            $output .= html_writer::tag('div', html_writer::tag('div', html_writer::tag('div', '', array('class'=>'block_action')). $title . $controlshtml, array('class' => 'title')), array('class' => 'header'));
+        if ($bc->controls) {
+            $output .= '<li>' . $this->block_controls($bc->controls) . '</li>';
         }
+
         return $output;
     }
 
-    // protected function block_content(block_contents $bc) {
-    // might be a clash with .content
+    protected function block_content(block_contents $bc) {
+        // probably only working for lists at the moment
+        $output = $bc->content;
+        $output .= $this->block_footer($bc);
+
+        return $bc->content . $this->block_footer($bc);
+    }
+
+    protected function block_footer(block_contents $bc) {
+        $output = '';
+        if ($bc->footer) {
+            $output .= html_writer::tag('li', $bc->footer);
+        }
+        return $output . '</ul>';
+    }
 
     public function list_block_contents($icons, $items) {
-        return bootstrap::unstyled_ul($items);
-        // currently just ditches icons rather
-        // than convert them to bootstrap style
+        // currently just ditches icons rather than convert them
+        return '<li>' . implode($items, '</li><li>') . '</li>';
     }
 
     public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
