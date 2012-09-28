@@ -16,15 +16,15 @@ class html {
     }
 
     public static function a($attributes, $content) {
-        return html::classy_tag('a', $content, $attributes);
+        return html::classy_tag('a', $attributes, $content);
     }
 
     public static function div($attributes, $content) {
-        return html::classy_tag('div', $content, $attributes);
+        return html::classy_tag('div', $attributes, $content);
     }
 
     public static function span($attributes, $content) {
-        return html::classy_tag('span', $content, $attributes);
+        return html::classy_tag('span', $attributes, $content);
     }
     public static function ul($items) {
         return '<ul><li>'.implode($items, '</li><li>').'</li></ul>';
@@ -525,7 +525,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // maybe their id, type or value might work better?
         // 
         // found so far:
-        // .singlebutton
+        // .singlebutton -> .btn
+        // .continuebutten -> .btn
 
         if ($button->actions) {
             $id = html_writer::random_id('single_button');
