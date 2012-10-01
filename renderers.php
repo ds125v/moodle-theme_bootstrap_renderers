@@ -26,8 +26,13 @@ class html {
     public static function span($attributes, $content) {
         return html::classy_tag('span', $attributes, $content);
     }
-    public static function ul($items) {
-        return '<ul><li>'.implode($items, '</li><li>').'</li></ul>';
+
+    public static function abbr($attributes, $content) {
+        return html::classy_tag('abbr', $attributes, $content);
+    }
+
+    public static function ul($attributes, $items) {
+        return html::classy_tag('ul', $attributes, '<li>'.implode('</li><li>', $items).'</li>');
     }
 
     public static function classes($classes) {
@@ -170,14 +175,14 @@ class bootstrap {
         return self::alert('info', $text);
     }
 
-
-    public static function initialism($full, $short) {
-        return "<abbr class=initialism title=\"$full\">$short</abbr>";
+    public static function initialism($short, $full) {
+        $attributes['class'] = 'initialism';
+        $attributes['title'] = $full;
+        return html::abbr($attributes, $short);
     }
 
-
-    public static function unstyled_ul($items) {
-        return '<ul class=unstyled>'.implode($items, '</li><li>').'</ul>';
+    public static function ul_unstyled($items) {
+        return html::ul('unstyled', $items);
     }
 }
 
@@ -187,12 +192,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     public function doctype() {
         $this->contenttype = 'text/html; charset=utf-8';
-        return "<!DOCTYPE html>";
+        return "<!DOCTYPE html>\n";
     }
     public function htmlattributes() {
-        return get_html_lang(true);
-        // I'd quite like to strip out the xml:lang="xx" that this returns,
-        // but maybe that's being overfussy
+        $parts = explode(' ', get_html_lang(true));
+        return $parts[1] . ' ' . $parts[2]; // ditch xml:lang
     }
     // public function standard_head_html() {}
     // lots of stuff going on here, should really be split up
@@ -373,7 +377,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         foreach ($controls as $control) {
             $controlshtml[] = html::a(array('href'=>$control['url'], 'title'=>$control['caption']), html::moodle_icon($control['icon']));
         }
-        return html::div('commands', implode($controlshtml, ' '));
+        return html::div('commands', implode(' ', $controlshtml));
     }
 
     public function block(block_contents $bc, $region) {
@@ -453,7 +457,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     public function list_block_contents($icons, $items) {
         // currently just ditches icons rather than convert them
-        return '<li>' . implode($items, '</li><li>') . '</li>';
+        return '<li>' . implode('</li><li>', $items) . '</li>';
     }
 
     public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
@@ -860,7 +864,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $links[] = $this->render($item);
         }
         $divider = '<span class=divider>/</span>';
-        return '<ul class=breadcrumb><li>' . join($links, " $divider</li><li>") . '</li></ul>';
+        return '<ul class=breadcrumb><li>' . implode($links, " $divider</li><li>") . '</li></ul>';
         return $navbarcontent;
     }
 
