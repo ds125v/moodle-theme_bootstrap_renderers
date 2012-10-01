@@ -6,3 +6,15 @@
  *
  */
 
+/* compensate for some broken javascript since #page-header not used,
+ * the javascript sets the height of the object to 0px (effectively
+ * hiding it)  see further discussion in MDL-34687
+ */
+div.resourcecontent { 
+  width: 100%;
+}
+#resourceobject {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 600px;
+}
