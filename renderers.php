@@ -31,8 +31,27 @@ class html {
         return html::classy_tag('abbr', $attributes, $content);
     }
 
+    public static function form($attributes, $content) {
+        return html::classy_tag('form', $attributes, $content);
+    }
+
     public static function ul($attributes, $items) {
         return html::classy_tag('ul', $attributes, '<li>'.implode('</li><li>', $items).'</li>');
+    }
+
+    public static function hidden_inputs($params) {
+        foreach ($params as $name => $value) {
+            $output[] = input_hidden($name, $value);
+        }
+        return implode($output);
+    }
+
+    public static function input_hidden($name, $value) {
+        $attributes['type'] = 'hidden';
+        $attributes['name'] = $name;
+        $attributes['value'] = $value;
+
+        return html::classy_tag('input', $attributes, '');
     }
 
     public static function classes($classes) {
@@ -335,8 +354,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     public function lang_menu() {
         global $CFG;
 
-        $output = '';
-
         if (empty($CFG->langmenu)) {
             return '';
         }
@@ -351,6 +368,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if ($langcount < 2) {
             return '';
         } else {
+            $output = '';
             $currlang = current_language();
             $output .= html::li('divider', '');
             $output .= html::li('nav-header', 'STRING: TITLE(RENDERER)');
@@ -364,9 +382,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 }
                 $output .= html::li('navbar-text', $lang);
             }
+            return $output;
         }
-
-        return $output;
     }
 
     public function block_controls($controls) {
@@ -516,7 +533,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     protected function render_single_button(single_button $button) {
         $attributes = array('type'     => 'submit',
-                'title'    => $button->tooltip .':'. $button->class,
+                'title'    => $button->tooltip .':'. $button->class, // TODO: remove this later
                 'class'    => $button->class . ' btn',
                 'value'    => $button->label,
                 'disabled' => $button->disabled ? 'disabled' : null);
@@ -548,8 +565,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if ($button->method === 'post') {
             $params['sesskey'] = sesskey();
         }
-        foreach ($params as $var => $val) {
-            $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $var, 'value' => $val));
+        foreach ($params as $name => $value) {
+            $output .= html::input_hidden($name, $value);
         }
 
         // then div wrapper for xhtml strictness
@@ -580,14 +597,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $select->formid = html_writer::random_id('single_select_f');
         }
 
-        $output = '';
         $params = $select->url->params();
         if ($select->method === 'post') {
             $params['sesskey'] = sesskey();
         }
-        foreach ($params as $name=>$value) {
-            $output .= html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>$name, 'value'=>$value));
-        }
+        $output = html::hidden_inputs($params);
 
         if (empty($select->attributes['id'])) {
             $select->attributes['id'] = html_writer::random_id('single_select');
@@ -627,11 +641,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         } else {
             $url = $select->url->out_omit_querystring();     // url without params, the anchor part not allowed
         }
-        $formattributes = array('method' => $select->method,
+        $form_attributes = array('method' => $select->method,
                                 'class' => 'form-inline',
                                 'action' => $url,
                                 'id'     => $select->formid);
-        $output = html_writer::tag('form', $output, $formattributes);
+        $output = html::form($form_attributes, $output);
 
         // and finally one more wrapper with class
         return html::div($select->class, $output);
@@ -670,10 +684,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // could be restyled with .btn and .form-inline probably
 
     public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
-        if ($icon) {
-            // should be done via CSS, if at all
-        }
-
+        // icons should be done via CSS, if at all
         $help = '';
         if ($helpidentifier) {
             $help = $this->help_icon($helpidentifier, $component);
@@ -730,9 +741,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // there's a button in here, but it appears to be display:none'd
 
     public function error_text($message) {
-        // default implementation uses a span, not a div
-        // maybe this maps better to a bootstrap .label?
-
         if (empty($message)) { return ''; }
         return bootstrap::alert_error($message);
     }
@@ -758,82 +766,79 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // not sure we need a class on this,
     // but doesn't seem worth rewriting just for that
 
+    // these should all really be in the pagingbar object
+    private function previous_link($baseurl, $pagevar, $current_page) {
+        $previous = get_string('previous');
+        if ($current_page == 0) {
+            return "<li class=disabled><span>$previous</span></li>";
+        }
+        return "<li>" . html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page-1)), $previous) . "</li>";
+    }
+    private function next_link($baseurl, $pagevar, $current_page, $last_page) {
+        $next = get_string('next');
+        if ($current_page == $last_page) {
+            return "<li class=disabled><span>$next</span></li>";
+        }
+        return "<li>" . html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page+1)), $next) . "</li>";
+    }
+    private function pagination_link($baseurl, $pagevar, $current_page, $target) {
+        $targetname = $target + 1;
+        if ($target == $current_page) {
+            return "<li class=active><span>$targetname</span></li>";
+        }
+        return "<li>" . html_writer::link(new moodle_url($baseurl, array($pagevar=>$target)), $targetname) . "</li>";
+    }
+
+    private function skipped_link() {
+        return "<li class=disabled><span>…</span></li>";
+    }
+
     protected function render_paging_bar(paging_bar $pagingbar) {
         // this is more complicated than it needs to be, see MDL-35367 
-
-        $pagingbar->maxdisplay = 11; // odd number for symmetry
         $pagingbar = clone($pagingbar);
         $pagingbar->prepare($this, $this->page, $this->target);
-        $show_pagingbar = ($pagingbar->totalcount > $pagingbar->perpage);
-        if ($show_pagingbar) {
-            $baseurl = $pagingbar->baseurl;
-            $pagevar = $pagingbar->pagevar;
-            $maxdisplay = max($pagingbar->maxdisplay, 5);
-            $page = $pagingbar->page;
 
-            $output = '<div class="pagination pagination-centered"><ul>';
-
-            // Note: page 0 is displayed to users as page 1 and so on.
-            if ($pagingbar->perpage > 0) {
-                $lastpage = floor($pagingbar->totalcount / $pagingbar->perpage);
-            } else {
-                $lastpage = 0;
-            }
-            if ($page != 0) {
-                $previouslink = html_writer::link(new moodle_url($baseurl, array($pagevar=>$page-1)), get_string('previous'));
-                $output .= "<li>$previouslink</li>";
-            } else {
-                $output .= '<li class=disabled><span>'.get_string('previous').'</span></li>';
-            }
-
-            $start = 0;
-            $stop = $lastpage;
-            $truncate = $lastpage + 1 > $maxdisplay ;
-            $start_margin = floor($maxdisplay / 2);
-            $end_margin = $lastpage - ceil($maxdisplay / 2);
-            $near_to_start = $page < $start_margin;
-            $near_to_end = $page > $end_margin;
-            if ($truncate && $near_to_start) {
-                $stop = $maxdisplay - 3;
-            } else if ($truncate && $near_to_end) {
-                $start = $lastpage - $maxdisplay + 3;
-            } else if ($truncate) { // truncate both sides, centered on current page
-                $before_current = ceil(($maxdisplay - 5) / 2) ;
-                $start = $page - $before_current;
-                $stop = $start + $maxdisplay - 5;
-            }
-
-            if ($truncate && !$near_to_start) {
-                $link = html_writer::link(new moodle_url($baseurl, array($pagevar=>'0')), '1');
-                $output .= "<li>$link</li>" . "<li class=disabled><span>…</span></li>";
-            }
-
-            for ($i = $start; $i <= $stop; $i++) {
-                if ($page == $i) {
-                    $pagename = $page + 1;
-                    $output .= "<li class=active><span>$pagename</span></li>";
-                } else {
-                    $link = html_writer::link(new moodle_url($baseurl, array($pagevar=>$i)), $i+1);
-                    $output .= "<li>$link</li>";
-                }
-            }
-
-            if ($truncate && !$near_to_end) {
-                $output .= "<li class=disabled><span>…</span>";
-                $link = html_writer::link(new moodle_url($baseurl, array($pagevar=>$lastpage)), $lastpage + 1);
-                $output .= "<li>$link</li>";
-            }
-
-            if ($page != $lastpage) {
-                $nextlink = html_writer::link(new moodle_url($baseurl, array($pagevar=>$page+1)), get_string('next'));
-                $output .= "<li>$nextlink</li>";
-            } else {
-                $output .= '<li class=disabled><span>'.get_string('next').'</span></li>';
-            }
-
-            return $output."</ul></div>";
+        $perpage = $pagingbar->perpage;
+        $total = $pagingbar->totalcount;
+        $show_pagingbar = ($perpage > 0 && $total > $perpage);
+        if (!$show_pagingbar) {
+            return '';
         }
+
+        $baseurl = $pagingbar->baseurl;
+        $pagevar = $pagingbar->pagevar;
+        $current_page = (int)$pagingbar->page;
+
+        // Note: page 0 is displayed to users as page 1 and so on.
+        $lastpage = floor(($total - 1) / $perpage);
+
+        // display max $padding*2 + 1 links
+        $padding = 4;
+        $near_to_start = ($current_page - $padding) < 1;
+        $near_to_end = ($current_page + $padding) > $lastpage;
+
+        if (!$near_to_start && !$near_to_end) {
+            $skip[1] = $current_page - $padding + 2;
+            $skip[($current_page + $padding) - 1] = $lastpage;
+        } else if ($near_to_end) {
+            $skip[1] = $lastpage - (2*$padding) + 2;
+        } else if ($near_to_start) {
+            $skip[2*$padding-1] = $lastpage;
+        }
+
+
+        $links[] = $this->previous_link($baseurl, $pagevar, $current_page);
+        for ($i = 0; $i <= $lastpage; $i++) {
+            if ($skip[$i]) {
+                $links[] = $this->skipped_link();
+                $i = $skip[$i];
+            }
+            $links[] = $this->pagination_link($baseurl, $pagevar, $current_page, $i);
+        }
+        $links[] = $this->next_link($baseurl, $pagevar, $current_page, $lastpage);
+        return '<div class="pagination pagination-centered"><ul>' . implode($links) . '</ul>';
     }
+
     // public function skip_link_target($id = null) {
     // I think this should usually point to an id on the actual
     // content rather than an extra span stuck in before it, but
