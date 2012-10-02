@@ -4,14 +4,15 @@
 class html {
     // html utility functions
 
-    public static function moodle_icon($name) {
-        return bootstrap::moodle_to_bootstrap_icon($name);
-    }
 
     // gave this a slightly stupid name, since you shouldn't be calling it directly
     public static function classy_tag($tag, $attributes, $content) {
         if (is_string($attributes)) {
-            $attributes = array('class'=>$attributes); 
+            if ($attributes === '') {
+                $attributes = null;
+            } else {
+                $attributes = array('class'=>$attributes); 
+            }
         }
         if ($content === null) {
             return html_writer::empty_tag($tag, $attributes);
@@ -31,12 +32,20 @@ class html {
         return html::classy_tag('span', $attributes, $content);
     }
 
+    public static function p($attributes, $content) {
+        return html::classy_tag('p', $attributes, $content);
+    }
+
     public static function abbr($attributes, $content) {
         return html::classy_tag('abbr', $attributes, $content);
     }
 
     public static function form($attributes, $content) {
         return html::classy_tag('form', $attributes, $content);
+    }
+    public static function submit($attributes) {
+        $attributes['type'] = 'submit';
+        return html::classy_tag('input', $attributes, null);
     }
 
     public static function ul($attributes, $content) {
@@ -57,7 +66,7 @@ class html {
 
     public static function hidden_inputs($params) {
         foreach ($params as $name => $value) {
-            $output[] = input_hidden($name, $value);
+            $output[] = html::input_hidden($name, $value);
         }
         return implode($output);
     }
@@ -81,7 +90,7 @@ class html {
             $current['class'] =  html::add_classes_string($current['class'], $new);
             return $current;
         }
-        // TODO: should really throw one of those "programmer error" errors if we get here
+        throw new coding_exception('The $current param to html::add_classes must be either a string or array of attributes.');
     }
 
     public static function add_classes_string($current, $new) {
@@ -210,7 +219,7 @@ class bootstrap {
         if ($type != '') {
             $type = ' alert-' . $type;
         }
-        return "<div class=\"alert$type\">$text</i>";
+        return "<div class=\"alert$type\">$text</div>";
     }
     public static function alert_default($text) {
         return self::alert('', $text);
@@ -221,11 +230,14 @@ class bootstrap {
     public static function alert_error($text) {
         return self::alert('error', $text);
     }
+    public static function alert_info($text) {
+        return self::alert('info', $text);
+    }
     public static function alert_block($text) {
         return self::alert('block', $text);
     }
-    public static function alert_info($text) {
-        return self::alert('info', $text);
+    public static function alert_block_info($text) {
+        return self::alert('block alert-info', $text);
     }
 
     public static function initialism($short, $full) {
@@ -238,6 +250,13 @@ class bootstrap {
         return html::ul('unstyled', $items);
     }
 }
+class moodle {
+    // moodle utitlity functions
+    // TODO: think of a better name
+    public static function icon($name) {
+        return bootstrap::moodle_to_bootstrap_icon($name);
+    }
+}
 
 class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // trying to keep the order of definition the same as
@@ -248,8 +267,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return "<!DOCTYPE html>\n";
     }
     public function htmlattributes() {
-        $parts = explode(' ', get_html_lang(true));
-        return $parts[1] . ' ' . $parts[2]; // ditch xml:lang
+        $parts = explode(' ', trim(get_html_lang(true)));
+        return $parts[0] . ' ' . $parts[1]; // ditch xml:lang
     }
     // public function standard_head_html() {}
     // lots of stuff going on here, should really be split up
@@ -428,7 +447,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         }
         $controlshtml = array();
         foreach ($controls as $control) {
-            $controlshtml[] = html::a(array('href'=>$control['url'], 'title'=>$control['caption']), html::moodle_icon($control['icon']));
+            $controlshtml[] = html::a(array('href'=>$control['url'], 'title'=>$control['caption']), moodle::icon($control['icon']));
         }
         return html::div('commands', implode(' ', $controlshtml));
     }
@@ -541,41 +560,55 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     public function confirm($message, $continue, $cancel) {
-        // this is used when upgrading, confusingly it's outputting
+        // this is used when upgrading (and possibly elsewhere) confusingly it's outputting
         // two different forms for a pair of continue/cancel buttons.
+        // will try outputting a single form, with the continue button
+        // submitting and the cancel button actually being a link
+        //
+        // On the upgrade screen at least, the cancel button doesn't seem to do anything
 
-        if ($continue instanceof single_button) {
-            // ok
-        } else if (is_string($continue)) {
-            $continue = new single_button(new moodle_url($continue), get_string('continue'), 'post');
-        } else if ($continue instanceof moodle_url) {
-            $continue = new single_button($continue, get_string('continue'), 'post');
+        $continue = $this->make_button($continue, 'continue', 'post');
+        $cancel = $this->make_button_link($cancel, 'cancel');
+
+        $output = $this->render($continue);
+        $output = strstr($output, '</form>', true); // cut off final </form>
+        $output = "<p>$message</p><p>$output $cancel</form></p>";
+        return bootstrap::alert_block($output);
+    }
+    private function make_button($button, $text, $method='post') {
+        if ($button instanceof single_button) {
+            return $button;
+        } else if (is_string($button)) {
+            return new single_button(new moodle_url($button), get_string($text), $method);
+        } else if ($button instanceof moodle_url) {
+            return new single_button($button, get_string($text), $method);
         } else {
-            throw new coding_exception('The continue param to $OUTPUT->confirm() must be either a URL (string/moodle_url) or a single_button instance.');
+            throw new coding_exception('The $button param to make_button() must be either a URL (string/moodle_url) or a single_button instance.');
         }
+    }
+    private function make_button_link($button, $text) {
+        $text = get_string($text);
 
-        if ($cancel instanceof single_button) {
-            // ok
-        } else if (is_string($cancel)) {
-            $cancel = new single_button(new moodle_url($cancel), get_string('cancel'), 'get');
-        } else if ($cancel instanceof moodle_url) {
-            $cancel = new single_button($cancel, get_string('cancel'), 'get');
+        if ($button instanceof single_button) {
+            $attributes['href'] = $button->url;
+        } else if (is_string($button)) {
+            $attributes['href'] = $button;
+        } else if ($button instanceof moodle_url) {
+            $attributes['href'] = $button;
         } else {
-            throw new coding_exception('The cancel param to $OUTPUT->confirm() must be either a URL (string/moodle_url) or a single_button instance.');
+            throw new coding_exception('The $button param to make_button_link() must be either a URL (string/moodle_url) or a single_button instance.');
         }
-
-        return bootstrap::alert_block("<p>$message</p>" .  
-            html::div('buttons', '<p>'. $this->render($continue) . $this->render($cancel).'</p>')
-        );
+        $attributes['class'] = 'btn btn-warning';
+        return html::a($attributes, $text);
     }
 
     protected function render_single_button(single_button $button) {
         // just because it says "single_botton" doesn't mean it's going to be rendered on it's own
         // but it does mean it gets it's own unique form and a div round it
 
-        $attributes = array('type'     => 'submit',
+        $attributes = array(
                 'title'    => $button->tooltip,
-                'class'    => html::add_classes($button->class, 'btn'),
+                'class'    => html::add_classes($button->class, 'btn btn-primary'),
                 'value'    => $button->label,
                 'disabled' => $button->disabled ? 'disabled' : null,
             );
@@ -588,8 +621,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // maybe their id, type or value might work better?
         // 
         // found so far:
-        // .singlebutton -> .btn
-        // .continuebutten -> .btn
+        // .singlebutton -> .btn?
+        // .continuebutton -> .btn-primary?
 
         if ($button->actions) {
             $id = html_writer::random_id('single_button');
@@ -600,23 +633,16 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         }
 
         // first the input element
-        $output = html_writer::empty_tag('input', $attributes);
+        $output = html::submit($attributes);
 
         // then hidden fields
-        $params = $button->url->params();
         if ($button->method === 'post') {
             $params['sesskey'] = sesskey();
         }
-        foreach ($params as $name => $value) {
-            $output .= html::input_hidden($name, $value);
-        }
-
-        // then div wrapper for xhtml strictness
-        $output = html_writer::tag('div', $output);
+        $output .= html::hidden_inputs($button->url->params());
 
         // now the form itself around it
         if ($button->method === 'get') {
-
             $url = $button->url->out_omit_querystring(true); // url without params, the anchor part allowed
         } else {
             $url = $button->url->out_omit_querystring();     // url without params, the anchor part not allowed
@@ -624,12 +650,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if ($url === '') {
             $url = '#'; // there has to be always some action
         }
-        $attributes = array('method' => $button->method,
+        $attributes = array(
+                'method' => $button->method,
                 'action' => $url,
                 'id'     => $button->formid);
-        $output = html_writer::tag('form', $output, $attributes);
-
-        return html::div($button->class, $output);
+        return html::form($attributes, $output);
     }
 
     protected function render_single_select(single_select $select) {
@@ -789,7 +814,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // public function fatal_error($message, $moreinfourl, $link, $backtrace, $debuginfo = null) {
     // there's some error notices that could be put in alerts here
 
-    public function notification($message, $classes = 'notifyproblem') {
+    public function notification($message, $classes = null) {
         // TODO rewrite recognized classnames to bootstrap alert equivalent 
         // only two are mentioned in documentation, there may be more
 
@@ -801,6 +826,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if ($classes = 'notifysuccess') {
             return bootstrap::alert_success($message);
         }
+        return bootstrap::alert_default($message);
     }
 
     // public function continue_button($url) {
@@ -1139,35 +1165,25 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
             $version, $showallplugins, $reloadurl, $continueurl) {
         global $CFG;
 
-        $output = '';
-
-        $output .= $this->header();
-        $output .= $this->box_start('generalbox');
-        $output .= $this->container_start('generalbox', 'notice');
-        $output .= html_writer::tag('p', get_string('pluginchecknotice', 'core_plugin'));
+        $output = $this->header();
+        $output .= html::p('', get_string('pluginchecknotice', 'core_plugin'));
         if (empty($CFG->disableupdatenotifications)) {
-            $output .= $this->container_start('checkforupdates');
             $output .= $this->single_button(new moodle_url($reloadurl, array('fetchupdates' => 1)), get_string('checkforupdates', 'core_plugin'));
             if ($timefetched = $checker->get_last_timefetched()) {
-                $output .= $this->container(get_string('checkforupdateslast', 'core_plugin',
-                    userdate($timefetched, get_string('strftimedatetime', 'core_langconfig'))));
+                $output .= get_string('checkforupdateslast', 'core_plugin',
+                    userdate($timefetched, get_string('strftimedatetime', 'core_langconfig')));
             }
-            $output .= $this->container_end();
         }
-        $output .= $this->container_end();
 
         $output .= $this->plugins_check_table($pluginman, $version, array('full' => $showallplugins));
-        $output .= $this->box_end();
         $output .= $this->upgrade_reload($reloadurl);
 
         if ($pluginman->some_plugins_updatable()) {
-            $output .= $this->container_start('upgradepluginsinfo');
-            $output .= $this->help_icon('upgradepluginsinfo', 'core_admin', get_string('upgradepluginsfirst', 'core_admin'));
-            $output .= $this->container_end();
+            $output .= bootstrap::alert_info($this->help_icon('upgradepluginsinfo', 'core_admin', get_string('upgradepluginsfirst', 'core_admin')));
         }
 
         $button = new single_button($continueurl, get_string('upgradestart', 'admin'), 'get');
-        $button->class = 'continuebutton';
+        $button->class = 'btn btn-primary';
         $output .= $this->render($button);
         $output .= $this->footer();
 
@@ -1283,17 +1299,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
     }
 
     /**
-     * Displays all known plugins and information about their installation or upgrade
-     *
-     * This default implementation renders all plugins into one big table. The rendering
-     * options support:
-     *     (bool)full = false: whether to display up-to-date plugins, too
-     *     (bool)xdep = false: display the plugins with unsatisified dependecies only
-     *
-     * @param plugin_manager $pluginman provides information about the plugins.
-     * @param int $version the version of the Moodle code from version.php.
-     * @param array $options rendering options
-     * @return string HTML code
+     * need to split these tables or something, mark the headers as thead?
      */
     public function plugins_check_table(plugin_manager $pluginman, $version, array $options = array()) {
         global $CFG;
@@ -1309,6 +1315,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
 
         $table = new html_table();
         $table->id = 'plugins-check';
+        $table->attributes['class'] = 'table table-striped table-hover';
         $table->head = array(
             get_string('displayname', 'core_plugin'),
             get_string('rootdir', 'core_plugin'),
@@ -1317,9 +1324,6 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
             get_string('versiondisk', 'core_plugin'),
             get_string('requires', 'core_plugin'),
             get_string('status', 'core_plugin'),
-        );
-        $table->colclasses = array(
-            'displayname', 'rootdir', 'source', 'versiondb', 'versiondisk', 'requires', 'status',
         );
         $table->data = array();
 
@@ -1362,19 +1366,19 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                 $rootdir = new html_table_cell($plugin->get_dir());
 
                 if ($isstandard = $plugin->is_standard()) {
-                    $row->attributes['class'] .= ' standard';
                     $source = new html_table_cell(get_string('sourcestd', 'core_plugin'));
                 } else {
-                    $row->attributes['class'] .= ' extension';
-                    $source = new html_table_cell(get_string('sourceext', 'core_plugin'));
+                    $source = new html_table_cell(bootstrap::label_warning(get_string('sourceext', 'core_plugin')));
                 }
 
                 $versiondb = new html_table_cell($plugin->versiondb);
                 $versiondisk = new html_table_cell($plugin->versiondisk);
 
                 $statuscode = $plugin->get_status();
-                $row->attributes['class'] .= ' status-' . $statuscode;
                 $status = get_string('status_' . $statuscode, 'core_plugin');
+                if ($statuscode === 'upgrade') {
+                    $status = bootstrap::label_info($status);
+                }
 
                 $availableupdates = $plugin->available_updates();
                 if (!empty($availableupdates) and empty($CFG->disableupdatenotifications)) {
@@ -1726,178 +1730,166 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         return $box;
     }
 
-    /**
-     * This function will render one beautiful table with all the environmental
-     * configuration and how it suits Moodle needs.
-     *
-     * @param boolean $result final result of the check (true/false)
-     * @param array $environment_results array of results gathered
-     * @return string HTML to output.
-     */
-    public function environment_check_table($result, $environment_results) {
-        global $CFG;
+     public function environment_check_table($result, $environment_results) {
+         global $CFG;
 
-        // Table headers
-        $servertable = new html_table();//table for server checks
-        $servertable->head  = array(
-            get_string('name'),
-            get_string('info'),
-            get_string('report'),
-            get_string('status'),
-        );
-        $servertable->wrap  = array('nowrap', '', '', 'nowrap');
-        $servertable->attributes['class'] = 'table environmenttable generaltable';
+         $servertable = new html_table();
+         $servertable->head  = array(
+             get_string('name'),
+             get_string('info'),
+             get_string('report'),
+             get_string('status'),
+         );
+         $servertable->attributes['class'] = 'table table-striped table-hover';
 
-        $serverdata = array('ok'=>array(), 'warn'=>array(), 'error'=>array());
+         $serverdata = array('success'=>array(), 'warning'=>array(), 'important'=>array());
 
-        $othertable = new html_table();//table for custom checks
-        $othertable->head  = array(
-            get_string('info'),
-            get_string('report'),
-            get_string('status'),
-        );
-        $othertable->wrap  = array('', '', 'nowrap');
-        $othertable->attributes['class'] = 'table environmenttable generaltable';
+         $othertable = new html_table();
+         $othertable->head  = array(
+             get_string('info'),
+             get_string('report'),
+             get_string('status'),
+         );
+         $othertable->attributes['class'] = 'table table-striped table-hover';
 
-        $otherdata = array('ok'=>array(), 'warn'=>array(), 'error'=>array());
+         $otherdata = array('success'=>array(), 'warning'=>array(), 'important'=>array());
 
-        // Iterate over each environment_result
-        $continue = true;
-        foreach ($environment_results as $environment_result) {
-            $errorline   = false;
-            $warningline = false;
-            $stringtouse = '';
-            if ($continue) {
-                $type = $environment_result->getPart();
-                $info = $environment_result->getInfo();
-                $status = $environment_result->getStatus();
-                $error_code = $environment_result->getErrorCode();
-                // Process Report field
-                $rec = new stdClass();
-                // Something has gone wrong at parsing time
-                if ($error_code) {
-                    $stringtouse = 'environmentxmlerror';
-                    $rec->error_code = $error_code;
-                    $status = get_string('error');
-                    $errorline = true;
-                    $continue = false;
-                }
+         // Iterate over each environment_result
+         $continue = true;
+         foreach ($environment_results as $environment_result) {
+             $errorline   = false;
+             $warningline = false;
+             $stringtouse = '';
+             if ($continue) {
+                 $type = $environment_result->getPart();
+                 $info = $environment_result->getInfo();
+                 $status = $environment_result->getStatus();
+                 $error_code = $environment_result->getErrorCode();
+                 // Process Report field
+                 $rec = new stdClass();
+                 // Something has gone wrong at parsing time
+                 if ($error_code) {
+                     $stringtouse = 'environmentxmlerror';
+                     $rec->error_code = $error_code;
+                     $status = get_string('error');
+                     $errorline = true;
+                     $continue = false;
+                 }
 
-                if ($continue) {
-                    if ($rec->needed = $environment_result->getNeededVersion()) {
-                        // We are comparing versions
-                        $rec->current = $environment_result->getCurrentVersion();
-                        if ($environment_result->getLevel() == 'required') {
-                            $stringtouse = 'environmentrequireversion';
-                        } else {
-                            $stringtouse = 'environmentrecommendversion';
-                        }
+                 if ($continue) {
+                     if ($rec->needed = $environment_result->getNeededVersion()) {
+                         // We are comparing versions
+                         $rec->current = $environment_result->getCurrentVersion();
+                         if ($environment_result->getLevel() == 'required') {
+                             $stringtouse = 'environmentrequireversion';
+                         } else {
+                             $stringtouse = 'environmentrecommendversion';
+                         }
 
-                    } else if ($environment_result->getPart() == 'custom_check') {
-                        // We are checking installed & enabled things
-                        if ($environment_result->getLevel() == 'required') {
-                            $stringtouse = 'environmentrequirecustomcheck';
-                        } else {
-                            $stringtouse = 'environmentrecommendcustomcheck';
-                        }
+                     } else if ($environment_result->getPart() == 'custom_check') {
+                         // We are checking installed & enabled things
+                         if ($environment_result->getLevel() == 'required') {
+                             $stringtouse = 'environmentrequirecustomcheck';
+                         } else {
+                             $stringtouse = 'environmentrecommendcustomcheck';
+                         }
 
-                    } else if ($environment_result->getPart() == 'php_setting') {
-                        if ($status) {
-                            $stringtouse = 'environmentsettingok';
-                        } else if ($environment_result->getLevel() == 'required') {
-                            $stringtouse = 'environmentmustfixsetting';
-                        } else {
-                            $stringtouse = 'environmentshouldfixsetting';
-                        }
+                     } else if ($environment_result->getPart() == 'php_setting') {
+                         if ($status) {
+                             $stringtouse = 'environmentsettingok';
+                         } else if ($environment_result->getLevel() == 'required') {
+                             $stringtouse = 'environmentmustfixsetting';
+                         } else {
+                             $stringtouse = 'environmentshouldfixsetting';
+                         }
 
-                    } else {
-                        if ($environment_result->getLevel() == 'required') {
-                            $stringtouse = 'environmentrequireinstall';
-                        } else {
-                            $stringtouse = 'environmentrecommendinstall';
-                        }
-                    }
+                     } else {
+                         if ($environment_result->getLevel() == 'required') {
+                             $stringtouse = 'environmentrequireinstall';
+                         } else {
+                             $stringtouse = 'environmentrecommendinstall';
+                         }
+                     }
 
-                    // Calculate the status value
-                    if ($environment_result->getBypassStr() != '') {            //Handle bypassed result (warning)
-                        $status = get_string('bypassed');
-                        $warningline = true;
-                    } else if ($environment_result->getRestrictStr() != '') {   //Handle restricted result (error)
-                        $status = get_string('restricted');
-                        $errorline = true;
-                    } else {
-                        if ($status) {                                          //Handle ok result (ok)
-                            $status = get_string('ok');
-                        } else {
-                            if ($environment_result->getLevel() == 'optional') {//Handle check result (warning)
-                                $status = get_string('check');
-                                $warningline = true;
-                            } else {                                            //Handle error result (error)
-                                $status = get_string('check');
-                                $errorline = true;
-                            }
-                        }
-                    }
-                }
+                     // Calculate the status value
+                     if ($environment_result->getBypassStr() != '') {            //Handle bypassed result (warning)
+                         $status = get_string('bypassed');
+                         $warningline = true;
+                     } else if ($environment_result->getRestrictStr() != '') {   //Handle restricted result (error)
+                         $status = get_string('restricted');
+                         $errorline = true;
+                     } else {
+                         if ($status) {                                          //Handle ok result (ok)
+                             $status = get_string('ok');
+                         } else {
+                             if ($environment_result->getLevel() == 'optional') {//Handle check result (warning)
+                                 $status = get_string('check');
+                                 $warningline = true;
+                             } else {                                            //Handle error result (error)
+                                 $status = get_string('check');
+                                 $errorline = true;
+                             }
+                         }
+                     }
+                 }
 
-                // Build the text
-                $linkparts = array();
-                $linkparts[] = 'admin/environment';
-                $linkparts[] = $type;
-                if (!empty($info)){
-                   $linkparts[] = $info;
-                }
-                if (empty($CFG->docroot)) {
-                    $report = get_string($stringtouse, 'admin', $rec);
-                } else {
-                    $report = $this->doc_link(join($linkparts, '/'), get_string($stringtouse, 'admin', $rec));
-                }
+                 // Build the text
+                 $linkparts = array();
+                 $linkparts[] = 'admin/environment';
+                 $linkparts[] = $type;
+                 if (!empty($info)){
+                     $linkparts[] = $info;
+                 }
+                 if (empty($CFG->docroot)) {
+                     $report = get_string($stringtouse, 'admin', $rec);
+                 } else {
+                     $report = $this->doc_link(join($linkparts, '/'), get_string($stringtouse, 'admin', $rec));
+                 }
 
-                // Format error or warning line
-                if ($errorline || $warningline) {
-                    $messagetype = $errorline? 'important':'warning';
-                } else {
-                    $messagetype = 'success';
-                }
-                $status = '<span class="label label-'.$messagetype.'">'.$status.'</span>';
-                // Here we'll store all the feedback found
-                $feedbacktext = '';
-                // Append the feedback if there is some
-                $feedbacktext .= $environment_result->strToReport($environment_result->getFeedbackStr(), 'alert alert-'.$messagetype);
-                //Append the bypass if there is some
-                $feedbacktext .= $environment_result->strToReport($environment_result->getBypassStr(), 'alert');
-                //Append the restrict if there is some
-                $feedbacktext .= $environment_result->strToReport($environment_result->getRestrictStr(), 'alert alert-error');
+                 // Format error or warning line
+                 if ($errorline || $warningline) {
+                     $messagetype = $errorline? 'important':'warning';
+                 } else {
+                     $messagetype = 'success';
+                 }
+                 $status = html::span( "label label-$messagetype", $status);
+                 // Here we'll store all the feedback found
+                 $feedbacktext = '';
+                 // Append the feedback if there is some
+                 $feedbacktext .= $environment_result->strToReport($environment_result->getFeedbackStr(), 'alert alert-'.$messagetype);
+                 //Append the bypass if there is some
+                 $feedbacktext .= $environment_result->strToReport($environment_result->getBypassStr(), 'alert');
+                 //Append the restrict if there is some
+                 $feedbacktext .= $environment_result->strToReport($environment_result->getRestrictStr(), 'alert alert-important');
 
-                $report .= $feedbacktext;
+                 $report .= $feedbacktext;
 
-                // Add the row to the table
-                if ($environment_result->getPart() == 'custom_check'){
-                    $otherdata[$messagetype][] = array ($info, $report, $status);
-                } else {
-                    $serverdata[$messagetype][] = array ($type, $info, $report, $status);
-                }
-            }
-        }
+                 // Add the row to the table
+                 if ($environment_result->getPart() == 'custom_check'){
+                     $otherdata[$messagetype][] = array ($info, $report, $status);
+                 } else {
+                     $serverdata[$messagetype][] = array ($type, $info, $report, $status);
+                 }
+             }
+         }
 
-        //put errors first in
-        $servertable->data = array_merge($serverdata['important'], $serverdata['warning'], $serverdata['success']);
-        $othertable->data = array_merge($otherdata['important'], $otherdata['warning'], $otherdata['success']);
+         //put errors first in
+         $servertable->data = array_merge($serverdata['important'], $serverdata['warning'], $serverdata['success']);
+         $othertable->data = array_merge($otherdata['important'], $otherdata['warning'], $otherdata['success']);
 
-        // Print table
-        $output = '';
-        $output .= $this->heading(get_string('serverchecks', 'admin'));
-        $output .= html_writer::table($servertable);
-        if (count($othertable->data)){
-            $output .= $this->heading(get_string('customcheck', 'admin'));
-            $output .= html_writer::table($othertable);
-        }
+         // Print table
+         $output = $this->heading(get_string('serverchecks', 'admin'));
+         $output .= html_writer::table($servertable);
+         if (count($othertable->data)){
+             $output .= $this->heading(get_string('customcheck', 'admin'));
+             $output .= html_writer::table($othertable);
+         }
 
-        // Finally, if any error has happened, print the summary box
-        if (!$result) {
-            $output .= $this->box(get_string('environmenterrortodo', 'admin'), 'alert alert-error');
-        }
+         // Finally, if any error has happened, print the summary box
+         if (!$result) {
+             $output .= bootstrap::alert_error(get_string('environmenterrortodo', 'admin'));
+         }
 
-        return $output;
-    }
+         return $output;
+     }
 }
