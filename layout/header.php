@@ -66,7 +66,7 @@ echo $OUTPUT->doctype() ?>
 
 
 <?php if ($hasheading || $hasnavbar) : ?>
-<!- PAGE HEADING -->
+<!-- PAGE HEADING -->
     <header id="page-header" class="jumbotron">    	
         <?php if ($hasheading) { ?>
         <h1 class="headermain"><a href="<?php  global $CFG; $url = $CFG->wwwroot."/course/view.php?id=".$PAGE->course->id; echo $url; ?>"><?php echo $PAGE->heading ?></a></h1>
@@ -85,5 +85,5 @@ echo $OUTPUT->doctype() ?>
             </div>
         <?php } ?>
     </header>
-<!- END PAGE HEADING -->
+<!-- END PAGE HEADING -->
 <?php endif; ?>

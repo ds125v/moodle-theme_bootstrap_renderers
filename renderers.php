@@ -8,9 +8,13 @@ class html {
         return bootstrap::moodle_to_bootstrap_icon($name);
     }
 
+    // gave this a slightly stupid name, since you shouldn't be calling it directly
     public static function classy_tag($tag, $attributes, $content) {
         if (is_string($attributes)) {
-           $attributes = array('class'=>$attributes); 
+            $attributes = array('class'=>$attributes); 
+        }
+        if ($content === null) {
+            return html_writer::empty_tag($tag, $attributes);
         }
         return html_writer::tag($tag, $content, $attributes);
     }
@@ -35,8 +39,20 @@ class html {
         return html::classy_tag('form', $attributes, $content);
     }
 
-    public static function ul($attributes, $items) {
-        return html::classy_tag('ul', $attributes, '<li>'.implode('</li><li>', $items).'</li>');
+    public static function ul($attributes, $content) {
+        return html::classy_tag('ul', $attributes, $content);
+    }
+    public static function ul_implode($attributes, $items) {
+        return html::classy_tag('ul', $attributes, implode($items));
+    }
+    public static function ul_implode_li($attributes, $items, $glue='</li><li>') {
+        return html::classy_tag('ul', $attributes, html::li_implode($items, $glue));
+    }
+    public static function li($attributes, $content) {
+        return html::classy_tag('li', $attributes, $content);
+    }
+    public static function li_implode($items, $glue='</li><li>') {
+        return '<li>'.implode($glue, $items).'</li>';
     }
 
     public static function hidden_inputs($params) {
@@ -51,12 +67,29 @@ class html {
         $attributes['name'] = $name;
         $attributes['value'] = $value;
 
-        return html::classy_tag('input', $attributes, '');
+        return html::classy_tag('input', $attributes, null);
     }
 
-    public static function classes($classes) {
-        // don't know what this does, but it sounds useful
-        return renderer_base::prepare_classes($classes);
+    public static function add_classes($current, $new) {
+        if (is_string($current)) {
+            return html::add_classes_string($current, $new);
+        }
+        if (is_array($current)) {
+            if (!isset($current['class'])) {
+                $current['class'] = '';
+            }
+            $current['class'] =  html::add_classes_string($current['class'], $new);
+            return $current;
+        }
+        // TODO: should really throw one of those "programmer error" errors if we get here
+    }
+
+    public static function add_classes_string($current, $new) {
+        $current = explode(' ', $current);
+        $new = explode( ' ', $new);
+        $merged = array_unique(array_merge($current, $new));
+
+        return implode(' ', $merged);
     }
 
 }
@@ -286,7 +319,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             if ($loginpage) {
                 $loggedinas = get_string('loggedinnot', 'moodle');
             } else {
-                $loggedinas .= '<input class="span2" type="text" placeholder="username">
+                $loggedinas = '<input class="span2" type="text" placeholder="username">
                     <input class="span2" type="password" placeholder="password">
                     <button type="submit" class="btn">'.get_string('login').'</button>';
             }
@@ -376,9 +409,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 $href = new moodle_url($this->page->url, array('lang'=>$code));
                 $lang = '';
                 if ($code !== $currlang) {
-                    $lang = html_writer::link($href, $title, array('class'=>'langlink ' . $code,'title'=>$title));
+                    $attributes['class'] = "langlink $code";
+                    $attributes['title'] = $title;
+                    $lang = html_writer::link($href, $title, $attributes);
                 } else {
-	                $lang = html::span('currlang ' . $code, $title);
+	                $lang = html::span("currlang $code", $title);
                 }
                 $output .= html::li('navbar-text', $lang);
             }
@@ -446,11 +481,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $output = '<ul class="nav nav-list">';
 
         if ($bc->title) {
-            $output .= "<li class=nav-header>$bc->title</li>";
+            $output .= html::li('nav-header', $bc->title);
         }
 
         if ($bc->controls) {
-            $output .= '<li>' . $this->block_controls($bc->controls) . '</li>';
+            $output .= html::li('',  $this->block_controls($bc->controls));
         }
 
         return $output;
@@ -465,16 +500,17 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function block_footer(block_contents $bc) {
+        $output = '';
         if ($bc->footer) {
-            return "<li>$bc->footer</li></ul>";
+            $output .= html::li('', $bc->footer);
         } else {
-            return '</ul>';
+            return "$output</ul>";
         }
     }
 
     public function list_block_contents($icons, $items) {
         // currently just ditches icons rather than convert them
-        return '<li>' . implode('</li><li>', $items) . '</li>';
+        return html::li_implode($items);
     }
 
     public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
@@ -504,7 +540,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     public function confirm($message, $continue, $cancel) {
-        // changed this but not sure where it's used so not tested
+        // this is used when upgrading, confusingly it's outputting
+        // two different forms for a pair of continue/cancel buttons.
 
         if ($continue instanceof single_button) {
             // ok
@@ -526,17 +563,21 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             throw new coding_exception('The cancel param to $OUTPUT->confirm() must be either a URL (string/moodle_url) or a single_button instance.');
         }
 
-        return bootstrap::alert_box("<p>$message</p>" .  
-            html::div( $this->render($continue) . $this->render($cancel))
+        return bootstrap::alert_block("<p>$message</p>" .  
+            html::div('buttons', '<p>'. $this->render($continue) . $this->render($cancel).'</p>')
         );
     }
 
     protected function render_single_button(single_button $button) {
+        // just because it says "single_botton" doesn't mean it's going to be rendered on it's own
+        // but it does mean it gets it's own unique form and a div round it
+
         $attributes = array('type'     => 'submit',
-                'title'    => $button->tooltip .':'. $button->class, // TODO: remove this later
-                'class'    => $button->class . ' btn',
+                'title'    => $button->tooltip,
+                'class'    => html::add_classes($button->class, 'btn'),
                 'value'    => $button->label,
-                'disabled' => $button->disabled ? 'disabled' : null);
+                'disabled' => $button->disabled ? 'disabled' : null,
+            );
 
         // should look at button->class and translate to Bootstrap
         // button types e.g. primary, info, success, warning, danger, inverse
@@ -583,7 +624,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $url = '#'; // there has to be always some action
         }
         $attributes = array('method' => $button->method,
-                'class' => 'form-inline',
                 'action' => $url,
                 'id'     => $button->formid);
         $output = html_writer::tag('form', $output, $attributes);
@@ -772,21 +812,21 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if ($current_page == 0) {
             return "<li class=disabled><span>$previous</span></li>";
         }
-        return "<li>" . html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page-1)), $previous) . "</li>";
+        return html::li('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page-1)), $previous));
     }
     private function next_link($baseurl, $pagevar, $current_page, $last_page) {
         $next = get_string('next');
         if ($current_page == $last_page) {
             return "<li class=disabled><span>$next</span></li>";
         }
-        return "<li>" . html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page+1)), $next) . "</li>";
+        return html::li ('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page+1)), $next));
     }
     private function pagination_link($baseurl, $pagevar, $current_page, $target) {
         $targetname = $target + 1;
         if ($target == $current_page) {
             return "<li class=active><span>$targetname</span></li>";
         }
-        return "<li>" . html_writer::link(new moodle_url($baseurl, array($pagevar=>$target)), $targetname) . "</li>";
+        return html::li('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$target)), $targetname));
     }
 
     private function skipped_link() {
@@ -868,9 +908,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $item->hideicon = true;
             $links[] = $this->render($item);
         }
-        $divider = '<span class=divider>/</span>';
-        return '<ul class=breadcrumb><li>' . implode($links, " $divider</li><li>") . '</li></ul>';
-        return $navbarcontent;
+        $glue = ' <span class=divider>/</span></li><li>';
+        return html::ul_implode_li('breadcrumb', $links, $glue);
     }
 
     protected function render_custom_menu(custom_menu $menu) {
@@ -923,7 +962,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             }
             $content .= html_writer::link($url, $menunode->get_text(), array('title'=>$menunode->get_title()));
         }
-        $content .= '<li>';
+        $content .= '</li>';
         return $content;
     }
 
@@ -1142,9 +1181,11 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
      * @return string HTML to output.
      */
     protected function warning($message, $type = '') {
-        if ($type == 'error') { $type = ' alert-error';}
+        if ($type == 'error') {
+           return bootstrap::alert_error($message);
+        }
         // what other types are there?
-        return html::div('alert' . $type, $message);
+        return bootstrap::alert($type, "warning type:$type".$message);
     }
 
 

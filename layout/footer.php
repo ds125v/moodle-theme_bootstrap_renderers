@@ -16,7 +16,6 @@
 	<?php } ?>			
 
 </div><!-- close container -->	
-</div><!-- close #page -->
 
 <?php echo $OUTPUT->standard_top_of_body_html(); ?> 
 <?php echo $OUTPUT->standard_end_of_body_html() ?>
