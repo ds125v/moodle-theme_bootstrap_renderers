@@ -1,17 +1,37 @@
 <?php
-/* renderers to align Moodle's HTML with that expected by Bootstrap */
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * renderers to align Moodle's HTML with that expected by Bootstrap
+ *
+ * @package    theme_bootstrap_renderers
+ * @copyright  2012 
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 class html {
-    // html utility functions
+    // HTML utility functions.
 
-
-    // gave this a slightly stupid name, since you shouldn't be calling it directly
+    // Gave this a slightly stupid name, since you shouldn't be calling it directly.
     public static function classy_tag($tag, $attributes, $content) {
         if (is_string($attributes)) {
             if ($attributes === '') {
                 $attributes = null;
             } else {
-                $attributes = array('class'=>$attributes); 
+                $attributes = array('class'=>$attributes);
             }
         }
         if ($content === null) {
@@ -21,44 +41,44 @@ class html {
     }
 
     public static function a($attributes, $content) {
-        return html::classy_tag('a', $attributes, $content);
+        return self::classy_tag('a', $attributes, $content);
     }
 
     public static function div($attributes, $content) {
-        return html::classy_tag('div', $attributes, $content);
+        return self::classy_tag('div', $attributes, $content);
     }
 
     public static function span($attributes, $content) {
-        return html::classy_tag('span', $attributes, $content);
+        return self::classy_tag('span', $attributes, $content);
     }
 
     public static function p($attributes, $content) {
-        return html::classy_tag('p', $attributes, $content);
+        return self::classy_tag('p', $attributes, $content);
     }
 
     public static function abbr($attributes, $content) {
-        return html::classy_tag('abbr', $attributes, $content);
+        return self::classy_tag('abbr', $attributes, $content);
     }
 
     public static function form($attributes, $content) {
-        return html::classy_tag('form', $attributes, $content);
+        return self::classy_tag('form', $attributes, $content);
     }
     public static function submit($attributes) {
         $attributes['type'] = 'submit';
-        return html::classy_tag('input', $attributes, null);
+        return self::classy_tag('input', $attributes, null);
     }
 
     public static function ul($attributes, $content) {
-        return html::classy_tag('ul', $attributes, $content);
+        return self::classy_tag('ul', $attributes, $content);
     }
     public static function ul_implode($attributes, $items) {
-        return html::classy_tag('ul', $attributes, implode($items));
+        return self::classy_tag('ul', $attributes, implode($items));
     }
     public static function ul_implode_li($attributes, $items, $glue='</li><li>') {
-        return html::classy_tag('ul', $attributes, html::li_implode($items, $glue));
+        return self::classy_tag('ul', $attributes, self::li_implode($items, $glue));
     }
     public static function li($attributes, $content) {
-        return html::classy_tag('li', $attributes, $content);
+        return self::classy_tag('li', $attributes, $content);
     }
     public static function li_implode($items, $glue='</li><li>') {
         return '<li>'.implode($glue, $items).'</li>';
@@ -66,7 +86,7 @@ class html {
 
     public static function hidden_inputs($params) {
         foreach ($params as $name => $value) {
-            $output[] = html::input_hidden($name, $value);
+            $output[] = self::input_hidden($name, $value);
         }
         return implode($output);
     }
@@ -76,18 +96,18 @@ class html {
         $attributes['name'] = $name;
         $attributes['value'] = $value;
 
-        return html::classy_tag('input', $attributes, null);
+        return self::classy_tag('input', $attributes, null);
     }
 
     public static function add_classes($current, $new) {
         if (is_string($current)) {
-            return html::add_classes_string($current, $new);
+            return self::add_classes_string($current, $new);
         }
         if (is_array($current)) {
             if (!isset($current['class'])) {
                 $current['class'] = '';
             }
-            $current['class'] =  html::add_classes_string($current['class'], $new);
+            $current['class'] =  self::add_classes_string($current['class'], $new);
             return $current;
         }
         throw new coding_exception('The $current param to html::add_classes must be either a string or array of attributes.');
@@ -104,9 +124,9 @@ class html {
 
 }
 class bootstrap {
-    // bootstrap utility functions
+    // Bootstrap utility functions.
 
-    static $icons = array(
+    static private $icons = array(
             'docs' => 'question-sign',
             'book' => 'book',
             'chapter' => 'file',
@@ -126,7 +146,7 @@ class bootstrap {
             't/editstring' => 'tag',
             't/delete' => 'remove',
             'i/edit' => 'pencil',
-            't/copy' => 'copy', // in font awesome
+            't/copy' => 'copy', // Only in font awesome.
             'i/settings' => 'list-alt',
             'i/grades' => 'grades',
             'i/group' => 'user',
@@ -146,25 +166,25 @@ class bootstrap {
             'i/navigationitem' => 'chevron-right' );
 
     public static function moodle_to_bootstrap_icon($name) {
-        return self::icon(self::$icons[$name]);    
+        return self::icon(self::$icons[$name]);
     }
     public static function icon($name) {
         return "<i class=icon-$name></i>";
     }
     public static function icon_help() {
         return self::icon('question-sign');
-    } 
+    }
     public static function icon_spacer() {
         return self::icon('spacer');
-        // no actual spacer icon provided by bootstrap, but magically it still works
-    } 
+        // No actual spacer icon provided by bootstrap, but magically it still works.
+    }
 
     public static function label($type, $text) {
         if ($type != '') {
             $type = ' label-' . $type;
         }
-        // bootstrap label classes can be added to other things
-        // but are usually spans (or a tags for clickable links)
+        /* Bootstrap label classes can be added to other things
+           but are usually spans (or a tags for clickable links) */
         return "<span class=\"label$type\">$text</i>";
     }
     public static function label_default($text) {
@@ -191,7 +211,7 @@ class bootstrap {
         if ($type != '') {
             $type = ' badge-' . $type;
         }
-        // bootstrap badge classes can be added to other things
+        // Bootstrap badge classes can be added to other things
         // but are usually spans (or a tags for clickable links)
         return "<span class=\"badge$type\">$text</i>";
     }
@@ -213,7 +233,6 @@ class bootstrap {
     public static function badge_inverse($text) {
         return self::badge('inverse', $text);
     }
-    
 
     public static function alert($type, $text) {
         if ($type != '') {
@@ -251,16 +270,16 @@ class bootstrap {
     }
 }
 class moodle {
-    // moodle utitlity functions
-    // TODO: think of a better name
+    // Moodle utitlity functions. TODO: think of a better name.
+
     public static function icon($name) {
         return bootstrap::moodle_to_bootstrap_icon($name);
     }
 }
 
 class theme_bootstrap_renderers_core_renderer extends core_renderer {
-    // trying to keep the order of definition the same as
-    // the source file, lib/outputrenderers.php
+    // Trying to keep the order of definition the same as
+    // the source file, lib/outputrenderers.php.
 
     public function doctype() {
         $this->contenttype = 'text/html; charset=utf-8';
@@ -268,24 +287,25 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
     public function htmlattributes() {
         $parts = explode(' ', trim(get_html_lang(true)));
-        return $parts[0] . ' ' . $parts[1]; // ditch xml:lang
+        return $parts[0] . ' ' . $parts[1]; // Ditch xml:lang part.
     }
-    // public function standard_head_html() {}
-    // lots of stuff going on here, should really be split up
+
+    /* public function standard_head_html() {} */
+    // Lots of stuff going on here, should really be split up.
 
     // public function standard_footer_html() {}
-    // same as head, should be split
+    // Same as head, should be split.
 
     // public function main_content() {}
-    // could be a chance to wrap the main_content
+    // Could be a chance to wrap the main_content div.
 
     public function login_info() {
-        // this could probably be tidied up
+        // This could probably be tidied up
         // bit confusing at the moment
         //
         // also gets outputted in header and footer
         // by default, probably want to do entirely different
-        // things in each place
+        // things in each place.
 
         global $USER, $CFG, $DB, $SESSION, $OUTPUT;
 
@@ -299,7 +319,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if (session_is_loggedinas()) {
             $realuser = session_get_realuser();
             $fullname = fullname($realuser, true);
-            $realuserinfo = "[<a href=\"$CFG->wwwroot/course/loginas.php?id=$course->id&amp;sesskey=".sesskey()."\" class=navbar-link>$fullname</a>]";
+            $realuserinfo = "[<a href=\"$CFG->wwwroot/course/loginas.php?id=$course->id&amp;sesskey=".
+                sesskey()."\" class=navbar-link>$fullname</a>]";
         } else {
             $realuserinfo = '';
         }
@@ -307,13 +328,12 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $loginurl = get_login_url();
 
         if (empty($course->id)) {
-            // $course->id is not defined during installation
+            // During installation.
             return '';
         } else if (isloggedin()) {
             $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
             $fullname = fullname($USER, true);
-            // Since Moodle 2.0 this link always goes to the public profile page (not the course profile page)
             $username = "<a href=\"$CFG->wwwroot/user/profile.php?id=$USER->id\" class=navbar-link>$fullname</a>";
             if (is_mnet_remote_user($USER) and $idprovider = $DB->get_record('mnet_host', array('id'=>$USER->mnethostid))) {
                 $username .= " from <a href=\"{$idprovider->wwwroot}\" class=navbar-link>{$idprovider->name}</a>";
@@ -323,17 +343,23 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 if (!$loginpage) {
                     $loggedinas .= " (<a href=\"$loginurl\" class=navbar-link>".get_string('login').'</a>)';
                 }
-            } else if (is_role_switched($course->id)) { // Has switched roles
+            } else if (is_role_switched($course->id)) { // Has switched roles.
                 $rolename = '';
                 if ($role = $DB->get_record('role', array('id'=>$USER->access['rsw'][$context->path]))) {
                     $rolename = ': '.format_string($role->name);
                 }
                 $loggedinas = get_string('loggedinas', 'moodle', $username).$rolename.
-                    " (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".sesskey()."\" class=navbar-link>".get_string('switchrolereturn').'</a>)';
-            } else { // normal user
-                $userpic = $OUTPUT->user_picture( $USER, array('size'=>26, 'link'=>FALSE, 'class'=>'img-circle'));
+                    " (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".
+                    sesskey()."\" class=navbar-link>".get_string('switchrolereturn').'</a>)';
+            } else { // Normal user.
+                $userpic = $OUTPUT->user_picture( $USER, array(
+                    'size'=>26,
+                    'link'=>false,
+                    'class'=>'img-circle',
+                ));
                 $loggedinas = $userpic . ' ' .$realuserinfo.get_string('loggedinas', 'moodle', $username).' '.
-                    " (<a href=\"$CFG->wwwroot/login/logout.php?sesskey=".sesskey()."\" class=navbar-link>".get_string('logout').'</a>)';
+                    " (<a href=\"$CFG->wwwroot/login/logout.php?sesskey=".
+                    sesskey()."\" class=navbar-link>".get_string('logout').'</a>)';
             }
         } else {
             if ($loginpage) {
@@ -356,7 +382,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                         } else {
                             $loggedinas .= get_string('failedloginattemptsall', '', $count);
                         }
-                        if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
+                        if (file_exists("$CFG->dirroot/report/log/index.php") and
+                            has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
                             $loggedinas .= ' (<a href="'.$CFG->wwwroot.'/report/log/index.php'.
                                 '?chooselog=1&amp;id=1&amp;modid=site_errors" class=navbar-link>'.get_string('logs').'</a>)';
                         }
@@ -400,9 +427,9 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return html::div($div_attributes, $text . html::a($a_attributes, $linktext));
     }
 
-    //public function redirect_message($encodedurl, $message, $delay, $debugdisableredirect) {
-    // there's an error message that could be bootstrapped, but it's buried
-    // under a lot of other stuff, low priority I think
+    // public function redirect_message($encodedurl, $message, $delay, $debugdisableredirect) {
+    // There's an error message that could be bootstrapped, but it's buried
+    // under a lot of other stuff, low priority I think.
 
     public function lang_menu() {
         global $CFG;
@@ -433,7 +460,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                     $attributes['title'] = $title;
                     $lang = html_writer::link($href, $title, $attributes);
                 } else {
-	                $lang = html::span("currlang $code", $title);
+                    $lang = html::span("currlang $code", $title);
                 }
                 $output .= html::li('navbar-text', $lang);
             }
@@ -453,11 +480,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     public function block(block_contents $bc, $region) {
-        // trying to make each block a list, first item the header, second items controls,
+        // Trying to make each block a list, first item the header, second items controls,
         // then if content is a list just join on and close the ul in the footer
-        // don't know if it'll work, Boostrap just expects simple lists
+        // don't know if it'll work, Boostrap just expects simple lists.
 
-        // rename class invisible to dimmed
+        // Rename class invisible to dimmed.
         $bc->attributes['class'] = str_replace ('invisible', 'dimmed', $bc->attributes['class']);
 
         $bc = clone($bc); // Avoid messing up the object passed in.
@@ -470,15 +497,17 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if (!empty($bc->controls)) {
             $bc->add_class('block_with_controls');
         }
-        $bc->add_class('well'); // bootstrap style
-        $bc->attributes['style'] = 'padding: 8px 0;'; // bit strange of bootstrap to hard code this but that's what the example does
+        $bc->add_class('well'); // Bootstrap style.
+        // Bit strange of bootstrap to hard code the style below but that's what the example does.
+        $bc->attributes['style'] = 'padding: 8px 0;';
 
         $skiptitle = strip_tags($bc->title);
         if (empty($skiptitle)) {
             $output = '';
             $skipdest = '';
         } else {
-            $output = html_writer::tag('a', get_string('skipa', 'access', $skiptitle), array('href' => '#sb-' . $bc->skipid, 'class' => 'skip-block'));
+            $output = html_writer::tag('a', get_string('skipa', 'access', $skiptitle),
+                array('href' => '#sb-' . $bc->skipid, 'class' => 'skip-block'));
             $skipdest = html_writer::tag('span', '', array('id' => 'sb-' . $bc->skipid, 'class' => 'skip-block-to'));
         }
 
@@ -512,7 +541,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function block_content(block_contents $bc) {
-        // probably only working for lists at the moment
+        // Probably only working for lists at the moment.
         $output = $bc->content;
         $output .= $this->block_footer($bc);
 
@@ -529,7 +558,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     public function list_block_contents($icons, $items) {
-        // currently just ditches icons rather than convert them
+        // Currently just ditches icons rather than convert them.
         return html::li_implode($items);
     }
 
@@ -540,15 +569,12 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $attributes = (array)$attributes;
 
         if (empty($attributes['class'])) {
-            // let ppl override the class via $options
             $attributes['class'] = 'action-icon';
         }
 
         $icon = $this->render($pixicon);
 
         $attributes['title'] = $pixicon->attributes['alt'];
-        // bootstrap icons aren't img tags, so don't have alt tags
-        // add the alt text as title to surrounding a tag instead
 
         if ($linktext) {
             $text = $pixicon->attributes['alt'];
@@ -560,18 +586,18 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     public function confirm($message, $continue, $cancel) {
-        // this is used when upgrading (and possibly elsewhere) confusingly it's outputting
+        // This is used when upgrading (and possibly elsewhere) confusingly it's outputting
         // two different forms for a pair of continue/cancel buttons.
         // will try outputting a single form, with the continue button
         // submitting and the cancel button actually being a link
         //
-        // On the upgrade screen at least, the cancel button doesn't seem to do anything
+        // On the upgrade screen at least, the cancel button doesn't seem to do anything.
 
         $continue = $this->make_button($continue, 'continue', 'post');
         $cancel = $this->make_button_link($cancel, 'cancel');
 
         $output = $this->render($continue);
-        $output = strstr($output, '</form>', true); // cut off final </form>
+        $output = strstr($output, '</form>', true); // Cut off final </form> tag.
         $output = "<p>$message</p><p>$output $cancel</form></p>";
         return bootstrap::alert_block($output);
     }
@@ -583,7 +609,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         } else if ($button instanceof moodle_url) {
             return new single_button($button, get_string($text), $method);
         } else {
-            throw new coding_exception('The $button param to make_button() must be either a URL (string/moodle_url) or a single_button instance.');
+            throw new coding_exception(
+                'The $button param to make_button() must be either a URL (string/moodle_url) or a single_button instance.');
         }
     }
     private function make_button_link($button, $text) {
@@ -596,15 +623,16 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         } else if ($button instanceof moodle_url) {
             $attributes['href'] = $button;
         } else {
-            throw new coding_exception('The $button param to make_button_link() must be either a URL (string/moodle_url) or a single_button instance.');
+            throw new coding_exception(
+                'The $button param to make_button_link() must be either a URL (string/moodle_url) or a single_button instance.');
         }
         $attributes['class'] = 'btn btn-warning';
         return html::a($attributes, $text);
     }
 
     protected function render_single_button(single_button $button) {
-        // just because it says "single_botton" doesn't mean it's going to be rendered on it's own
-        // but it does mean it gets it's own unique form and a div round it
+        // Just because it says "single_botton" doesn't mean it's going to be rendered on it's own
+        // but it does mean it gets it's own unique form and a div round it.
 
         $attributes = array(
                 'title'    => $button->tooltip,
@@ -613,14 +641,14 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 'disabled' => $button->disabled ? 'disabled' : null,
             );
 
-        // should look at button->class and translate to Bootstrap
+        // Should look at button->class and translate to Bootstrap
         // button types e.g. primary, info, success, warning, danger, inverse
         // and sizes like large, small, mini, block-level, or link
         // not sure how best to get a comprehensive list of button classes
         // in moodle, so for now appending their class to tooltip
         // maybe their id, type or value might work better?
-        // 
-        // found so far:
+  
+        // Found so far:
         // .singlebutton -> .btn?
         // .continuebutton -> .btn-primary?
 
@@ -632,23 +660,20 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             }
         }
 
-        // first the input element
         $output = html::submit($attributes);
 
-        // then hidden fields
         if ($button->method === 'post') {
             $params['sesskey'] = sesskey();
         }
         $output .= html::hidden_inputs($button->url->params());
 
-        // now the form itself around it
         if ($button->method === 'get') {
-            $url = $button->url->out_omit_querystring(true); // url without params, the anchor part allowed
+            $url = $button->url->out_omit_querystring(true);
         } else {
-            $url = $button->url->out_omit_querystring();     // url without params, the anchor part not allowed
+            $url = $button->url->out_omit_querystring();
         }
         if ($url === '') {
-            $url = '#'; // there has to be always some action
+            $url = '#';
         }
         $attributes = array(
                 'method' => $button->method,
@@ -692,16 +717,14 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         }
         $output .= html_writer::select($select->options, $select->name, $select->selected, $select->nothing, $select->attributes);
 
-        $go = html_writer::empty_tag('input', array('class'=>'btn','type'=>'submit', 'value'=>get_string('go')));
+        $go = html_writer::empty_tag('input', array('class'=>'btn', 'type'=>'submit', 'value'=>get_string('go')));
         $output .= html_writer::tag('noscript', html_writer::tag('div', $go), array('style'=>'inline'));
 
         $nothing = empty($select->nothing) ? false : key($select->nothing);
         $this->page->requires->js_init_call('M.util.init_select_autosubmit', array($select->formid, $select->attributes['id'], $nothing));
 
-        // then div wrapper for xhtml strictness
         $output = html_writer::tag('div', $output);
 
-        // now the form itself around it
         if ($select->method === 'get') {
             $url = $select->url->out_omit_querystring(true); // url without params, the anchor part allowed
         } else {
@@ -713,20 +736,20 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                                 'id'     => $select->formid);
         $output = html::form($form_attributes, $output);
 
-        // and finally one more wrapper with class
         return html::div($select->class, $output);
     }
 
     // protected function render_url_select(url_select $select) {
-    // probably needs a .form-inline for the 'go' button
-    // but too scary to deal with right now
+    // Probably needs a .form-inline for the 'go' button
+    // but too scary to deal with right now.
 
     public function doc_link($path, $text = '') {
         $attributes['href'] = new moodle_url(get_docs_url($path));
         if ($text == '') {
             $linktext = bootstrap::icon_help();
         } else {
-            $linktext = bootstrap::icon_help().' '.$text; }
+            $linktext = bootstrap::icon_help().' '.$text;
+        }
         return html::a($attributes, $linktext);
     }
 
@@ -734,23 +757,22 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         if (isset(bootstrap::$icons[$icon->pix])) {
             return bootstrap::icon(bootstrap::$icons[$icon->pix]);
-            // currently throws away any attributes attached to
+            // Currently throws away any attributes attached to
             // the icon, like alt, which could be rendered
-            // using .hide-text image replacement technique
+            // using .hide-text image replacement technique.
 
-            // also doesn't look at the $icon->component, so all mod
-            // icons for example look the same as pix == 'icon'
+            // Also doesn't look at the $icon->component, so all mod
+            // icons for example look the same as pix == 'icon'.
         } else {
             return parent::render_pix_icon($icon);
         }
     }
 
     // function render_rating(rating $rating) {
-    // theres some buttons and form labels in here that
-    // could be restyled with .btn and .form-inline probably
+    // Theres some buttons and form labels in here that
+    // could be restyled with .btn and .form-inline probably.
 
     public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
-        // icons should be done via CSS, if at all
         $help = '';
         if ($helpidentifier) {
             $help = $this->help_icon($helpidentifier, $component);
@@ -790,33 +812,34 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         $this->page->requires->js_init_call('M.util.help_icon.add', array(array('id'=>$id, 'url'=>$url->out(false))));
 
-        // and finally span
         return html::span('helplink', $output);
-        // final span probably unnecessary but leaving it in case the js needs it
+        // Final span probably unnecessary but leaving it in case the js needs it.
     }
 
     public function spacer(array $attributes = null, $br = false) {
         return bootstrap::icon_spacer();
-        // don't bother outputting br's or attributes
+        // Don't bother outputting br's or attributes.
     }
 
     // protected function render_user_picture(user_picture $userpicture) {
-    // could add a nice frame effect on the image
+    // Could add a nice frame effect on the image.
 
     // public function render_file_picker(file_picker $fp) {
-    // there's a button in here, but it appears to be display:none'd
+    // There's a button in here, but it appears to be display:none'd.
 
     public function error_text($message) {
-        if (empty($message)) { return ''; }
+        if (empty($message)) {
+            return '';
+        }
         return bootstrap::alert_error($message);
     }
 
     // public function fatal_error($message, $moreinfourl, $link, $backtrace, $debuginfo = null) {
-    // there's some error notices that could be put in alerts here
+    // There's some error notices that could be put in alerts here.
 
     public function notification($message, $classes = null) {
-        // TODO rewrite recognized classnames to bootstrap alert equivalent 
-        // only two are mentioned in documentation, there may be more
+        // TODO rewrite recognized classnames to bootstrap alert equivalent
+        // only two are mentioned in documentation, there may be more.
 
         $message = clean_text($message);
 
@@ -830,10 +853,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     // public function continue_button($url) {
-    // not sure we need a class on this,
-    // but doesn't seem worth rewriting just for that
+    // Not sure we need a class on this,
+    // but doesn't seem worth rewriting just for that.
 
-    // these should all really be in the pagingbar object
+    // These should all really be in the pagingbar object to save
+    // passing the paramaters about all over.
     private function previous_link($baseurl, $pagevar, $current_page) {
         $previous = get_string('previous');
         if ($current_page == 0) {
@@ -861,7 +885,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function render_paging_bar(paging_bar $pagingbar) {
-        // this is more complicated than it needs to be, see MDL-35367 
+        // This is more complicated than it needs to be, see MDL-35367 for more.
         $pagingbar = clone($pagingbar);
         $pagingbar->prepare($this, $this->page, $this->target);
 
@@ -879,7 +903,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // Note: page 0 is displayed to users as page 1 and so on.
         $lastpage = floor(($total - 1) / $perpage);
 
-        // display max $padding*2 + 1 links
+        // Display a max of $padding*2 + 1 links.
         $padding = 4;
         $near_to_start = ($current_page - $padding) < 1;
         $near_to_end = ($current_page + $padding) > $lastpage;
@@ -892,7 +916,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         } else if ($near_to_start) {
             $skip[2*$padding-1] = $lastpage;
         }
-
 
         $links[] = $this->previous_link($baseurl, $pagevar, $current_page);
         for ($i = 0; $i <= $lastpage; $i++) {
@@ -909,26 +932,26 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // public function skip_link_target($id = null) {
     // I think this should usually point to an id on the actual
     // content rather than an extra span stuck in before it, but
-    // that's not really Bootstrap related
+    // that's not really Bootstrap related.
 
     // public function heading($text, $level = 2, $classes = 'main', $id = null) {
-    // might be nice to allow Bootstrap-style sub-headings using <small>
+    // Might be nice to allow Bootstrap-style sub-headings using <small>
     // or maybe that works anyway if you put the tags in the header text?
 
-    //public function box($contents, $classes = 'generalbox', $id = null) {
+    // public function box($contents, $classes = 'generalbox', $id = null) {
     // 99% of these could probably be replaced with a classless div
     // maybe only output classes and ids if specified?
 
     // public function container($contents, $classes = null, $id = null) {
-    // not sure of semantic difference between container, box and div
+    // Not sure of semantic difference between container, box and div.
 
 
     // public function tree_block_contents($items, $attrs = array()) {
-    // looks important, but a lot going on
+    // Looks important, but a lot going on.
 
     public function navbar() {
-        // bit of a nameclash, Bootstrap calls the navbar the breadcrumb and
-        // also have a sperate thing called navbar that sticks to the top of the page
+        // Bit of a nameclash, Bootstrap calls the navbar the breadcrumb and
+        // also have a sperate thing called navbar that sticks to the top of the page.
 
         $items = $this->page->navbar->get_items();
         foreach ($items as $item) {
@@ -951,17 +974,16 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         foreach ($menu->get_children() as $item) {
             $content .= $this->render_custom_menu_item($item);
         }
-        $content .= '</ul></div></div><div>'; 
+        $content .= '</ul></div></div><div>';
         return $content;
     }
 
     protected function render_custom_menu_item(custom_menu_item $menunode) {
-        // Required to ensure we get unique trackable id's
         static $submenucount = 0;
 
         if ($menunode->has_children()) {
             $content = '<li class=dropdown>';
-            // If the child has menus render it as a sub menu
+            // If the child has menus render it as a sub menu.
             $submenucount++;
             if ($menunode->get_url() !== null) {
                 $url = $menunode->get_url();
@@ -969,7 +991,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 $url = '#cm_submenu_'.$submenucount;
             }
 
-            //$content .= html_writer::link($url, $menunode->get_text(), array('title'=>,));
+            // $content .= html_writer::link($url, $menunode->get_text(), array('title'=>,));
             $content .= '<a href="'.$url.'" class=dropdown-toggle data-toggle=dropdown>';
             $content .= $menunode->get_title();
             $content .= '<b class=caret></b></a>';
@@ -980,7 +1002,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $content .= '</ul>';
         } else {
             $content = '<li>';
-            // The node doesn't have children so produce a final menuitem
+            // The node doesn't have children so produce a final menuitem.
 
             if ($menunode->get_url() !== null) {
                 $url = $menunode->get_url();
@@ -995,9 +1017,9 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
 }
 
-    include_once($CFG->dirroot . "/admin/renderer.php");
+require_once($CFG->dirroot . "/admin/renderer.php");
+
 class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer {
-         
     /**
      * Display the 'Do you acknowledge the terms of the GPL' page. The first page
      * during install.
@@ -1199,7 +1221,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
      */
     protected function warning($message, $type = '') {
         if ($type == 'error') {
-           return bootstrap::alert_error($message);
+            return bootstrap::alert_error($message);
         }
         // what other types are there?
         return bootstrap::alert($type, "warning type:$type".$message);
@@ -1294,7 +1316,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
     }
 
 
-    function upgrade_reload($url) {
+    public function upgrade_reload($url) {
         return '<div><a class=btn href="' . $url. '"><i class=icon-refresh></i> ' . get_string('reload') . '</a></div>';
     }
 
@@ -1547,13 +1569,12 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         }
 
         $info = array();
-        $info[] = html_writer::tag('span', get_string('numtotal', 'core_plugin', $numtotal), array('class' => 'info total'));
-        $info[] = html_writer::tag('span', get_string('numdisabled', 'core_plugin', $numdisabled), array('class' => 'info disabled'));
-        $info[] = html_writer::tag('span', get_string('numextension', 'core_plugin', $numextension), array('class' => 'info extension'));
+        $info[] = html::span('info total', get_string('numtotal', 'core_plugin', $numtotal));
+        $info[] = html::span('info disabled', get_string('numdisabled', 'core_plugin', $numdisabled));
+        $info[] = html::span('info extension', get_string('numextension', 'core_plugin', $numextension));
         if ($numupdatable > 0) {
-            $info[] = html_writer::tag('span', get_string('numupdatable', 'core_plugin', $numupdatable), array('class' => 'info updatable'));
+            $info[] = html::span('info updatable', get_string('numupdatable', 'core_plugin', $numupdatable));
         }
-
         return $this->output->box(implode(html::span('separator', ' '), $info), '', 'plugins-overview-panel');
     }
 
@@ -1582,7 +1603,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
             get_string('version', 'core_plugin'),
             get_string('availability', 'core_plugin'),
             get_string('actions', 'core_plugin'),
-            get_string('notes','core_plugin'),
+            get_string('notes', 'core_plugin'),
         );
         $table->colclasses = array(
             'pluginname', 'source', 'version', 'availability', 'actions', 'notes'
@@ -1723,173 +1744,171 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         }
 
         $box  = $this->output->box_start($boxclasses);
-        $box .= html_writer::tag('div', get_string('updateavailable', 'core_plugin', $updateinfo->version), array('class' => 'version'));
-        $box .= $this->output->box(implode(html_writer::tag('span', ' ', array('class' => 'separator')), $info), '');
+        $box .= html::div('version', get_string('updateavailable', 'core_plugin', $updateinfo->version));
+        $box .= $this->output->box(implode(html::span('separator', ' '), $info), '');
         $box .= $this->output->box_end();
 
         return $box;
     }
 
-     public function environment_check_table($result, $environment_results) {
-         global $CFG;
+    public function environment_check_table($result, $environment_results) {
+        global $CFG;
 
-         $servertable = new html_table();
-         $servertable->head  = array(
-             get_string('name'),
-             get_string('info'),
-             get_string('report'),
-             get_string('status'),
-         );
-         $servertable->attributes['class'] = 'table table-striped table-hover';
+        $servertable = new html_table();
+        $servertable->head  = array(
+            get_string('name'),
+            get_string('info'),
+            get_string('report'),
+            get_string('status'),
+        );
+        $servertable->attributes['class'] = 'table table-striped table-hover';
 
-         $serverdata = array('success'=>array(), 'warning'=>array(), 'important'=>array());
+        $serverdata = array('success'=>array(), 'warning'=>array(), 'important'=>array());
 
-         $othertable = new html_table();
-         $othertable->head  = array(
-             get_string('info'),
-             get_string('report'),
-             get_string('status'),
-         );
-         $othertable->attributes['class'] = 'table table-striped table-hover';
+        $othertable = new html_table();
+        $othertable->head  = array(
+            get_string('info'),
+            get_string('report'),
+            get_string('status'),
+        );
+        $othertable->attributes['class'] = 'table table-striped table-hover';
 
-         $otherdata = array('success'=>array(), 'warning'=>array(), 'important'=>array());
+        $otherdata = array('success'=>array(), 'warning'=>array(), 'important'=>array());
 
-         // Iterate over each environment_result
-         $continue = true;
-         foreach ($environment_results as $environment_result) {
-             $errorline   = false;
-             $warningline = false;
-             $stringtouse = '';
-             if ($continue) {
-                 $type = $environment_result->getPart();
-                 $info = $environment_result->getInfo();
-                 $status = $environment_result->getStatus();
-                 $error_code = $environment_result->getErrorCode();
-                 // Process Report field
-                 $rec = new stdClass();
-                 // Something has gone wrong at parsing time
-                 if ($error_code) {
-                     $stringtouse = 'environmentxmlerror';
-                     $rec->error_code = $error_code;
-                     $status = get_string('error');
-                     $errorline = true;
-                     $continue = false;
-                 }
+        // Iterate over each environment_result
+        $continue = true;
+        foreach ($environment_results as $environment_result) {
+            $errorline   = false;
+            $warningline = false;
+            $stringtouse = '';
+            if ($continue) {
+                $type = $environment_result->getPart();
+                $info = $environment_result->getInfo();
+                $status = $environment_result->getStatus();
+                $error_code = $environment_result->getErrorCode();
+                // Process Report field
+                $rec = new stdClass();
+                // Something has gone wrong at parsing time
+                if ($error_code) {
+                    $stringtouse = 'environmentxmlerror';
+                    $rec->error_code = $error_code;
+                    $status = get_string('error');
+                    $errorline = true;
+                    $continue = false;
+                }
 
-                 if ($continue) {
-                     if ($rec->needed = $environment_result->getNeededVersion()) {
-                         // We are comparing versions
-                         $rec->current = $environment_result->getCurrentVersion();
-                         if ($environment_result->getLevel() == 'required') {
-                             $stringtouse = 'environmentrequireversion';
-                         } else {
-                             $stringtouse = 'environmentrecommendversion';
-                         }
+                if ($continue) {
+                    if ($rec->needed = $environment_result->getNeededVersion()) {
+                        // We are comparing versions
+                        $rec->current = $environment_result->getCurrentVersion();
+                        if ($environment_result->getLevel() == 'required') {
+                            $stringtouse = 'environmentrequireversion';
+                        } else {
+                            $stringtouse = 'environmentrecommendversion';
+                        }
 
-                     } else if ($environment_result->getPart() == 'custom_check') {
-                         // We are checking installed & enabled things
-                         if ($environment_result->getLevel() == 'required') {
-                             $stringtouse = 'environmentrequirecustomcheck';
-                         } else {
-                             $stringtouse = 'environmentrecommendcustomcheck';
-                         }
+                    } else if ($environment_result->getPart() == 'custom_check') {
+                        // We are checking installed & enabled things
+                        if ($environment_result->getLevel() == 'required') {
+                            $stringtouse = 'environmentrequirecustomcheck';
+                        } else {
+                            $stringtouse = 'environmentrecommendcustomcheck';
+                        }
 
-                     } else if ($environment_result->getPart() == 'php_setting') {
-                         if ($status) {
-                             $stringtouse = 'environmentsettingok';
-                         } else if ($environment_result->getLevel() == 'required') {
-                             $stringtouse = 'environmentmustfixsetting';
-                         } else {
-                             $stringtouse = 'environmentshouldfixsetting';
-                         }
+                    } else if ($environment_result->getPart() == 'php_setting') {
+                        if ($status) {
+                            $stringtouse = 'environmentsettingok';
+                        } else if ($environment_result->getLevel() == 'required') {
+                            $stringtouse = 'environmentmustfixsetting';
+                        } else {
+                            $stringtouse = 'environmentshouldfixsetting';
+                        }
 
-                     } else {
-                         if ($environment_result->getLevel() == 'required') {
-                             $stringtouse = 'environmentrequireinstall';
-                         } else {
-                             $stringtouse = 'environmentrecommendinstall';
-                         }
-                     }
+                    } else {
+                        if ($environment_result->getLevel() == 'required') {
+                            $stringtouse = 'environmentrequireinstall';
+                        } else {
+                            $stringtouse = 'environmentrecommendinstall';
+                        }
+                    }
 
-                     // Calculate the status value
-                     if ($environment_result->getBypassStr() != '') {            //Handle bypassed result (warning)
-                         $status = get_string('bypassed');
-                         $warningline = true;
-                     } else if ($environment_result->getRestrictStr() != '') {   //Handle restricted result (error)
-                         $status = get_string('restricted');
-                         $errorline = true;
-                     } else {
-                         if ($status) {                                          //Handle ok result (ok)
-                             $status = get_string('ok');
-                         } else {
-                             if ($environment_result->getLevel() == 'optional') {//Handle check result (warning)
-                                 $status = get_string('check');
-                                 $warningline = true;
-                             } else {                                            //Handle error result (error)
-                                 $status = get_string('check');
-                                 $errorline = true;
-                             }
-                         }
-                     }
-                 }
+                    // Calculate the status value
+                    if ($environment_result->getBypassStr() != '') {            //Handle bypassed result (warning)
+                        $status = get_string('bypassed');
+                        $warningline = true;
+                    } else if ($environment_result->getRestrictStr() != '') {   //Handle restricted result (error)
+                        $status = get_string('restricted');
+                        $errorline = true;
+                    } else {
+                        if ($status) {                                          //Handle ok result (ok)
+                            $status = get_string('ok');
+                        } else {
+                            if ($environment_result->getLevel() == 'optional') {//Handle check result (warning)
+                                $status = get_string('check');
+                                $warningline = true;
+                            } else {                                            //Handle error result (error)
+                                $status = get_string('check');
+                                $errorline = true;
+                            }
+                        }
+                    }
+                }
 
-                 // Build the text
-                 $linkparts = array();
-                 $linkparts[] = 'admin/environment';
-                 $linkparts[] = $type;
-                 if (!empty($info)){
-                     $linkparts[] = $info;
-                 }
-                 if (empty($CFG->docroot)) {
-                     $report = get_string($stringtouse, 'admin', $rec);
-                 } else {
-                     $report = $this->doc_link(join($linkparts, '/'), get_string($stringtouse, 'admin', $rec));
-                 }
+                // Build the text
+                $linkparts = array();
+                $linkparts[] = 'admin/environment';
+                $linkparts[] = $type;
+                if (!empty($info)){
+                    $linkparts[] = $info;
+                }
+                if (empty($CFG->docroot)) {
+                    $report = get_string($stringtouse, 'admin', $rec);
+                } else {
+                    $report = $this->doc_link(join($linkparts, '/'), get_string($stringtouse, 'admin', $rec));
+                }
 
-                 // Format error or warning line
-                 if ($errorline || $warningline) {
-                     $messagetype = $errorline? 'important':'warning';
-                 } else {
-                     $messagetype = 'success';
-                 }
-                 $status = html::span( "label label-$messagetype", $status);
-                 // Here we'll store all the feedback found
-                 $feedbacktext = '';
-                 // Append the feedback if there is some
-                 $feedbacktext .= $environment_result->strToReport($environment_result->getFeedbackStr(), 'alert alert-'.$messagetype);
-                 //Append the bypass if there is some
-                 $feedbacktext .= $environment_result->strToReport($environment_result->getBypassStr(), 'alert');
-                 //Append the restrict if there is some
-                 $feedbacktext .= $environment_result->strToReport($environment_result->getRestrictStr(), 'alert alert-important');
+                // Format error or warning line
+                if ($errorline || $warningline) {
+                    $messagetype = $errorline? 'important':'warning';
+                } else {
+                    $messagetype = 'success';
+                }
+                $status = html::span( "label label-$messagetype", $status);
+                // Here we'll store all the feedback found
+                $feedbacktext = '';
+                // Append the feedback if there is some
+                $feedbacktext .= $environment_result->strToReport($environment_result->getFeedbackStr(), 'alert alert-'.$messagetype);
+                //Append the bypass if there is some
+                $feedbacktext .= $environment_result->strToReport($environment_result->getBypassStr(), 'alert');
+                //Append the restrict if there is some
+                $feedbacktext .= $environment_result->strToReport($environment_result->getRestrictStr(), 'alert alert-important');
 
-                 $report .= $feedbacktext;
+                $report .= $feedbacktext;
 
-                 // Add the row to the table
-                 if ($environment_result->getPart() == 'custom_check'){
-                     $otherdata[$messagetype][] = array ($info, $report, $status);
-                 } else {
-                     $serverdata[$messagetype][] = array ($type, $info, $report, $status);
-                 }
-             }
-         }
+                // Add the row to the table
+                if ($environment_result->getPart() == 'custom_check'){
+                    $otherdata[$messagetype][] = array ($info, $report, $status);
+                } else {
+                    $serverdata[$messagetype][] = array ($type, $info, $report, $status);
+                }
+            }
+        }
 
-         //put errors first in
-         $servertable->data = array_merge($serverdata['important'], $serverdata['warning'], $serverdata['success']);
-         $othertable->data = array_merge($otherdata['important'], $otherdata['warning'], $otherdata['success']);
+        $servertable->data = array_merge($serverdata['important'], $serverdata['warning'], $serverdata['success']);
+        $othertable->data = array_merge($otherdata['important'], $otherdata['warning'], $otherdata['success']);
 
-         // Print table
-         $output = $this->heading(get_string('serverchecks', 'admin'));
-         $output .= html_writer::table($servertable);
-         if (count($othertable->data)){
-             $output .= $this->heading(get_string('customcheck', 'admin'));
-             $output .= html_writer::table($othertable);
-         }
+        $output = $this->heading(get_string('serverchecks', 'admin'));
+        $output .= html_writer::table($servertable);
+        if (count($othertable->data)) {
+            $output .= $this->heading(get_string('customcheck', 'admin'));
+            $output .= html_writer::table($othertable);
+        }
 
-         // Finally, if any error has happened, print the summary box
-         if (!$result) {
-             $output .= bootstrap::alert_error(get_string('environmenterrortodo', 'admin'));
-         }
+        // Finally, if any error has happened, print the summary box.
+        if (!$result) {
+            $output .= bootstrap::alert_error(get_string('environmenterrortodo', 'admin'));
+        }
 
-         return $output;
-     }
+        return $output;
+    }
 }
