@@ -88,6 +88,7 @@ class html {
         $current = explode(' ', $current);
         $new = explode( ' ', $new);
         $merged = array_unique(array_merge($current, $new));
+        sort($merged);
 
         return implode(' ', $merged);
     }
