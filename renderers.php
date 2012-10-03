@@ -22,255 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class html {
-    // HTML utility functions.
+require_once('html.php');
+require_once('bootstrap.php');
 
-    // Gave this a slightly stupid name, since you shouldn't be calling it directly.
-    public static function classy_tag($tag, $attributes, $content) {
-        if (is_string($attributes)) {
-            if ($attributes === '') {
-                $attributes = null;
-            } else {
-                $attributes = array('class'=>$attributes);
-            }
-        }
-        if ($content === null) {
-            return html_writer::empty_tag($tag, $attributes);
-        }
-        return html_writer::tag($tag, $content, $attributes);
-    }
-
-    public static function a($attributes, $content) {
-        return self::classy_tag('a', $attributes, $content);
-    }
-
-    public static function div($attributes, $content) {
-        return self::classy_tag('div', $attributes, $content);
-    }
-
-    public static function span($attributes, $content) {
-        return self::classy_tag('span', $attributes, $content);
-    }
-
-    public static function p($attributes, $content) {
-        return self::classy_tag('p', $attributes, $content);
-    }
-
-    public static function abbr($attributes, $content) {
-        return self::classy_tag('abbr', $attributes, $content);
-    }
-
-    public static function form($attributes, $content) {
-        return self::classy_tag('form', $attributes, $content);
-    }
-    public static function submit($attributes) {
-        $attributes['type'] = 'submit';
-        return self::classy_tag('input', $attributes, null);
-    }
-
-    public static function ul($attributes, $content) {
-        return self::classy_tag('ul', $attributes, $content);
-    }
-    public static function ul_implode($attributes, $items) {
-        return self::classy_tag('ul', $attributes, implode($items));
-    }
-    public static function ul_implode_li($attributes, $items, $glue='</li><li>') {
-        return self::classy_tag('ul', $attributes, self::li_implode($items, $glue));
-    }
-    public static function li($attributes, $content) {
-        return self::classy_tag('li', $attributes, $content);
-    }
-    public static function li_implode($items, $glue='</li><li>') {
-        return '<li>'.implode($glue, $items).'</li>';
-    }
-
-    public static function hidden_inputs($params) {
-        foreach ($params as $name => $value) {
-            $output[] = self::input_hidden($name, $value);
-        }
-        return implode($output);
-    }
-
-    public static function input_hidden($name, $value) {
-        $attributes['type'] = 'hidden';
-        $attributes['name'] = $name;
-        $attributes['value'] = $value;
-
-        return self::classy_tag('input', $attributes, null);
-    }
-
-    public static function add_classes($current, $new) {
-        if (is_string($current)) {
-            return self::add_classes_string($current, $new);
-        }
-        if (is_array($current)) {
-            if (!isset($current['class'])) {
-                $current['class'] = '';
-            }
-            $current['class'] =  self::add_classes_string($current['class'], $new);
-            return $current;
-        }
-        throw new coding_exception('The $current param to html::add_classes must be either a string or array of attributes.');
-    }
-
-    public static function add_classes_string($current, $new) {
-        $current = explode(' ', $current);
-        $new = explode( ' ', $new);
-        $merged = array_unique(array_merge($current, $new));
-        sort($merged);
-
-        return implode(' ', $merged);
-    }
-
-}
-class bootstrap {
-    // Bootstrap utility functions.
-
-    static private $icons = array(
-            'docs' => 'question-sign',
-            'book' => 'book',
-            'chapter' => 'file',
-            'spacer' => 'spacer',
-            'generate' => 'gift',
-            'add' => 'plus',
-            't/hide' => 'eye-open',
-            'i/hide' => 'eye-open',
-            't/show' => 'eye-close',
-            'i/show' => 'eye-close',
-            't/add' => 'plus',
-            't/right' => 'arrow-right',
-            't/left' => 'arrow-left',
-            't/up' => 'arrow-up',
-            't/down' => 'arrow-down',
-            't/edit' => 'edit',
-            't/editstring' => 'tag',
-            't/delete' => 'remove',
-            'i/edit' => 'pencil',
-            't/copy' => 'copy', // Only in font awesome.
-            'i/settings' => 'list-alt',
-            'i/grades' => 'grades',
-            'i/group' => 'user',
-            't/switch_plus' => 'plus-sign',
-            't/switch_minus' => 'minus-sign',
-            'i/filter' => 'filter',
-            't/move' => 'resize-vertical',
-            'i/move_2d' => 'move',
-            'i/backup' => 'cog',
-            'i/restore' => 'cog',
-            'i/return' => 'repeat',
-            'i/reload' => 'refresh',
-            'i/roles' => 'user',
-            'i/user' => 'user',
-            'i/users' => 'user',
-            'i/publish' => 'publish',
-            'i/navigationitem' => 'chevron-right' );
-
-    public static function moodle_to_bootstrap_icon($name) {
-        return self::icon(self::$icons[$name]);
-    }
-    public static function icon($name) {
-        return "<i class=icon-$name></i>";
-    }
-    public static function icon_help() {
-        return self::icon('question-sign');
-    }
-    public static function icon_spacer() {
-        return self::icon('spacer');
-        // No actual spacer icon provided by bootstrap, but magically it still works.
-    }
-
-    public static function label($type, $text) {
-        if ($type != '') {
-            $type = ' label-' . $type;
-        }
-        /* Bootstrap label classes can be added to other things
-           but are usually spans (or a tags for clickable links) */
-        return "<span class=\"label$type\">$text</i>";
-    }
-    public static function label_default($text) {
-        return self::label('', $text);
-    }
-    public static function label_success($text) {
-        return self::label('success', $text);
-    }
-    public static function label_warning($text) {
-        return self::label('warning', $text);
-    }
-    public static function label_important($text) {
-        return self::label('important', $text);
-    }
-    public static function label_info($text) {
-        return self::label('info', $text);
-    }
-    public static function label_inverse($text) {
-        return self::label('inverse', $text);
-    }
-
-
-    public static function badge($type, $text) {
-        if ($type != '') {
-            $type = ' badge-' . $type;
-        }
-        // Bootstrap badge classes can be added to other things
-        // but are usually spans (or a tags for clickable links)
-        return "<span class=\"badge$type\">$text</i>";
-    }
-    public static function badge_default($text) {
-        return self::badge('', $text);
-    }
-    public static function badge_success($text) {
-        return self::badge('success', $text);
-    }
-    public static function badge_warning($text) {
-        return self::badge('warning', $text);
-    }
-    public static function badge_important($text) {
-        return self::badge('important', $text);
-    }
-    public static function badge_info($text) {
-        return self::badge('info', $text);
-    }
-    public static function badge_inverse($text) {
-        return self::badge('inverse', $text);
-    }
-
-    public static function alert($type, $text) {
-        if ($type != '') {
-            $type = ' alert-' . $type;
-        }
-        return "<div class=\"alert$type\">$text</div>";
-    }
-    public static function alert_default($text) {
-        return self::alert('', $text);
-    }
-    public static function alert_success($text) {
-        return self::alert('success', $text);
-    }
-    public static function alert_error($text) {
-        return self::alert('error', $text);
-    }
-    public static function alert_info($text) {
-        return self::alert('info', $text);
-    }
-    public static function alert_block($text) {
-        return self::alert('block', $text);
-    }
-    public static function alert_block_info($text) {
-        return self::alert('block alert-info', $text);
-    }
-
-    public static function initialism($short, $full) {
-        $attributes['class'] = 'initialism';
-        $attributes['title'] = $full;
-        return html::abbr($attributes, $short);
-    }
-
-    public static function ul_unstyled($items) {
-        return html::ul('unstyled', $items);
-    }
-}
 class moodle {
     // Moodle utitlity functions. TODO: think of a better name.
+
 
     public static function icon($name) {
         return bootstrap::moodle_to_bootstrap_icon($name);
@@ -647,7 +404,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // not sure how best to get a comprehensive list of button classes
         // in moodle, so for now appending their class to tooltip
         // maybe their id, type or value might work better?
-  
+        //
         // Found so far:
         // .singlebutton -> .btn?
         // .continuebutton -> .btn-primary?
@@ -959,7 +716,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $links[] = $this->render($item);
         }
         $glue = ' <span class=divider>/</span></li><li>';
-        return html::ul_implode_li('breadcrumb', $links, $glue);
+        return bootstrap::ul_implode_li('breadcrumb', $links, $glue);
     }
 
     protected function render_custom_menu(custom_menu $menu) {
