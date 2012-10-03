@@ -38,7 +38,7 @@ echo $OUTPUT->doctype() ?>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->pix_url('favicon', 'theme')?>">
     
     <!--[if lt IE 9]>
-  		<script src="[[theme|html5shiv.js]]"></script>
+    <script src="<?php echo new moodle_url('/theme/bootstrap_renderers/html5shiv.js') ?>"></script>
 	<![endif]-->
 
 		

@@ -18,3 +18,10 @@ div.resourcecontent {
   max-width: 100%;
   min-height: 600px;
 }
+
+/* Just broken the block expandable navigation, probably just renaming again.
+ *
+ * Relevant js seems to be located in lib/blocks/navigation/yui/navigation/navigation.js
+ * will get back to it once I get the HTML for that area sorted.
+ *
+ */

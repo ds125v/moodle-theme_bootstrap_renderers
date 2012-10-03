@@ -26,7 +26,7 @@ require_once('html.php');
 require_once('bootstrap.php');
 
 class moodle {
-    // Moodle utitlity functions. TODO: think of a better name.
+    // Moodle utility functions. TODO: think of a better name.
 
 
     public static function icon($name) {
@@ -513,7 +513,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     protected function render_pix_icon(pix_icon $icon) {
 
         if (isset(bootstrap::$icons[$icon->pix])) {
-            return bootstrap::icon(bootstrap::$icons[$icon->pix]);
+            return moodle::icon($icon->pix);
             // Currently throws away any attributes attached to
             // the icon, like alt, which could be rendered
             // using .hide-text image replacement technique.
@@ -600,10 +600,10 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         $message = clean_text($message);
 
-        if ($classes = 'notifyproblem') {
+        if ($classes == 'notifyproblem') {
             return bootstrap::alert_error($message);
         }
-        if ($classes = 'notifysuccess') {
+        if ($classes == 'notifysuccess') {
             return bootstrap::alert_success($message);
         }
         return bootstrap::alert_default($message);

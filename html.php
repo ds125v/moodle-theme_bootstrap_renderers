@@ -38,7 +38,7 @@ class html {
     }
 
     private static function empty_tag($tagname, array $attributes = null) {
-        return start_tag($tagname, $attributes);
+        return self::start_tag($tagname, $attributes);
     }
 
     private static function attribute($name, $value) {
@@ -60,6 +60,7 @@ class html {
     }
 
     private static function attributes($attributes) {
+        $output = array();
         foreach ($attributes as $name => $value) {
             $output[] = self::attribute($name, $value);
         }

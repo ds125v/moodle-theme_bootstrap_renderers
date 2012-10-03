@@ -27,7 +27,7 @@ require_once('html.php');
 class bootstrap {
     // Bootstrap utility functions.
 
-    static private $icons = array(
+    static public $icons = array(
             'docs' => 'question-sign',
             'book' => 'book',
             'chapter' => 'file',

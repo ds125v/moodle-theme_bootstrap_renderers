@@ -11,7 +11,10 @@ TODO
 * go through every renderer.php in Moodle (starting with outputrenderers.php) and rewrite to match Bootstrap expectations (see [/list_renderers.txt](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/list_renderers.txt))
 * figure out how to switch off CSS coming from modules
 * generate Bootswatch CSS for all their themes to help with debugging
-* split renderers.php into multiple files? It's getting quite big.
+* * have manually generated amelia.css, cyborg.css, united.css and awesome.css which can be manually renamed to bootstrap.css to see effect
+* * Should automate the production of those, and come up with some way to switch between by clicking a link in footer 
+* find out if anyone's doing work on a Zurb Foundation theme and see if we can work together: [http://foundation.zurb.com/](http://foundation.zurb.com/)
+* get a Bootstrap tagin the Moodle bug tracker to allow people to work together on finding and fixing relevant bugs
 
 Longer term TODO
 ----------------
