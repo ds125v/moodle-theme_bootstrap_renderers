@@ -1,7 +1,7 @@
 <?php include('header.php') ;?>
 <!-- START OF CONTENT -->
 
-  <div id="region-main-box" class="row">
+  <div id="region-main-box" class="row-fluid">
 
 				<?php if ($hassidepre) : ?>
                 <aside class="span3">

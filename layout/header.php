@@ -47,7 +47,7 @@ echo $OUTPUT->doctype() ?>
 
 
 <body id="<?php echo $PAGE->bodyid ?>" class="<?php echo $PAGE->bodyclasses?>">
-<div class="container">
+<div class="container-fluid">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <a class="brand" href="<?php echo new moodle_url("/")?>">Moodle (short?)name here</a>
