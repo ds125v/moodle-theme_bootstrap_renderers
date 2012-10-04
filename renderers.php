@@ -24,13 +24,53 @@
 
 require_once('html.php');
 require_once('bootstrap.php');
+require_once('classes.php');
 
 class moodle {
     // Moodle utility functions. TODO: think of a better name.
+    //
+    static public $icons = array(
+            'docs' => 'question-sign',
+            'book' => 'book',
+            'chapter' => 'file',
+            'spacer' => 'spacer',
+            'generate' => 'gift',
+            'add' => 'plus',
+            't/hide' => 'eye-open',
+            'i/hide' => 'eye-open',
+            't/show' => 'eye-close',
+            'i/show' => 'eye-close',
+            't/add' => 'plus',
+            't/right' => 'arrow-right',
+            't/left' => 'arrow-left',
+            't/up' => 'arrow-up',
+            't/down' => 'arrow-down',
+            't/edit' => 'edit',
+            't/editstring' => 'tag',
+            't/delete' => 'remove',
+            'i/edit' => 'pencil',
+            't/copy' => 'copy', // Only in font awesome.
+            'i/settings' => 'list-alt',
+            'i/grades' => 'grades',
+            'i/group' => 'user',
+            't/switch_plus' => 'plus-sign',
+            't/switch_minus' => 'minus-sign',
+            'i/filter' => 'filter',
+            't/move' => 'resize-vertical',
+            'i/move_2d' => 'move',
+            'i/backup' => 'cog',
+            'i/restore' => 'cog',
+            'i/return' => 'repeat',
+            'i/reload' => 'refresh',
+            'i/roles' => 'user',
+            'i/user' => 'user',
+            'i/users' => 'user',
+            'i/publish' => 'publish',
+            'i/navigationitem' => 'chevron-right' );
 
 
     public static function icon($name) {
-        return bootstrap::moodle_to_bootstrap_icon($name);
+        return bootstrap::icon(self::$icons[$name]);
     }
 }
 
@@ -309,9 +349,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $output = '';
         if ($bc->footer) {
             $output .= html::li('', $bc->footer);
-        } else {
-            return "$output</ul>";
-        }
+        } 
+        return "$output</ul>";
     }
 
     public function list_block_contents($icons, $items) {
@@ -512,7 +551,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     protected function render_pix_icon(pix_icon $icon) {
 
-        if (isset(bootstrap::$icons[$icon->pix])) {
+        if (isset(moodle::$icons[$icon->pix])) {
             return moodle::icon($icon->pix);
             // Currently throws away any attributes attached to
             // the icon, like alt, which could be rendered
@@ -770,6 +809,38 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         }
         $content .= '</li>';
         return $content;
+    }
+
+}
+require_once($CFG->dirroot . "/blocks/navigation/renderer.php");
+
+class theme_bootstrap_renderers_block_navigation_renderer extends block_navigation_renderer {
+
+}
+
+require_once($CFG->dirroot . "/blocks/settings/renderer.php");
+
+class theme_bootstrap_renderers_block_settings_renderer extends block_settings_renderer {
+
+    public function search_form(moodle_url $formtarget, $searchvalue) {
+        return html::form(array(
+            'class'=>'form-search',
+            'method'=>'get',
+            'action'=>$formtarget,
+            ),
+            html_writer::empty_tag('input', array(
+                'class'=>'search-query',
+                'type'=>'text',
+                'name'=>'query',
+                'placeholder'=>'Search Settings',
+                'value'=>s($searchvalue),
+            )) .
+            html_writer::empty_tag('input', array(
+                'class'=>'btn',
+                'type'=>'submit',
+                'value'=>s(get_string('search')),
+            ))
+        );
     }
 
 }
