@@ -154,7 +154,7 @@ class html {
         $merged = array_unique(array_merge($current, $new));
         sort($merged);
 
-        return implode(' ', $merged);
+        return trim(implode(' ', $merged));
     }
 
 }

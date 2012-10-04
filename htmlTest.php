@@ -26,14 +26,61 @@ require_once('html.php');
 
 class htmlTest extends PHPUnit_Framework_TestCase {
 
-    public function test_add_classes() {
-        $existing = "a b c";
-        $new = "d e f";
-        $expected = "a b c d e f";
+    public static function add_classes() {
+
+        return array(
+            array("a", "b", "a b"),
+            array(" starting space", "no space", "no space starting"),
+            array("no space", "trailing space ", "no space trailing"),
+            array("         starting spaces", "no spaces", "no spaces starting"),
+            array("no spaces", "trailing spaces        ", "no spaces trailing"),
+            array("inside      space", "no space", "inside no space"),
+            array("e", "e", "e"),
+            array("slash-dot", "under_score", "slash-dot under_score"),
+            array("alpha delta", "charlie bravo", "alpha bravo charlie delta"),
+            array("z    z  z z   z   z ", "    a    a a   a   a   ", "a z"),
+            array("", "", ""),
+            array("only-one", "", "only-one"),
+            array("the other one is empty", "", "empty is one other the"),
+            array("some overlap", "partial overlap", "overlap partial some"),
+        );
+    }
+
+    /**
+     * @dataProvider add_classes
+     */
+    public function test_add_classes_string($existing, $new, $expected) {
+
         $result = html::add_classes_string($existing, $new);
+
         $this->assertEquals($result, $expected);
+
         list($existing, $new) = array($new, $existing);
+
         $result = html::add_classes_string($existing, $new);
+
         $this->assertEquals($result, $expected);
+
+    }
+
+    /**
+     * @dataProvider add_classes
+     * @depends test_add_classes_string
+     */
+    public function test_add_classes($existing, $new, $expected) {
+
+        $attributes['class'] = $existing;
+        $result = html::add_classes($attributes, $new);
+
+        $this->assertArrayHasKey('class', $attributes);
+        $this->assertEquals($result['class'], $expected);
+
+        list($existing, $new) = array($new, $existing);
+
+        $attributes['class'] = $existing;
+        $result = html::add_classes($attributes, $new);
+
+        $this->assertArrayHasKey('class', $attributes);
+        $this->assertEquals($result['class'], $expected);
     }
 }
