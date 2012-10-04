@@ -123,6 +123,7 @@ class html {
     }
     public static function submit($attributes) {
         $attributes['type'] = 'submit';
+        $attributes = classes::add($attributes, 'btn');
         return self::input($attributes);
     }
     /**
