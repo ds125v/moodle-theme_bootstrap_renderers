@@ -27,53 +27,11 @@ require_once('html.php');
 class bootstrap {
     // Bootstrap utility functions.
 
-    static public $icons = array(
-            'docs' => 'question-sign',
-            'book' => 'book',
-            'chapter' => 'file',
-            'spacer' => 'spacer',
-            'generate' => 'gift',
-            'add' => 'plus',
-            't/hide' => 'eye-open',
-            'i/hide' => 'eye-open',
-            't/show' => 'eye-close',
-            'i/show' => 'eye-close',
-            't/add' => 'plus',
-            't/right' => 'arrow-right',
-            't/left' => 'arrow-left',
-            't/up' => 'arrow-up',
-            't/down' => 'arrow-down',
-            't/edit' => 'edit',
-            't/editstring' => 'tag',
-            't/delete' => 'remove',
-            'i/edit' => 'pencil',
-            't/copy' => 'copy', // Only in font awesome.
-            'i/settings' => 'list-alt',
-            'i/grades' => 'grades',
-            'i/group' => 'user',
-            't/switch_plus' => 'plus-sign',
-            't/switch_minus' => 'minus-sign',
-            'i/filter' => 'filter',
-            't/move' => 'resize-vertical',
-            'i/move_2d' => 'move',
-            'i/backup' => 'cog',
-            'i/restore' => 'cog',
-            'i/return' => 'repeat',
-            'i/reload' => 'refresh',
-            'i/roles' => 'user',
-            'i/user' => 'user',
-            'i/users' => 'user',
-            'i/publish' => 'publish',
-            'i/navigationitem' => 'chevron-right' );
-
     public static function ul_implode_li($attributes, $items, $glue='</li><li>') {
         return html::ul($attributes, html::li_implode($items, $glue));
     }
     public static function ul_implode($attributes, $items) {
         return html::ul($attributes, implode($items));
-    }
-    public static function moodle_to_bootstrap_icon($name) {
-        return self::icon(self::$icons[$name]);
     }
     public static function icon($name) {
         return "<i class=icon-$name></i>";
