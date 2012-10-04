@@ -133,4 +133,7 @@ class bootstrap {
     public static function ul_unstyled($items) {
         return html::ul('unstyled', $items);
     }
+    // TODO: some ideas for bits not done yet.
+    //
+    // Bootstrap inline search form ($name, $method, $action, $placeholder, $button_text)
 }
