@@ -432,7 +432,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         $attributes = array(
                 'title'    => $button->tooltip,
-                'class'    => html::add_classes($button->class, 'btn btn-primary'),
+                'class'    => classes::add($button->class, 'btn btn-primary'),
                 'value'    => $button->label,
                 'disabled' => $button->disabled ? 'disabled' : null,
             );
