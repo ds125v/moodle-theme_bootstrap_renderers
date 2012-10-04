@@ -24,6 +24,13 @@ div.resourcecontent {
 
 /* Activity chooser links don't become active, current workaround, turn it off. */
 
+/* This second section are things that can be broken just by not
+ * including Moodle's standard css. Mostly this is things that should
+ * be shown on demand by js, that are always visible.
+ */
+
+/* Drag'n'drop targets and spinners */
+
 /* 
  * From this point onwards are things that are broken because I've rewritten
  * some of the renderers, above are things you can break just by messing
