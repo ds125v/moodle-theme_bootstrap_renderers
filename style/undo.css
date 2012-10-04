@@ -73,9 +73,7 @@ block.invisible {
 #turnitintool_style .row,
 .forumpost .row {
   margin-left: 0 !important;
-  /* not sure if this needs !important, or if this rule
-   * is needed at all actually, might be the next one
-   * that does all the work */
+  // not sure if this needs !important
 }
 #turnitintool_style .row:before, 
 #turnitintool_style .row:after,
@@ -86,7 +84,7 @@ block.invisible {
 
 /* .controls vs .controls
  *
- * in expanding course list, can be fixed in rendrer though
+ * in expanding course list, can be fixed in renderer though
  */
 
 
