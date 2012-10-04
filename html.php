@@ -24,6 +24,14 @@
 
 class html {
     // HTML utility functions.
+    private static $boolean_attributes = array(
+        'disabled',
+        'checked',
+        'readonly',
+        'required',
+        'autoplay',
+        'selected',
+    );
 
     private static function tag($tagname, $attributes, $contents) {
         return self::start_tag($tagname, $attributes) . $contents . self::end_tag($tagname);
@@ -41,30 +49,32 @@ class html {
         return self::start_tag($tagname, $attributes);
     }
 
-    private static function attribute($name, $value) {
+    public static function attribute($name, $value) {
         if (is_array($value)) {
             debugging("Passed an array for the HTML attribute $name", DEBUG_DEVELOPER);
         }
-        if ($value === null) {
-            return '';
+        if (strpos($name, " ")!==false) {
+            debugging("Attribute names can't have spaces in them like \"$name\"", DEBUG_DEVELOPER);
         }
         if ($value instanceof moodle_url) {
             $value = $value->out();
         }
-
+        if ($name === $value && in_array($name, self::$boolean_attributes)) {
+            return $name;
+        }
         $value = htmlspecialchars($value);
-        if (strpos($value, " ")) {
+        if (strpbrk($value, "= '")!==false) {
             $value = '"'.$value.'"';
         }
-        return " $name=$value";
+        return "$name=$value";
     }
 
-    private static function attributes($attributes) {
+    public static function attributes($attributes) {
         $output = array();
         foreach ($attributes as $name => $value) {
             $output[] = self::attribute($name, $value);
         }
-        return implode($output);
+        return ' ' . implode(' ', $output);
     }
 
     private static function classy_tag($tag, $attributes, $content = null) {
@@ -80,9 +90,17 @@ class html {
         }
         return self::tag($tag, $attributes, $content);
     }
-
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
     public static function a($attributes, $content) {
         return self::classy_tag('a', $attributes, $content);
+    }
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
+    public static function p($attributes, $content) {
+        return self::classy_tag('p', $attributes, $content);
     }
 
     public static function div($attributes, $content) {
@@ -93,10 +111,6 @@ class html {
         return self::classy_tag('span', $attributes, $content);
     }
 
-    public static function p($attributes, $content) {
-        return self::classy_tag('p', $attributes, $content);
-    }
-
     public static function abbr($attributes, $content) {
         return self::classy_tag('abbr', $attributes, $content);
     }
@@ -104,14 +118,22 @@ class html {
     public static function form($attributes, $content) {
         return self::classy_tag('form', $attributes, $content);
     }
+    public static function input($attributes, $content = null) {
+        return self::classy_tag('input', $attributes, $content);
+    }
     public static function submit($attributes) {
         $attributes['type'] = 'submit';
-        return self::classy_tag('input', $attributes, null);
+        return self::input($attributes);
     }
-
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
     public static function ul($attributes, $content) {
         return self::classy_tag('ul', $attributes, $content);
     }
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
     public static function li($attributes, $content) {
         return self::classy_tag('li', $attributes, $content);
     }
@@ -131,30 +153,8 @@ class html {
         $attributes['name'] = $name;
         $attributes['value'] = $value;
 
-        return self::classy_tag('input', $attributes, null);
+        return self::input($attributes);
     }
 
-    public static function add_classes($current, $new) {
-        if (is_string($current)) {
-            return self::add_classes_string($current, $new);
-        }
-        if (is_array($current)) {
-            if (!isset($current['class'])) {
-                $current['class'] = '';
-            }
-            $current['class'] =  self::add_classes_string($current['class'], $new);
-            return $current;
-        }
-        throw new coding_exception('The $current param to html::add_classes must be either a string or array of attributes.');
-    }
-
-    public static function add_classes_string($current, $new) {
-        $current = explode(' ', $current);
-        $new = explode( ' ', $new);
-        $merged = array_unique(array_merge($current, $new));
-        sort($merged);
-
-        return trim(implode(' ', $merged));
-    }
 
 }

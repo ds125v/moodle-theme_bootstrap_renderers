@@ -26,61 +26,31 @@ require_once('html.php');
 
 class htmlTest extends PHPUnit_Framework_TestCase {
 
-    public static function add_classes() {
+    public static function attributes() {
 
         return array(
-            array("a", "b", "a b"),
-            array(" starting space", "no space", "no space starting"),
-            array("no space", "trailing space ", "no space trailing"),
-            array("         starting spaces", "no spaces", "no spaces starting"),
-            array("no spaces", "trailing spaces        ", "no spaces trailing"),
-            array("inside      space", "no space", "inside no space"),
-            array("e", "e", "e"),
-            array("slash-dot", "under_score", "slash-dot under_score"),
-            array("alpha delta", "charlie bravo", "alpha bravo charlie delta"),
-            array("z    z  z z   z   z ", "    a    a a   a   a   ", "a z"),
-            array("", "", ""),
-            array("only-one", "", "only-one"),
-            array("the other one is empty", "", "empty is one other the"),
-            array("some overlap", "partial overlap", "overlap partial some"),
+            array('name', 'value', 'name=value'),
+            array('name', 'two values', 'name="two values"'),
+            array('equals', '=', 'equals="="'),
+            array('double-quote', '"', 'double-quote=&quot;'),
+            array('sums', '1+1=2', 'sums="1+1=2"'),
+            array('lessthan', '<', 'lessthan=&lt;'),
+            array('morethan', '>', 'morethan=&gt;'),
+            array('name', 'O\'Reilly', 'name="O\'Reilly"'),
+            array('big-apple', 'I <3 New York', 'big-apple="I &lt;3 New York"'),
+            array('candy', 'M&Ms', 'candy=M&amp;Ms'),
+            array('leading', ' space', 'leading=" space"'),
+            array('disabled', 'disabled', 'disabled'),
         );
     }
-
     /**
-     * @dataProvider add_classes
+     * @dataProvider attributes
      */
-    public function test_add_classes_string($existing, $new, $expected) {
+    public function test_attribute($name, $value, $expected) {
 
-        $result = html::add_classes_string($existing, $new);
+        $actual = html::attribute($name, $value);
 
-        $this->assertEquals($result, $expected);
+        $this->assertSame($expected, $actual);
 
-        list($existing, $new) = array($new, $existing);
-
-        $result = html::add_classes_string($existing, $new);
-
-        $this->assertEquals($result, $expected);
-
-    }
-
-    /**
-     * @dataProvider add_classes
-     * @depends test_add_classes_string
-     */
-    public function test_add_classes($existing, $new, $expected) {
-
-        $attributes['class'] = $existing;
-        $result = html::add_classes($attributes, $new);
-
-        $this->assertArrayHasKey('class', $attributes);
-        $this->assertEquals($result['class'], $expected);
-
-        list($existing, $new) = array($new, $existing);
-
-        $attributes['class'] = $existing;
-        $result = html::add_classes($attributes, $new);
-
-        $this->assertArrayHasKey('class', $attributes);
-        $this->assertEquals($result['class'], $expected);
     }
 }
