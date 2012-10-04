@@ -40,7 +40,7 @@ $THEME->layouts = array(
         'defaultregion' => 'side-post',
     ),
     'frontpage' => array(
-        'file' => 'frontpage.php',
+        'file' => 'general.php',
         'regions' => array('side-pre', 'side-post'),
         'defaultregion' => 'side-post',
     ),

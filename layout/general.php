@@ -1,5 +1,4 @@
 <?php include('header.php') ;?>
-<!-- GENERAL -->
 <div id="region-main-box" class="row-fluid">
 
 <?php if ($hassidepre) : ?>
@@ -23,5 +22,4 @@
     </aside>
 <?php endif; ?>          
 </div>
-<!-- END GENERAL -->  
 <?php include('footer.php') ;?>
