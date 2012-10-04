@@ -60,9 +60,9 @@ echo $OUTPUT->doctype() ?>
 
 
 <?php if ($hasheading || $hasnavbar) : ?>
-    <header id="page-header" class="jumbotron">    	
+    <header>    	
         <?php if ($hasheading) { ?>
-        <h1 class="headermain"><a href="<?php  global $CFG; $url = $CFG->wwwroot."/course/view.php?id=".$PAGE->course->id; echo $url; ?>"><?php echo $PAGE->heading ?></a></h1>
+        <h1><a href="<?php  global $CFG; $url = $CFG->wwwroot."/course/view.php?id=".$PAGE->course->id; echo $url; ?>"><?php echo $PAGE->heading ?></a></h1>
         
         <?php if (!empty($PAGE->layout_options['langmenu'])) {
                 echo $OUTPUT->lang_menu();
@@ -74,7 +74,7 @@ echo $OUTPUT->doctype() ?>
         <?php if ($hasnavbar) { ?>
             <div>
                 <?php echo $OUTPUT->navbar(); ?>
-                <div class="navbutton"> <?php echo $PAGE->button; ?></div>
+                <div class="pull-right"> <?php echo $PAGE->button; ?></div>
             </div>
         <?php } ?>
     </header>
