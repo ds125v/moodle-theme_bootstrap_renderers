@@ -31,7 +31,9 @@ require_once($CFG->dirroot . "/blocks/settings/renderer.php");
 class theme_bootstrap_renderers_block_settings_renderer extends block_settings_renderer {
 
     public function search_form(moodle_url $formtarget, $searchvalue) {
+        // TODO: internationalise the placeholder text.
         return bootstrap::inline_search($formtarget, 'Search Settings', s($searchvalue), s(get_string('search')));
+
     }
 
 }
