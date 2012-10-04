@@ -828,14 +828,14 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
             'method'=>'get',
             'action'=>$formtarget,
             ),
-            html_writer::empty_tag('input', array(
+            html::input(array(
                 'class'=>'search-query',
                 'type'=>'text',
                 'name'=>'query',
                 'placeholder'=>'Search Settings',
                 'value'=>s($searchvalue),
             )) .
-            html_writer::empty_tag('input', array(
+            html::input(array(
                 'class'=>'btn',
                 'type'=>'submit',
                 'value'=>s(get_string('search')),
