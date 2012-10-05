@@ -12,93 +12,46 @@ $THEME->csspostprocess = 'processor';
 $THEME->javascripts = array();
 $THEME->javascripts_footer = array();
 
-$THEME->enable_dock = true;
+$THEME->enable_dock = false;
+
+// Layouts.
+
+$basic = array(
+    'file' => 'general.php',
+);
+$normal = $basic + array(
+    'regions' => array('side-pre', 'side-post'),
+    'defaultregion' => 'side-post',
+);
+$one_column = $basic + array(
+    'regions' => array('side-pre'),
+    'defaultregion' => 'side-pre',
+);
+$plain = $basic + array(
+    'options' => array(
+        'noblocks'=>true,
+        'nofooter'=>true,
+        'nonavbar'=>false,
+        'nocustommenu'=>true,
+    ),
+);
 
 $THEME->layouts = array(
-    'base' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-    ),
-    'standard' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'course' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-        'options' => array('langmenu'=>true),
-    ),
-    'coursecategory' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'incourse' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'frontpage' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'admin' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre'),
-        'defaultregion' => 'side-pre',
-    ),
-    'mydashboard' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-        'options' => array('langmenu'=>true),
-    ),
-    'mypublic' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'login' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('langmenu'=>true),
-    ),
-    'popup' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nologininfo'=>true),
-    ),
-    'frametop' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true),
-    ),
-    'embedded' => array(
-        'file' => 'embedded.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
-    ),
-    'maintenance' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
-    ),
-    'print' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>false, 'nocustommenu'=>true),
-    ),
-    'redirect' => array(
-        'file' => 'embedded.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
-    ),
-    'report' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre'),
-        'defaultregion' => 'side-pre',
-    ),
+    'admin' => $one_column,
+    'base' => $basic,
+    'course' => $normal,
+    'coursecategory' => $normal,
+    'embedded' => $basic + array('options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true)),
+    'frametop' => $basic + array('options' => array('nofooter'=>true)),
+    'frontpage' => $normal,
+    'incourse' => $normal,
+    'login' => $basic,
+    'maintenance' => $plain,
+    'mydashboard' => $normal,
+    'mypublic' => $normal,
+    'popup' => $basic + array('options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nologininfo'=>true)),
+    'print' => $plain,
+    'redirect' => $plain,
+    'report' => $one_column,
+    'standard' => $normal,
 );
