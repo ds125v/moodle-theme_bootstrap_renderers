@@ -152,7 +152,9 @@ class html {
         foreach ($params as $name => $value) {
             $output[] = self::input_hidden($name, $value);
         }
-        return implode($output);
+        if ($output) {
+            return implode($output);
+        }
     }
 
     public static function input_hidden($name, $value) {
