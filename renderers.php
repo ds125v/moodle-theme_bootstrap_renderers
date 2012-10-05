@@ -36,6 +36,7 @@ class moodle {
             'docs' => 'question-sign',
             'generate' => 'gift',
             'i/backup' => 'cog',
+            'i/checkpermissions' => 'user',
             'i/edit' => 'pencil',
             'i/filter' => 'filter',
             'i/grades' => 'grades',
@@ -45,6 +46,7 @@ class moodle {
             'i/navigationitem' => 'chevron-right',
             'i/publish' => 'publish',
             'i/reload' => 'refresh',
+            'i/report' => 'list-alt',
             'i/restore' => 'cog',
             'i/return' => 'repeat',
             'i/roles' => 'user',
@@ -54,7 +56,6 @@ class moodle {
             'i/users' => 'user',
             'spacer' => 'spacer',
             't/add' => 'plus',
-            't/checkpermissions' => 'user',
             't/copy' => 'copy', // Only in font awesome.
             't/delete' => 'remove',
             't/down' => 'arrow-down',
