@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require_once('classes.php');
+
 class html {
     // HTML utility functions.
     private static $boolean_attributes = array(
@@ -50,6 +52,9 @@ class html {
     }
 
     public static function attribute($name, $value) {
+        if ($value === null) {
+            return '';
+        }
         if (is_array($value)) {
             debugging("Passed an array for the HTML attribute $name", DEBUG_DEVELOPER);
         }
@@ -71,6 +76,7 @@ class html {
 
     public static function attributes($attributes) {
         $output = array();
+        ksort($attributes);
         foreach ($attributes as $name => $value) {
             $output[] = self::attribute($name, $value);
         }

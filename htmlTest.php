@@ -53,4 +53,35 @@ class htmlTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($expected, $actual);
 
     }
+
+    public static function submits() {
+
+        return array(
+            array(array(
+                'value'=>'hello',
+            ),
+            '<input class=btn type=submit value=hello>'),
+            array(array(
+                'value'=>'hello', 'disabled'=>'disabled',
+            ),
+            '<input class=btn disabled type=submit value=hello>'),
+            array(array(
+                'value'=>'hello',
+                'disabled'=>'disabled',
+                'title'=>'this is the title',
+            ),
+            '<input class=btn disabled title="this is the title" type=submit value=hello>'),
+        );
+    }
+
+    /**
+     * @dataProvider submits
+     */
+    public function test_submit($attributes, $expected) {
+
+        $actual = html::submit($attributes);
+
+        $this->assertSame($expected, $actual);
+
+    }
 }
