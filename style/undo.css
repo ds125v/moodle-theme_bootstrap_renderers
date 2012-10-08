@@ -1,20 +1,22 @@
 /* some very targetted corrections to roll back nameclashes between
  * Moodle and Bootstrap like .row, .label, .content, .controls
  *
- * This file should come first in CSS as the YUI one needs to go before
- * Bootstrap, so that Bootstrap can then restyle the same target. With
- * the others rely on more specific CSS to overrule the Bootstrap styles
+ * Mostly relies on these styles being more specific than the Bootstrap
+ * ones in order to overule them.
  */
 
 /* YUI vs tables
  * 
  * It seems a bit crazy but YUI appears to be adding ugly borders to
  * all table cells,.
+ * 
+ * YUI gets included before user styles so this has precedence,
+ * might make some YUI things look funny though if they expect padding.
  */
 th,td {
-        border: none;
-        padding: 0;
-      }
+    border: none;
+    padding: 0;
+}
 
 /* .label vs .label
  */
@@ -49,8 +51,7 @@ li.activity.label,
  currently worked around in renderers.php function block{}
  by rewriting the class name "invisible" to "dimmed",
  though the blocks don't look particularly different apart
- from their contents disappearing.
- 
+ from their contents disappearing. Maybe try .muted? or
  dimming all the edit icons apart from unhide, might be a 
  nice effect, though they'd still be active. Maybe reverse
  it to white?
@@ -87,4 +88,11 @@ block.invisible {
  * in expanding course list, can be fixed in renderer though
  */
 
+
+/* .btn vs .btn
+ *
+ * links, inputs and buttons are commonly styled with .btn in
+ * bootstrap but it seems that some buttons in Moodle are 
+ * wrapped in div.btn e.g. the login block's "login" button
+ */
 

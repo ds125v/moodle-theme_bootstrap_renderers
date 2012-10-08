@@ -83,7 +83,7 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
 
     public function search_form(moodle_url $formtarget, $searchvalue) {
         // TODO: internationalise the placeholder text.
-        return bootstrap::inline_search($formtarget, 'Search Settings', s($searchvalue), s(get_string('search')));
+        return bootstrap::inline_search_append($formtarget, 'Search Settings', s($searchvalue), s(get_string('search')));
 
     }
 

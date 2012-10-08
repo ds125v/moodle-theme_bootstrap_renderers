@@ -146,4 +146,17 @@ class bootstrap {
 
         return html::form($form_attributes, html::input($input_attributes) . html::submit(array('value'=>$submit_text)));
     }
+    public static function inline_search_append($action, $placeholder, $value, $submit_text) {
+        $form_attributes['class'] = 'form-search';
+        $form_attributes['method'] = 'get';
+        $form_attributes['action'] = $action;
+
+        $input_attributes['class'] = 'search-query';
+        $input_attributes['type'] = 'text';
+        $input_attributes['name'] = 'query';
+        $input_attributes['placeholder'] = $placeholder;
+        $input_attributes['value'] = $value;
+
+        return html::form($form_attributes, html::div('input-append', html::input($input_attributes) . html::submit(array('value'=>$submit_text))));
+    }
 }

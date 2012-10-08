@@ -65,7 +65,7 @@ class html {
         }
         return "$name=$value";
     }
-    public function href_then_alphabetical($left, $right) {
+    public static function href_then_alphabetical($left, $right) {
         if ($left === 'href') {
             return -1;
         } else if ($right === 'href') {

@@ -106,17 +106,19 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                     'link'=>false,
                     'class'=>'img-circle',
                 ));
-                $loggedinas = $userpic . ' ' .$realuserinfo.get_string('loggedinas', 'moodle', $username).' '.
-                    " (<a href=\"$CFG->wwwroot/login/logout.php?sesskey=".
-                    sesskey()."\" class=navbar-link>".get_string('logout').'</a>)';
+                $logout = $CFG->wwwroot . '/login/logout.php?sesskey=' . sesskey();
+                $loggedinas = '<p class="navbar-text pull-right">' . $userpic . ' ' . $realuserinfo .
+                    get_string('loggedinas', 'moodle', $username).' '.
+                    '<a href="' . $logout . '" class=label>'.get_string('logout').'</a></p>';
             }
         } else {
             if ($loginpage) {
-                $loggedinas = get_string('loggedinnot', 'moodle');
+                $loggedinas = '<div class="navbar-text pull-right">' . get_string('loggedinnot', 'moodle');
             } else {
-                $loggedinas = '<input class="span2" type="text" placeholder="username">
-                    <input class="span2" type="password" placeholder="password">
-                    <button type="submit" class="btn">'.get_string('login').'</button>';
+                $loggedinas = '<form action="' . $CFG->wwwroot . '/login/index.php?authldap_skipntlmsso=1" class="navbar-form pull-right" method=post>';
+                $loggedinas .= '<input class="span2" name=username type="text" placeholder="' . get_string('username') . '">';
+                $loggedinas .= '<input class="span2" name=password type="password" placeholder="'. get_string('password') . '">';
+                $loggedinas .= '<button type="submit" class="btn">'.get_string('login').'</button></form>';
             }
         }
 
