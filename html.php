@@ -36,19 +36,11 @@ class html {
     );
 
     private static function tag($tagname, $attributes, $contents) {
-        return self::start_tag($tagname, $attributes) . $contents . self::end_tag($tagname);
-    }
-
-    private static function start_tag($tagname, array $attributes = null) {
-        return "<$tagname" . self::attributes($attributes) . '>';
-    }
-
-    private static function end_tag($tagname) {
-        return "</$tagname>";
-    }
-
-    private static function empty_tag($tagname, array $attributes = null) {
-        return self::start_tag($tagname, $attributes);
+        if ($contents === null) {
+            return "<$tagname" . self::attributes($attributes) . '>';
+        } else {
+            return "<$tagname" . self::attributes($attributes) . ">$contents</$tagname>";
+        }
     }
 
     public static function attribute($name, $value) {
@@ -73,10 +65,19 @@ class html {
         }
         return "$name=$value";
     }
+    public function href_then_alphabetical($left, $right) {
+        if ($left === 'href') {
+            return -1;
+        } else if ($right === 'href') {
+            return 1;
+        } else {
+            return strcmp($left, $right);
+        }
+    }
 
     public static function attributes($attributes) {
         $output = array();
-        ksort($attributes);
+        uksort($attributes, array("html", "href_then_alphabetical"));
         foreach ($attributes as $name => $value) {
             $output[] = self::attribute($name, $value);
         }
@@ -90,9 +91,6 @@ class html {
             } else {
                 $attributes = array('class'=>$attributes);
             }
-        }
-        if ($content === null) {
-            return self::empty_tag($tag, $attributes);
         }
         return self::tag($tag, $attributes, $content);
     }
