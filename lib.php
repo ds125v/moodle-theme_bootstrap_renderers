@@ -22,9 +22,9 @@ function processor($css, $theme) {
     $random = true;
     if ($random) {
         $subtheme = array_rand($themes);
-        $responsive = true;
-        $fixed = true;
-        $awesome = true;
+        $responsive = rand(0, 1);
+        $fixed = rand(0, 1);
+        $awesome = rand(0, 1);
     }
 
     $themedir = "/var/www/bootstrap/theme/bootstrap_renderers";
