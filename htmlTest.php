@@ -54,6 +54,26 @@ class htmlTest extends PHPUnit_Framework_TestCase {
 
     }
 
+    public function test_no_output_for_attribute_with_null_value() {
+
+        $name = "not-output";
+        $value = null;
+        $actual = html::attribute($name, $value);
+
+        $this->assertSame('', $actual);
+
+    }
+
+    public function test_output_for_attribute_empty_value() {
+
+        $name = "output";
+        $value = '';
+        $actual = html::attribute($name, $value);
+
+        $this->assertSame('output=""', $actual);
+
+    }
+
     public static function submits() {
 
         return array(

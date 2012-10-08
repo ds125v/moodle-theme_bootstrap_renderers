@@ -28,7 +28,7 @@ class classesTest extends PHPUnit_Framework_TestCase {
 
     public static function add() {
 
-        return array(
+        $testcases = array(
             array("order", "alphabetical", "alphabetical order"),
             array("alpha delta", "charlie bravo", "alpha bravo charlie delta"),
             array("z", "a", "a z"),
@@ -45,6 +45,12 @@ class classesTest extends PHPUnit_Framework_TestCase {
             array("other is empty", "", "empty is other"),
             array("some overlap", "partial overlap", "overlap partial some"),
         );
+
+        $reversed = array();
+        foreach ($testcases as $testcase) {
+            $reversed[] = array($testcase[1], $testcase[0], $testcase[2]);
+        }
+        return array_merge($testcases, $reversed);
     }
     /**
      * @dataProvider add
@@ -54,13 +60,6 @@ class classesTest extends PHPUnit_Framework_TestCase {
         $actual = classes::add($existing, $new);
 
         $this->assertSame($expected, $actual);
-
-        list($existing, $new) = array($new, $existing);
-
-        $actual = classes::add($existing, $new);
-
-        $this->assertSame($expected, $actual);
-
     }
     /**
      * @dataProvider add
@@ -73,13 +72,20 @@ class classesTest extends PHPUnit_Framework_TestCase {
 
         $this->assertArrayHasKey('class', $attributes);
         $this->assertSame($expected, $actual['class']);
+    }
+    /**
+     * @dataProvider add
+     * @depends test_add
+     */
+    public function test_create_class_key_on_add_to_array($first, $second, $expected) {
 
-        list($existing, $new) = array($new, $existing);
+        $attributes = array();
+        $one_added = classes::add($attributes, $first);
+        $this->assertArrayHasKey('class', $one_added);
 
-        $attributes['class'] = $existing;
-        $actual = classes::add($attributes, $new);
+        $two_added = classes::add($one_added, $second);
+        $this->assertArrayHasKey('class', $two_added);
 
-        $this->assertArrayHasKey('class', $attributes);
-        $this->assertSame($expected, $actual['class']);
+        $this->assertSame($expected, $two_added['class']);
     }
 }

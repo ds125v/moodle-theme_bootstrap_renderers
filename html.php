@@ -52,14 +52,14 @@ class html {
     }
 
     public static function attribute($name, $value) {
-        if ($value === null) {
-            return '';
-        }
         if (is_array($value)) {
             debugging("Passed an array for the HTML attribute $name", DEBUG_DEVELOPER);
         }
         if (strpos($name, " ")!==false) {
             debugging("Attribute names can't have spaces in them like \"$name\"", DEBUG_DEVELOPER);
+        }
+        if ($value === null) {
+            return '';
         }
         if ($value instanceof moodle_url) {
             $value = $value->out();
@@ -68,7 +68,7 @@ class html {
             return $name;
         }
         $value = htmlspecialchars($value);
-        if (strpbrk($value, "= '")!==false) {
+        if (strpbrk($value, "= '")!==false || $value === '') {
             $value = '"'.$value.'"';
         }
         return "$name=$value";
