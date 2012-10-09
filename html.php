@@ -51,7 +51,7 @@ class html {
     }
 
     private static function tag($tagname, $attributes, $contents) {
-        if (self::$zurb && $attributes['class']) {
+        if (self::$zurb && isset($attributes['class'])) {
             $attributes['class'] = self::bootstrap_to_zurb($tagname, $attributes['class']);
         }
         if ($contents === null) {

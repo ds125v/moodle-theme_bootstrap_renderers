@@ -1,6 +1,13 @@
 output of :
 find -name renderer.php -exec wc -l {} \;
 
+also useful:
+in theme/bootstrap_renderers:
+grep -r 'public function' --include=*renderer.php .
+
+in moodle root:
+grep -r 'public function' --include=*renderer.php --exclude-dir=bootstrap_renderers .
+
 91 ./user/renderer.php
 90 ./rss/renderer.php
 348 ./message/renderer.php
