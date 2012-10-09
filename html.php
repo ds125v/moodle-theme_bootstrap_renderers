@@ -182,7 +182,7 @@ class html {
         return self::classy_tag('li', $attributes, $content);
     }
     public static function li_implode($items, $glue='</li><li>') {
-        if (is_string($items)) {
+        if (is_string($items) || $items === null) {
             return $items;
         }
         if (strpos($items[0], '<li') === 0) {

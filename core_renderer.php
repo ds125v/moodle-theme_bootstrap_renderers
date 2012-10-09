@@ -259,15 +259,10 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         } else {
             $output = html_writer::tag('a', get_string('skipa', 'access', $skiptitle),
                 array('href' => '#sb-' . $bc->skipid, 'class' => 'skip-block'));
-            $skipdest = html_writer::tag('span', '', array('id' => 'sb-' . $bc->skipid, 'class' => 'skip-block-to'));
+            $skipdest = html::span(array('id' => 'sb-' . $bc->skipid, 'class' => 'skip-block-to'), '');
         }
 
-        $output .= html_writer::start_tag('div', $bc->attributes);
-
-        $output .= $this->block_header($bc);
-        $output .= $this->block_content($bc);
-
-        $output .= html_writer::end_tag('div');
+        $output .= html::div($bc->attributes, $this->block_header($bc) . $this->block_content($bc));
 
         $output .= $this->block_annotation($bc);
 
@@ -278,7 +273,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function block_header(block_contents $bc) {
-        $output = '<ul class="nav nav-list">';
+        $output = html::ul_open('nav nav-list');
 
         if ($bc->title) {
             $output .= html::li('nav-header', $bc->title);
@@ -669,7 +664,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         $links[] = $this->previous_link($baseurl, $pagevar, $current_page);
         for ($i = 0; $i <= $lastpage; $i++) {
-            if ($skip[$i]) {
+            if (isset($skip[$i])) {
                 $links[] = $this->skipped_link();
                 $i = $skip[$i];
             }
