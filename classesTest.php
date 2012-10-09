@@ -88,4 +88,29 @@ class classesTest extends PHPUnit_Framework_TestCase {
 
         $this->assertSame($expected, $two_added['class']);
     }
+    public static function replace() {
+
+        $testcases = array(
+            array("btn", array('btn'=>'button'), "button"),
+            array("well", array('well'=>'panel'), "panel"),
+            array("active", array('active'=>'current'), "current"),
+            array("disabled", array('disabled'=>'unavailable'), "unavailable"),
+            array("btn well active disabled", array('btn'=>'button', 'well'=>'panel', 'active'=>'current', 'disabled'=>'unavailable'), "button panel current unavailable"),
+        );
+
+        $reversed = array();
+        foreach ($testcases as $testcase) {
+            $reversed[] = array($testcase[2], array_flip($testcase[1]), $testcase[0]);
+        }
+        return array_merge($testcases, $reversed);
+    }
+    /**
+     * @dataProvider replace
+     */
+    public function test_replace($existing, $replacements, $expected) {
+
+        $actual = classes::replace($existing, $replacements);
+
+        $this->assertSame($expected, $actual);
+    }
 }

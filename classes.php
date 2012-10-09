@@ -69,7 +69,7 @@ class classes {
             }
         }
         if ($found) {
-            return trim(implode(array_merge(array_diff($current, $found), $to_add)));
+            return trim(implode(' ', array_merge(array_diff($current_array, $found), $to_add)));
         } else {
             return $current;
         }
