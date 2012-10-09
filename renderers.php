@@ -28,7 +28,11 @@ require_once('classes.php');
 
 
 // TODO: interesting things in renderers that I haven't got around to yet:
-// backup/util/ui/renderer.php has some forms stuff.
+// backup/util/ui/renderer.php has some forms stuff, backup details in particular.
+// mod/forum/renderer.php has one of those user selector things.
+// mod/choice/renderer.php seems fairly self-contained and straightforward.
+// mod/course/renderer.php and
+// mod/course/format/renderer.php are full of good stuff.
 
 class moodle {
     // Moodle utility functions. TODO: think of a better name.
