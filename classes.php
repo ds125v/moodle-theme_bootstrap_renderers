@@ -34,7 +34,7 @@ class classes {
             $current['class'] =  self::add_classes_string($current['class'], $new);
             return $current;
         }
-        throw new coding_exception('The $current param to html::add_classes must be either a string or array of attributes.');
+        throw new coding_exception('The $current param to classes::add must be either a string or array of attributes.');
     }
 
     private static function add_classes_string($current, $new) {
@@ -44,5 +44,29 @@ class classes {
         sort($merged);
 
         return trim(implode(' ', $merged));
+    }
+    public static function replace($current, $new) {
+        if (is_string($current)) {
+            return self::replace_classes($current, $new);
+        }
+        if (is_array($current)) {
+            if (!isset($current['class'])) {
+                $current['class'] = '';
+            }
+            $current['class'] =  self::replace_classes($current['class'], $new);
+            return $current;
+        }
+        throw new coding_exception('The $current param to classes::replace must be either a string or array of attributes.');
+    }
+
+    private static function replace_classes($current, $new) {
+        $current = explode(' ', $current);
+        foreach ($new as $find => $replace) {
+            if (in_array($find, $current)) {
+                $found[] = $find;
+                $to_add[] = $replace;
+            }
+        }
+        return trim(implode(array_merge(array_diff($current, $found), $to_add)));
     }
 }

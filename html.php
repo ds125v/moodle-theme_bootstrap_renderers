@@ -27,15 +27,29 @@ require_once('classes.php');
 class html {
     // HTML utility functions.
     private static $boolean_attributes = array(
-        'disabled',
+        'autoplay',
         'checked',
+        'disabled',
         'readonly',
         'required',
-        'autoplay',
         'selected',
     );
 
+    private static $to_zurb = array(
+        'input' => array('btn'=>'button'),
+        'a' => array('btn'=>'button'),
+        'button' => array('btn'=>'button'),
+        'li' => array('active'=>'current', 'disabled'=>'unavailable'),
+        'ul' => array('breadcrumb'=>'breadcrumbs'),
+        'div' => array('well'=>'panel'),
+    );
+
+    private static function bootstrap_to_zurb($tag, $classes) {
+        return classes::replace($classes, self::$to_zurb[$tag]);
+    }
+
     private static function tag($tagname, $attributes, $contents) {
+        // $attributes['class'] = self::bootstrap_to_zurb($tagname, $attributes['class']);
         if ($contents === null) {
             return "<$tagname" . self::attributes($attributes) . '>';
         } else {
