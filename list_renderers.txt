@@ -1,8 +1,8 @@
 output of :
 egrep -r '(private|protected|public) function' --include=renderer.php --include=outputrenderers.php --exclude-dir=theme -l .
 
-for more detail, in moodle root:
-egrep -r '(private|protected|public) function' --include=renderer.php --exclude-dir=theme .
+for more detail on each file's functions, in moodle root:
+egrep -r '(private|protected|public) function' --include=renderer.php --include=outputrenderers.php --exclude-dir=theme .
 
 for progress, in theme/bootstrap_renderers:
 egrep -r '(private|protected|public) function' --include=renderer.php .
