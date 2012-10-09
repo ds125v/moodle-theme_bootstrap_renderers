@@ -35,13 +35,15 @@ class html {
         'selected',
     );
 
+    private static $zurb = false;
+
     private static $to_zurb = array(
-        'input' => array('btn'=>'button'),
         'a' => array('btn'=>'button'),
         'button' => array('btn'=>'button'),
+        'div' => array('well'=>'panel'),
+        'input' => array('btn'=>'button'),
         'li' => array('active'=>'current', 'disabled'=>'unavailable'),
         'ul' => array('breadcrumb'=>'breadcrumbs'),
-        'div' => array('well'=>'panel'),
     );
 
     private static function bootstrap_to_zurb($tag, $classes) {
@@ -49,7 +51,9 @@ class html {
     }
 
     private static function tag($tagname, $attributes, $contents) {
-        // $attributes['class'] = self::bootstrap_to_zurb($tagname, $attributes['class']);
+        if (self::$zurb && $attributes['class']) {
+            $attributes['class'] = self::bootstrap_to_zurb($tagname, $attributes['class']);
+        }
         if ($contents === null) {
             return "<$tagname" . self::attributes($attributes) . '>';
         } else {
