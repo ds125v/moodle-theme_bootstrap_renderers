@@ -27,12 +27,6 @@ require_once('html.php');
 class bootstrap {
     // Bootstrap utility functions.
 
-    public static function ul_implode_li($attributes, $items, $glue='</li><li>') {
-        return html::ul($attributes, html::li_implode($items, $glue));
-    }
-    public static function ul_implode($attributes, $items) {
-        return html::ul($attributes, implode($items));
-    }
     public static function icon($name) {
         return "<i class=icon-$name></i>";
     }
@@ -132,6 +126,13 @@ class bootstrap {
 
     public static function ul_unstyled($items) {
         return html::ul('unstyled', $items);
+    }
+    public static function pagination($items) {
+        return html::div('pagination pagination-centered', html::ul('', $items));
+    }
+    public static function breadcrumb($items) {
+        $divider = html::span('divider', ' / ');
+        return html::ul('breadcrumb', '<li>' . implode("$divider</li><li>", $items). '</li>');
     }
     public static function inline_search($action, $placeholder, $value, $submit_text) {
         $form_attributes['class'] = 'form-search';

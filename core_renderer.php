@@ -236,7 +236,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         // don't know if it'll work, Boostrap just expects simple lists.
 
         // Rename class invisible to dimmed.
-        $bc->attributes['class'] = str_replace ('invisible', 'dimmed', $bc->attributes['class']);
+        $bc->attributes['class'] = classes::replace($bc->attributes['class'], array('invisible'=>'muted'));
 
         $bc = clone($bc); // Avoid messing up the object passed in.
         if (empty($bc->blockinstanceid) || !strip_tags($bc->title)) {
@@ -611,27 +611,27 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     private function previous_link($baseurl, $pagevar, $current_page) {
         $previous = get_string('previous');
         if ($current_page == 0) {
-            return "<li class=disabled><span>$previous</span></li>";
+            return html::li('disabled', "<span>$previous</span>");
         }
         return html::li('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page-1)), $previous));
     }
     private function next_link($baseurl, $pagevar, $current_page, $last_page) {
         $next = get_string('next');
         if ($current_page == $last_page) {
-            return "<li class=disabled><span>$next</span></li>";
+            return html::li('disabled', "<span>$next</span>");
         }
         return html::li ('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page+1)), $next));
     }
     private function pagination_link($baseurl, $pagevar, $current_page, $target) {
         $targetname = $target + 1;
         if ($target == $current_page) {
-            return "<li class=active><span>$targetname</span></li>";
+            return html::li('active', "<span>$targetname</span>");
         }
         return html::li('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$target)), $targetname));
     }
 
     private function skipped_link() {
-        return "<li class=disabled><span>…</span></li>";
+        return html::li('disabled', '<span>…</span>');
     }
 
     protected function render_paging_bar(paging_bar $pagingbar) {
@@ -676,7 +676,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $links[] = $this->pagination_link($baseurl, $pagevar, $current_page, $i);
         }
         $links[] = $this->next_link($baseurl, $pagevar, $current_page, $lastpage);
-        return '<div class="pagination pagination-centered"><ul>' . implode($links) . '</ul>';
+        return bootstrap::pagination(implode($links));
     }
 
     // public function skip_link_target($id = null) {
@@ -708,8 +708,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $item->hideicon = true;
             $links[] = $this->render($item);
         }
-        $glue = ' <span class=divider>/</span></li><li>';
-        return bootstrap::ul_implode_li('breadcrumb', $links, $glue);
+        return bootstrap::breadcrumb($links);
     }
 
     protected function render_custom_menu(custom_menu $menu) {

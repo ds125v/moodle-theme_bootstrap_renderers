@@ -128,6 +128,9 @@ class html {
     public static function div($attributes, $content) {
         return self::classy_tag('div', $attributes, $content);
     }
+    public static function div_open($attributes) {
+        return self::div($attributes, null);
+    }
 
     public static function span($attributes, $content) {
         return self::classy_tag('span', $attributes, $content);
@@ -143,6 +146,21 @@ class html {
     public static function input($attributes, $content = null) {
         return self::classy_tag('input', $attributes, $content);
     }
+    public static function input_hidden($name, $value) {
+        $attributes['type'] = 'hidden';
+        $attributes['name'] = $name;
+        $attributes['value'] = $value;
+
+        return self::input($attributes);
+    }
+    public static function hidden_inputs($params) {
+        foreach ($params as $name => $value) {
+            $output[] = self::input_hidden($name, $value);
+        }
+        if ($output) {
+            return implode($output);
+        }
+    }
     public static function submit($attributes) {
         $attributes['type'] = 'submit';
         $attributes = classes::add($attributes, 'btn');
@@ -152,7 +170,10 @@ class html {
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function ul($attributes, $content) {
-        return self::classy_tag('ul', $attributes, $content);
+        return self::classy_tag('ul', $attributes, self::li_implode($content));
+    }
+    public static function ul_open($attributes) {
+        return self::ul($attributes, null);
     }
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
@@ -161,25 +182,13 @@ class html {
         return self::classy_tag('li', $attributes, $content);
     }
     public static function li_implode($items, $glue='</li><li>') {
-        return '<li>'.implode($glue, $items).'</li>';
-    }
-
-    public static function hidden_inputs($params) {
-        foreach ($params as $name => $value) {
-            $output[] = self::input_hidden($name, $value);
+        if (is_string($items)) {
+            return $items;
         }
-        if ($output) {
-            return implode($output);
+        if (strpos($items[0], '<li') === 0) {
+            return implode($items);
+        } else {
+            return '<li>'.implode($glue, $items).'</li>';
         }
     }
-
-    public static function input_hidden($name, $value) {
-        $attributes['type'] = 'hidden';
-        $attributes['name'] = $name;
-        $attributes['value'] = $value;
-
-        return self::input($attributes);
-    }
-
-
 }

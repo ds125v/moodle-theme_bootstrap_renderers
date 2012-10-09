@@ -60,13 +60,18 @@ class classes {
     }
 
     private static function replace_classes($current, $new) {
-        $current = explode(' ', $current);
+        $current_array = explode(' ', $current);
+        $found = array();
         foreach ($new as $find => $replace) {
-            if (in_array($find, $current)) {
+            if (in_array($find, $current_array)) {
                 $found[] = $find;
                 $to_add[] = $replace;
             }
         }
-        return trim(implode(array_merge(array_diff($current, $found), $to_add)));
+        if ($found) {
+            return trim(implode(array_merge(array_diff($current, $found), $to_add)));
+        } else {
+            return $current;
+        }
     }
 }
