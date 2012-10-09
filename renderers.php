@@ -26,6 +26,10 @@ require_once('html.php');
 require_once('bootstrap.php');
 require_once('classes.php');
 
+
+// TODO: interesting things in renderers that I haven't got around to yet:
+// backup/util/ui/renderer.php has some forms stuff.
+
 class moodle {
     // Moodle utility functions. TODO: think of a better name.
     //
