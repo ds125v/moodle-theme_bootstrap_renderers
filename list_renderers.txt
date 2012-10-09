@@ -1,74 +1,76 @@
 output of :
-find -name renderer.php -exec wc -l {} \;
+find -name . *renderer*.php
 
-91 ./user/renderer.php
-90 ./rss/renderer.php
-348 ./message/renderer.php
-64 ./question/behaviour/interactive/renderer.php
-50 ./question/behaviour/informationitem/renderer.php
-100 ./question/behaviour/deferredcbm/renderer.php
-41 ./question/behaviour/immediatefeedback/renderer.php
-48 ./question/behaviour/adaptivenopenalty/renderer.php
-42 ./question/behaviour/interactivecountback/renderer.php
-137 ./question/behaviour/adaptive/renderer.php
-42 ./question/behaviour/missing/renderer.php
-38 ./question/behaviour/manualgraded/renderer.php
-38 ./question/behaviour/deferredfeedback/renderer.php
-51 ./question/behaviour/immediatecbm/renderer.php
-49 ./question/renderer.php
-134 ./question/type/match/renderer.php
-193 ./question/type/ddmarker/renderer.php
-38 ./question/type/ddimageortext/renderer.php
-440 ./question/type/multianswer/renderer.php
-444 ./question/type/essay/renderer.php
-39 ./question/type/calculatedmulti/renderer.php
-301 ./question/type/multichoice/renderer.php
-39 ./question/type/varnumericset/renderer.php
-176 ./question/type/numerical/renderer.php
-163 ./question/type/pmatch/renderer.php
-39 ./question/type/calculated/renderer.php
-79 ./question/type/gapselect/renderer.php
-196 ./question/type/pmatchjme/renderer.php
-47 ./question/type/description/renderer.php
-146 ./question/type/truefalse/renderer.php
-39 ./question/type/varnumeric/renderer.php
-39 ./question/type/calculatedsimple/renderer.php
-38 ./question/type/missingtype/renderer.php
-123 ./question/type/shortanswer/renderer.php
-435 ./question/engine/renderer.php
-94 ./blocks/settings/renderer.php
-171 ./blocks/navigation/renderer.php
-92 ./blocks/private_files/renderer.php
-376 ./blocks/community/renderer.php
-822 ./webservice/renderer.php
-712 ./backup/util/ui/renderer.php
-130 ./mod/assignment/renderer.php
-669 ./mod/assign/renderer.php
-119 ./mod/forum/renderer.php
-275 ./mod/adobeconnect/renderer.php
-999 ./mod/workshop/renderer.php
-211 ./mod/workshop/allocation/manual/renderer.php
-470 ./mod/choice/renderer.php
-1239 ./mod/quiz/renderer.php
-104 ./mod/folder/renderer.php
-85 ./mod/data/renderer.php
-557 ./mod/wiki/renderer.php
-601 ./mod/lesson/renderer.php
-787 ./enrol/renderer.php
-308 ./course/renderer.php
-777 ./course/format/renderer.php
-80 ./course/format/weeks/renderer.php
-105 ./course/format/topics/renderer.php
-218 ./course/publish/renderer.php
-46 ./grade/report/user/renderer.php
-46 ./grade/report/overview/renderer.php
-96 ./grade/grading/renderer.php
-483 ./grade/grading/form/rubric/renderer.php
-634 ./grade/grading/form/guide/renderer.php
-1013 ./files/renderer.php
-244 ./admin/tool/assignmentupgrade/renderer.php
-168 ./admin/tool/qeupgradehelper/renderer.php
-146 ./admin/tool/customlang/renderer.php
-1244 ./admin/renderer.php
-94 ./admin/registration/renderer.php
-718 ./calendar/renderer.php
+./admin/registration/renderer.php
+./admin/renderer.php
+./admin/tool/assignmentupgrade/renderer.php
+./admin/tool/customlang/renderer.php
+./admin/tool/qeupgradehelper/renderer.php
+./backup/util/ui/renderer.php
+./blocks/community/renderer.php
+./blocks/course_overview/renderer.php
+./blocks/navigation/renderer.php
+./blocks/private_files/renderer.php
+./blocks/settings/renderer.php
+./blog/renderer.php
+./calendar/renderer.php
+./course/format/renderer.php
+./course/format/topics/renderer.php
+./course/format/weeks/renderer.php
+./course/publish/renderer.php
+./course/renderer.php
+./enrol/renderer.php
+./files/renderer.php
+./grade/grading/form/guide/renderer.php
+./grade/grading/form/rubric/renderer.php
+./grade/grading/renderer.php
+./grade/report/overview/renderer.php
+./grade/report/user/renderer.php
+./lib/outputrenderers.php
+./message/renderer.php
+./mod/assign/feedback/file/renderer.php
+./mod/assign/renderer.php
+./mod/assignment/renderer.php
+./mod/chat/renderer.php
+./mod/choice/renderer.php
+./mod/data/renderer.php
+./mod/folder/renderer.php
+./mod/forum/renderer.php
+./mod/lesson/renderer.php
+./mod/quiz/renderer.php
+./mod/wiki/renderer.php
+./mod/workshop/allocation/manual/renderer.php
+./mod/workshop/renderer.php
+./question/behaviour/adaptive/renderer.php
+./question/behaviour/adaptivenopenalty/renderer.php
+./question/behaviour/deferredcbm/renderer.php
+./question/behaviour/deferredfeedback/renderer.php
+./question/behaviour/immediatecbm/renderer.php
+./question/behaviour/immediatefeedback/renderer.php
+./question/behaviour/informationitem/renderer.php
+./question/behaviour/interactive/renderer.php
+./question/behaviour/interactivecountback/renderer.php
+./question/behaviour/manualgraded/renderer.php
+./question/behaviour/missing/renderer.php
+./question/behaviour/rendererbase.php
+./question/engine/renderer.php
+./question/renderer.php
+./question/type/calculated/renderer.php
+./question/type/calculatedmulti/renderer.php
+./question/type/calculatedsimple/renderer.php
+./question/type/description/renderer.php
+./question/type/essay/renderer.php
+./question/type/match/renderer.php
+./question/type/missingtype/renderer.php
+./question/type/multianswer/renderer.php
+./question/type/multichoice/renderer.php
+./question/type/numerical/renderer.php
+./question/type/rendererbase.php
+./question/type/shortanswer/renderer.php
+./question/type/truefalse/renderer.php
+./rss/renderer.php
+./theme/afterburner/renderers.php
+./theme/anomaly/renderers.php
+./theme/mymobile/renderers.php
+./user/renderer.php
+./webservice/renderer.php
