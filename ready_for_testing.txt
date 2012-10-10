@@ -1,0 +1,11 @@
+Instructions on how and what to test
+====================================
+
+As individual components reach the stage where they can be tested, they'll be added to the list below and then added to a git branch called 'ready_for_testing'.
+
+There are two ways to test:
+
+1. Simply check out the ready_for_testing branch, install it as a theme on your Moodle (I'm developing for 2.3 at the moment, but I'd be interested to hear about what works, or not, on older and newer versions). Most of the Moodle will be unfinished, which may be distracting but by referencing this list you should be able to work out what is in a state where it can be tested and focus your attention on that.
+
+2. If you have access to a theme that uses Bootstrap.css, but doesn't have any renderers, you should be able to copy all the .php files across into the oter theme folder and it should (in theory) seamlessly update the specific components. This testing is useful because it lets the creators of such themes know which renderer components are ready for their use, but if you find issues I'd ask you to recreate them via method 1 before reporting them. This establishes if it's a conflict with the particular them or not.
+
