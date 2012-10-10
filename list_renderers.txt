@@ -1,3 +1,6 @@
+output of, in moodle root:
+git grep -p --break --heading -E '(public|private|protected) function' -- 'renderer.php' 'outputrenderers.php'
+
 admin/registration/renderer.php
 class core_register_renderer extends plugin_renderer_base {
     public function moodleorg_registration_message() {
