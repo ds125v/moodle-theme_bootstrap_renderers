@@ -165,10 +165,10 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         $output = $this->render($continue);
         $output = strstr($output, '</form>', true); // Cut off final </form> tag.
-        $output = "<p>$message</p><p>$output $cancel</form></p>";
+        $output = "<p>$message</p>$output $cancel</form>";
         return bootstrap::alert_block($output);
     }
-    private function make_button($button, $text, $method='post') {
+    private function make_button($button, $text, $method='get') {
         if ($button instanceof single_button) {
             return $button;
         } else if (is_string($button)) {
