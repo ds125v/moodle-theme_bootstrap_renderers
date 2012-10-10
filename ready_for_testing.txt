@@ -14,15 +14,16 @@ core_renderer.php
     public function htmlattributes() { // shouldn't output xml:lang
     public function home_link() {
     public function block_controls($controls) { // should output bootstrap icons
-    public function block(block_contents $bc, $region) {
-    public function list_block_contents($icons, $items) { // 
+    public function block(block_contents $bc, $region) { // the outer block should look like a Bootstrap well
+    public function list_block_contents($icons, $items) { // list blocks e.g. activities should not have bullet points  
     public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
     // various action icons, though not all, should be replaced with Bootstrap equivalents
-    public function confirm($message, $continue, $cancel) { 
-    public function doc_link($path, $text = '') {
+    public function confirm($message, $continue, $cancel) { // try the purgecaches page
+    public function doc_link($path, $text = '') { // icon should be Bootstrapped
     public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
+    // help icon should look nice
     public function spacer(array $attributes = null, $br = false) { // some spacer icons should no longer be images 
     public function error_text($message) { // various short, roughly single sentence length. messages e.g. "Invalid login, please try again"
-    public function notification($message, $classes = null) { 
+    public function notification($message, $classes = null) { various longer error messages
     protected function render_paging_bar(paging_bar $pagingbar) { // the site logs are a good place to test these
     public function navbar() { // What Bootstrap calls the breadcrumb trail
