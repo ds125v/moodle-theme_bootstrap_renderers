@@ -86,7 +86,4 @@ class moodle {
 }
 
 require_once('core_renderer.php');
-require_once('core_admin_renderer.php');
-require_once('blocks_navigation_renderer.php');
-require_once('blocks_settings_renderer.php');
 

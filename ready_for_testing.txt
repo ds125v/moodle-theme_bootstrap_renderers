@@ -7,5 +7,22 @@ There are two ways to test:
 
 1. Simply check out the ready_for_testing branch, install it as a theme on your Moodle (I'm developing for 2.3 at the moment, but I'd be interested to hear about what works, or not, on older and newer versions). Most of the Moodle will be unfinished, which may be distracting but by referencing this list you should be able to work out what is in a state where it can be tested and focus your attention on that.
 
-2. If you have access to a theme that uses Bootstrap.css, but doesn't have any renderers, you should be able to copy all the .php files across into the oter theme folder and it should (in theory) seamlessly update the specific components. This testing is useful because it lets the creators of such themes know which renderer components are ready for their use, but if you find issues I'd ask you to recreate them via method 1 before reporting them. This establishes if it's a conflict with the particular them or not.
+2. If you have access to a theme that uses Bootstrap.css, but doesn't have any renderers, you should be able to copy all the .php files (except lib.php and config.php)  from the 'ready_for_testing' branch into the other theme folder. Make sure config.php has a line that says "$THEME->rendererfactory = 'theme_overridden_renderer_factory'; and then change any classnames in each renderer.hp file by replacing 'bootstrap_renderers' with 'your_theme_name' e.g. 'theme_bootstrap_renderers_core_renderer' becomes 'theme_example_core_renderer'. This testing is useful because it lets the creators of such themes know which renderer components are ready for their use, but if you find issues I'd ask you to recreate them via method 1 before reporting them. This establishes if it's a conflict with the particular them or not. If there are already some renderers in use, you should be able to merge them but that's more of a manual, tricky task best left to the theme creator.
 
+core_renderer.php
+    public function doctype() { // should output an HTML5 doctype.
+    public function htmlattributes() { // shouldn't output xml:lang
+    public function home_link() {
+    public function block_controls($controls) { // should output bootstrap icons
+    public function block(block_contents $bc, $region) {
+    public function list_block_contents($icons, $items) { // 
+    public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
+    // various action icons, though not all, should be replaced with Bootstrap equivalents
+    public function confirm($message, $continue, $cancel) { 
+    public function doc_link($path, $text = '') {
+    public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
+    public function spacer(array $attributes = null, $br = false) { // some spacer icons should no longer be images 
+    public function error_text($message) { // various short, roughly single sentence length. messages e.g. "Invalid login, please try again"
+    public function notification($message, $classes = null) { 
+    protected function render_paging_bar(paging_bar $pagingbar) { // the site logs are a good place to test these
+    public function navbar() { // What Bootstrap calls the breadcrumb trail
