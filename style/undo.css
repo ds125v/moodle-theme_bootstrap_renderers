@@ -47,14 +47,14 @@ li.activity.label,
  * collapses them, 'visible' if you have the right role and in 
  * different circumstances different sections of a block can
  * be 'visible' or not.
-
- currently worked around in renderers.php function block{}
- by rewriting the class name "invisible" to "dimmed",
- though the blocks don't look particularly different apart
- from their contents disappearing. Maybe try .muted? or
- dimming all the edit icons apart from unhide, might be a 
- nice effect, though they'd still be active. Maybe reverse
- it to white?
+ *
+ * currently worked around in renderers.php function block{}
+ * by rewriting the class name "invisible" to "dimmed",
+ * though the blocks don't look particularly different apart
+ * from their contents disappearing. Maybe try .muted? or
+ * dimming all the edit icons apart from unhide, might be a 
+ * nice effect, though they'd still be active. Maybe reverse
+ * it to white?
 
 block.invisible {
   visibility: visible;
@@ -94,5 +94,12 @@ block.invisible {
  * links, inputs and buttons are commonly styled with .btn in
  * bootstrap but it seems that some buttons in Moodle are 
  * wrapped in div.btn e.g. the login block's "login" button
+ */
+
+/* .container vs .container
+ *
+ * bootstrap uses .container to set the width of the layout at 960px or so, Moodle uses it
+ * in the Quiz to contain the questions to add. If you don't overule the Bootstrap code,
+ * it becomes near unuseable. 
  */
 
