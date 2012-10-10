@@ -1,0 +1,79 @@
+output of:
+git grep -p --break --heading -E '(public|private|protected) function' -- '*renderer.php' > progress.txt
+
+blocks_settings_renderer.php
+class theme_bootstrap_renderers_block_settings_renderer extends block_settings_renderer {
+    public function settings_tree(settings_navigation $navigation) {
+    protected function navigation_node(navigation_node $node, $wrap = true) {
+    public function search_form(moodle_url $formtarget, $searchvalue) {
+
+core_admin_renderer.php
+class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer {
+    public function install_licence_page() {
+    public function upgrade_stale_php_files_page() {
+    public function install_environment_page($maturity, $envstatus, $environment_results, $release) {
+    public function unsatisfied_dependencies_page($version, array $failed, moodle_url $reloadurl) {
+    public function upgrade_confirm_page($strnewversion, $maturity) {
+    public function upgrade_environment_page($release, $envstatus, $environment_results) {
+    public function upgrade_plugin_check_page(plugin_manager $pluginman, available_update_checker $checker,
+    protected function warning($message, $type = '') {
+    protected function maturity_warning($maturity) {
+    protected function moodle_copyright() {
+    protected function maturity_info($maturity) {
+    protected function available_updates($updates, $fetch) {
+    public function upgrade_reload($url) {
+    public function plugins_check_table(plugin_manager $pluginman, $version, array $options = array()) {
+    protected function required_column(plugininfo_base $plugin, plugin_manager $pluginman, $version) {
+    public function plugins_overview_panel(plugin_manager $pluginman) {
+    public function plugins_control_panel(plugin_manager $pluginman) {
+    protected function plugin_available_update_info(available_update_info $updateinfo) {
+    public function environment_check_table($result, $environment_results) {
+
+core_renderer.php
+class theme_bootstrap_renderers_core_renderer extends core_renderer {
+    public function doctype() {
+    public function htmlattributes() {
+    /* public function standard_head_html() {} */
+    // public function standard_footer_html() {}
+    // public function main_content() {}
+    public function login_info() {
+    public function home_link() {
+    // public function redirect_message($encodedurl, $message, $delay, $debugdisableredirect) {
+    public function lang_menu() {
+    public function block_controls($controls) {
+    public function block(block_contents $bc, $region) {
+    protected function block_header(block_contents $bc) {
+    protected function block_content(block_contents $bc) {
+    protected function block_footer(block_contents $bc) {
+    public function list_block_contents($icons, $items) {
+    public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
+    public function confirm($message, $continue, $cancel) {
+    private function make_button($button, $text, $method='post') {
+    private function make_button_link($button, $text) {
+    protected function render_single_button(single_button $button) {
+    protected function render_single_select(single_select $select) {
+    // protected function render_url_select(url_select $select) {
+    public function doc_link($path, $text = '') {
+    protected function render_pix_icon(pix_icon $icon) {
+    public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
+    protected function render_help_icon(help_icon $helpicon) {
+    public function spacer(array $attributes = null, $br = false) {
+    // protected function render_user_picture(user_picture $userpicture) {
+    // public function render_file_picker(file_picker $fp) {
+    public function error_text($message) {
+    // public function fatal_error($message, $moreinfourl, $link, $backtrace, $debuginfo = null) {
+    public function notification($message, $classes = null) {
+    // public function continue_button($url) {
+    private function previous_link($baseurl, $pagevar, $current_page) {
+    private function next_link($baseurl, $pagevar, $current_page, $last_page) {
+    private function pagination_link($baseurl, $pagevar, $current_page, $target) {
+    private function skipped_link() {
+    protected function render_paging_bar(paging_bar $pagingbar) {
+    // public function skip_link_target($id = null) {
+    // public function heading($text, $level = 2, $classes = 'main', $id = null) {
+    // public function box($contents, $classes = 'generalbox', $id = null) {
+    // public function container($contents, $classes = null, $id = null) {
+    // public function tree_block_contents($items, $attrs = array()) {
+    public function navbar() {
+    protected function render_custom_menu(custom_menu $menu) {
+    protected function render_custom_menu_item(custom_menu_item $menunode) {

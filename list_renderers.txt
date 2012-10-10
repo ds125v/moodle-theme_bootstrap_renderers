@@ -1,71 +1,821 @@
-output of :
-egrep -r '(private|protected|public) function' --include=renderer.php --include=outputrenderers.php --exclude-dir=theme -l .
+admin/registration/renderer.php
+class core_register_renderer extends plugin_renderer_base {
+    public function moodleorg_registration_message() {
+    public function registration_confirmation($confirmationmessage) {
+    public function registeredonhublisting($hubs) {
 
-for more detail on each file's functions, in moodle root:
-egrep -r '(private|protected|public) function' --include=renderer.php --include=outputrenderers.php --exclude-dir=theme .
+admin/renderer.php
+class core_admin_renderer extends plugin_renderer_base {
+    public function install_licence_page() {
+    public function upgrade_stale_php_files_page() {
+    public function install_environment_page($maturity, $envstatus, $environment_results, $release) {
+    public function unsatisfied_dependencies_page($version, array $failed, moodle_url $reloadurl) {
+    public function upgrade_confirm_page($strnewversion, $maturity) {
+    public function upgrade_environment_page($release, $envstatus, $environment_results) {
+    public function upgrade_plugin_check_page(plugin_manager $pluginman, available_update_checker $checker,
+    public function admin_notifications_page($maturity, $insecuredataroot, $errorsdisplayed,
+    public function plugin_management_page(plugin_manager $pluginman, available_update_checker $checker) {
+    public function environment_check_page($versions, $version, $envstatus, $environment_results) {
+    protected function warning($message, $type = 'warning') {
+    protected function insecure_dataroot_warning($insecuredataroot) {
+    protected function display_errors_warning($errorsdisplayed) {
+    protected function buggy_iconv_warning($buggyiconvnomb) {
+    public function cron_overdue_warning($cronoverdue) {
+    public function db_problems($dbproblems) {
+    public function maintenance_mode_warning($maintenancemode) {
+    protected function maturity_warning($maturity) {
+    protected function moodle_copyright() {
+    protected function maturity_info($maturity) {
+    protected function available_updates($updates, $fetch) {
+    protected function registration_warning($registered) {
+    protected function moodle_available_update_info(available_update_info $updateinfo) {
+    protected function release_notes_link() {
+    public function plugins_check_table(plugin_manager $pluginman, $version, array $options = array()) {
+    protected function required_column(plugininfo_base $plugin, plugin_manager $pluginman, $version) {
+    public function plugins_overview_panel(plugin_manager $pluginman) {
+    public function plugins_control_panel(plugin_manager $pluginman) {
+    protected function plugin_available_update_info(available_update_info $updateinfo) {
+    public function environment_check_table($result, $environment_results) {
 
-for progress, in theme/bootstrap_renderers:
-egrep -r '(private|protected|public) function' --include=renderer.php .
+admin/tool/assignmentupgrade/renderer.php
+class tool_assignmentupgrade_renderer extends plugin_renderer_base {
+    public function index_page($detected, array $actions) {
+    public function simple_message_page($message) {
+    public function confirm_batch_operation_page(stdClass $data) {
+    public function render_tool_assignmentupgrade_batchoperationconfirm(tool_assignmentupgrade_batchoperationconfirm $confirm) {
+    public function assignment_list_page(tool_assignmentupgrade_assignments_table $assignments, tool_assignmentupgrade_batchoperations_form $batchform, tool_assignmentupgrade_pagination_form $paginationform) {
+    public function convert_assignment_result($assignmentsummary, $success, $log) {
+    public function convert_assignment_are_you_sure($assignmentsummary) {
+    protected function flexible_table(flexible_table $table, $rowsperpage, $displaylinks) {
+    protected function moodleform(moodleform $mform) {
+    public function end_of_page_link($url, $text) {
+    public function back_to_index() {
 
-./user/renderer.php
-./rss/renderer.php
-./message/renderer.php
-./question/behaviour/interactive/renderer.php
-./question/behaviour/informationitem/renderer.php
-./question/behaviour/deferredcbm/renderer.php
-./question/behaviour/immediatefeedback/renderer.php
-./question/behaviour/adaptivenopenalty/renderer.php
-./question/behaviour/adaptive/renderer.php
-./question/behaviour/missing/renderer.php
-./question/behaviour/immediatecbm/renderer.php
-./question/renderer.php
-./question/type/match/renderer.php
-./question/type/ddmarker/renderer.php
-./question/type/multianswer/renderer.php
-./question/type/essay/renderer.php
-./question/type/multichoice/renderer.php
-./question/type/numerical/renderer.php
-./question/type/pmatch/renderer.php
-./question/type/gapselect/renderer.php
-./question/type/pmatchjme/renderer.php
-./question/type/description/renderer.php
-./question/type/truefalse/renderer.php
-./question/type/shortanswer/renderer.php
-./question/engine/renderer.php
-./blocks/settings/renderer.php
-./blocks/navigation/renderer.php
-./blocks/private_files/renderer.php
-./blocks/community/renderer.php
-./webservice/renderer.php
-./backup/util/ui/renderer.php
-./mod/assignment/renderer.php
-./mod/assign/renderer.php
-./mod/forum/renderer.php
-./mod/adobeconnect/renderer.php
-./mod/workshop/renderer.php
-./mod/workshop/allocation/manual/renderer.php
-./mod/choice/renderer.php
-./mod/quiz/renderer.php
-./mod/folder/renderer.php
-./mod/data/renderer.php
-./mod/wiki/renderer.php
-./mod/lesson/renderer.php
-./enrol/renderer.php
-./course/renderer.php
-./course/format/renderer.php
-./course/format/weeks/renderer.php
-./course/format/topics/renderer.php
-./course/publish/renderer.php
-./grade/report/user/renderer.php
-./grade/report/overview/renderer.php
-./grade/grading/renderer.php
-./grade/grading/form/rubric/renderer.php
-./grade/grading/form/guide/renderer.php
-./files/renderer.php
-./admin/tool/assignmentupgrade/renderer.php
-./admin/tool/qeupgradehelper/renderer.php
-./admin/tool/customlang/renderer.php
-./admin/renderer.php
-./admin/registration/renderer.php
-./lib/outputrenderers.php
-./calendar/renderer.php
+admin/tool/customlang/renderer.php
+class tool_customlang_renderer extends plugin_renderer_base {
+    protected function render_tool_customlang_menu(tool_customlang_menu $menu) {
+    protected function render_tool_customlang_translator(tool_customlang_translator $translator) {
+
+admin/tool/qeupgradehelper/renderer.php
+class tool_qeupgradehelper_renderer extends plugin_renderer_base {
+    public function index_page($detected, array $actions) {
+    public function simple_message_page($message) {
+    public function quiz_list_page(tool_qeupgradehelper_quiz_list $quizzes,
+    public function convert_quiz_are_you_sure($quizsummary) {
+    public function reset_quiz_are_you_sure($quizsummary) {
+    public function end_of_page_link($url, $text) {
+    public function back_to_index() {
+
+backup/util/ui/renderer.php
+class core_backup_renderer extends plugin_renderer_base {
+    public function progress_bar(array $items) {
+    public function dependency_notification($message) {
+    public function backup_details($details, $nextstageurl) {
+    public function backup_details_nonstandard($nextstageurl, array $details) {
+    public function backup_details_unknown(moodle_url $nextstageurl) {
+    public function course_selector(moodle_url $nextstageurl, $wholecourse = true, restore_category_search $categories = null, restore_course_search $courses=null, $currentcourse = null) {
+    public function import_course_selector(moodle_url $nextstageurl, import_course_search $courses=null) {
+    protected function backup_detail_pair($label, $value) {
+    protected function backup_detail_input($label, $type, $name, $value, array $attributes=array(), $description=null) {
+    protected function backup_detail_select($label, $name, $options, $selected='', $nothing=false, array $attributes=array(), $description=null) {
+    public function precheck_notices($results) {
+    public function substage_buttons($haserrors) {
+    public function role_mappings($rolemappings, $roles) {
+    public function continue_button($url, $method='post') {
+    public function backup_files_viewer(array $options = null) {
+    public function render_backup_files_viewer(backup_files_viewer $viewer) {
+    public function render_restore_course_search(restore_course_search $component) {
+    public function render_import_course_search(import_course_search $component) {
+    public function render_restore_category_search(restore_category_search $component) {
+class backup_files_viewer implements renderable {
+    public function __construct(array $options = null) {
+
+blocks/community/renderer.php
+class block_community_renderer extends plugin_renderer_base {
+    public function restore_confirmation_box($filename, $context) {
+    public function remove_success(moodle_url $url) {
+    public function save_link_success(moodle_url $url) {
+    public function next_button($data) {
+    public function course_list($courses, $huburl, $contextcourseid) {
+
+blocks/navigation/renderer.php
+class block_navigation_renderer extends plugin_renderer_base {
+    public function navigation_tree(global_navigation $navigation, $expansionlimit, array $options = array()) {
+    protected function navigation_node($items, $attrs=array(), $expansionlimit=null, array $options = array(), $depth=1) {
+
+blocks/private_files/renderer.php
+class block_private_files_renderer extends plugin_renderer_base {
+    public function private_files_tree() {
+    public function render_private_files_tree(private_files_tree $tree) {
+    protected function htmllize_tree($tree, $dir) {
+class private_files_tree implements renderable {
+    public function __construct() {
+
+blocks/settings/renderer.php
+class block_settings_renderer extends plugin_renderer_base {
+    public function settings_tree(settings_navigation $navigation) {
+    protected function navigation_node(navigation_node $node, $attrs=array()) {
+    public function search_form(moodle_url $formtarget, $searchvalue) {
+
+calendar/renderer.php
+class core_calendar_renderer extends plugin_renderer_base {
+    public function basic_export_form($allowthisweek, $allownextweek, $allownextmonth, $userid, $authtoken) {
+    public function start_layout() {
+    public function complete_layout() {
+    public function fake_block_filters($courseid, $day, $month, $year, $view, $courses) {
+    public function fake_block_threemonths(calendar_information $calendar) {
+    public function add_pretend_calendar_block(block_contents $bc, $pos=BLOCK_POS_RIGHT) {
+    protected function add_event_button($courseid, $day=null, $month=null, $year=null) {
+    public function show_day(calendar_information $calendar, moodle_url $returnurl = null) {
+    public function event(calendar_event $event, $showactions=true) {
+    public function show_month_detailed(calendar_information $calendar, moodle_url $returnurl  = null) {
+    protected function filter_selection_table(calendar_information $calendar, moodle_url $returnurl = null) {
+    public function show_upcoming_events(calendar_information $calendar, $futuredays, $maxevents, moodle_url $returnurl = null) {
+    protected function course_filter_selector(moodle_url $returnurl, $label=null) {
+
+course/format/renderer.php
+abstract class format_section_renderer_base extends plugin_renderer_base {
+    abstract protected function start_section_list();
+    abstract protected function end_section_list();
+    abstract protected function page_title();
+    public function section_title($section, $course) {
+    protected function section_right_content($section, $course, $onsectionpage) {
+    protected function section_left_content($section, $course, $onsectionpage) {
+    protected function section_header($section, $course, $onsectionpage, $sectionreturn=0) {
+    protected function section_footer() {
+    protected function section_edit_controls($course, $section, $onsectionpage = false) {
+    protected function section_summary($section, $course, $mods) {
+    private function section_activity_summary($section, $course, $mods) {
+    protected function section_availability_message($section) {
+    protected function course_activity_clipboard($course, $sectionno = 0) {
+    protected function get_nav_links($course, $sections, $sectionno) {
+    protected function stealth_section_header($sectionno) {
+    protected function stealth_section_footer() {
+    protected function section_hidden($sectionno) {
+    public function print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection) {
+    public function print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused) {
+    protected function format_summary_text($section) {
+    protected function is_section_current($section, $course) {
+
+course/format/topics/renderer.php
+class format_topics_renderer extends format_section_renderer_base {
+    protected function start_section_list() {
+    protected function end_section_list() {
+    protected function page_title() {
+    protected function section_edit_controls($course, $section, $onsectionpage = false) {
+
+course/format/weeks/renderer.php
+class format_weeks_renderer extends format_section_renderer_base {
+    protected function start_section_list() {
+    protected function end_section_list() {
+    protected function page_title() {
+    protected function is_section_current($section, $course) {
+
+course/publish/renderer.php
+class core_publish_renderer extends plugin_renderer_base {
+    public function publicationselector($courseid) {
+    public function registeredonhublisting($courseid, $publications) {
+    public function confirmunpublishing($publication) {
+    public function sendingbackupinfo($backupfile) {
+    public function sentbackupinfo($id, $huburl, $hubname) {
+    public function hubinfo($hubinfo) {
+
+course/renderer.php
+class core_course_renderer extends plugin_renderer_base {
+    public function __construct(moodle_page $page, $target) {
+    public function course_category_tree(array $structure) {
+    protected function course_category_tree_category(stdClass $category, $depth=1) {
+    public function course_modchooser($modules, $course) {
+    protected function course_modchooser_module_types($modules) {
+    protected function course_modchooser_module($module, $classes = array('option')) {
+    protected function course_modchooser_title($title, $identifier = null) {
+
+enrol/renderer.php
+class core_enrol_renderer extends plugin_renderer_base {
+    protected function render_course_enrolment_users_table(course_enrolment_users_table $table) {
+    protected function render_enrol_user_button(enrol_user_button $button) {
+    protected function render_course_enrolment_other_users_table(course_enrolment_other_users_table $table) {
+    public function user_roles_and_actions($userid, $roles, $assignableroles, $canassign, $pageurl) {
+    public function user_groups_and_actions($userid, $groups, $allgroups, $canmanagegroups, $pageurl) {
+    public function user_enrolments_and_actions($enrolments) {
+    protected function render_user_enrolment_action(user_enrolment_action $icon) {
+class course_enrolment_table extends html_table implements renderable {
+    public function __construct(course_enrolment_manager $manager) {
+    public function get_manual_enrol_buttons() {
+    public function get_field_sort_direction($field) {
+    public function set_fields($fields, $output) {
+    public function set_total_users($totalusers) {
+    public function set_users(array $users) {
+    public function initialise_javascript() {
+    public function get_paging_bar() {
+    protected function get_direction_icon($output, $field) {
+    public function get_url_params() {
+    public function get_combined_url_params() {
+    public function set_bulk_user_enrolment_operations(array $bulkoperations) {
+    public function get_bulk_user_enrolment_operations() {
+    public function has_bulk_user_enrolment_operations() {
+class course_enrolment_users_table extends course_enrolment_table {
+    public function get_enrolment_type_filter() {
+class course_enrolment_other_users_table extends course_enrolment_table {
+    public function __construct(course_enrolment_manager $manager) {
+    public function get_user_search_button() {
+
+files/renderer.php
+class core_files_renderer extends plugin_renderer_base {
+    public function files_tree_viewer(file_info $file_info, array $options = null) {
+    public function render_files_tree_viewer(files_tree_viewer $tree) {
+    public function render_form_filemanager($fm) {
+    private function fm_print_generallayout($fm) {
+    private function fm_js_template_iconfilename() {
+    private function fm_js_template_listfilename() {
+    private function fm_js_template_mkdir() {
+    private function fm_js_template_message() {
+    private function fm_js_template_fileselectlayout() {
+    private function fm_js_template_confirmdialog() {
+    public function filemanager_js_templates() {
+    private function fm_print_restrictions($fm) {
+    private function fp_js_template_generallayout() {
+    private function fp_js_template_iconfilename() {
+    private function fp_js_template_listfilename() {
+    private function fp_js_template_nextpage() {
+    private function fp_js_template_selectlayout() {
+    private function fp_js_template_uploadform() {
+    private function fp_js_template_loading() {
+    private function fp_js_template_error() {
+    private function fp_js_template_message() {
+    private function fp_js_template_processexistingfile() {
+    private function fp_js_template_processexistingfilemultiple() {
+    private function fp_js_template_loginform() {
+    public function filepicker_js_templates() {
+    public function repository_default_searchform() {
+class files_tree_viewer implements renderable {
+    public function __construct(file_info $file_info, array $options = null) {
+
+grade/grading/form/guide/renderer.php
+class gradingform_guide_renderer extends plugin_renderer_base {
+    public function criterion_template($mode, $options, $elementname = '{NAME}', $criterion = null, $value = null,
+    public function comment_template($mode, $elementname = '{NAME}', $comment = null) {
+    protected function guide_template($mode, $options, $elementname, $criteriastr, $commentstr) {
+    protected function guide_edit_options($mode, $options) {
+    public function display_guide($criteria, $comments, $options, $mode, $elementname = null, $values = null,
+    protected function get_css_class_suffix($idx, $maxidx) {
+    public function display_instances($instances, $defaultcontent, $cangrade) {
+    public function display_instance(gradingform_guide_instance $instance, $idx, $cangrade) {
+    public function display_regrade_confirmation($elementname, $changelevel, $value) {
+    public function display_guide_mapping_explained($scores) {
+
+grade/grading/form/rubric/renderer.php
+class gradingform_rubric_renderer extends plugin_renderer_base {
+    public function criterion_template($mode, $options, $elementname = '{NAME}', $criterion = null, $levelsstr = '{LEVELS}', $value = null) {
+    public function level_template($mode, $options, $elementname = '{NAME}', $criterionid = '{CRITERION-id}', $level = null) {
+    protected function rubric_template($mode, $options, $elementname, $criteriastr) {
+    protected function rubric_edit_options($mode, $options) {
+    public function display_rubric($criteria, $options, $mode, $elementname = null, $values = null) {
+    protected function get_css_class_suffix($idx, $maxidx) {
+    public function display_instances($instances, $defaultcontent, $cangrade) {
+    public function display_instance(gradingform_rubric_instance $instance, $idx, $cangrade) {
+    public function display_regrade_confirmation($elementname, $changelevel, $value) {
+    public function display_rubric_mapping_explained($scores) {
+
+grade/grading/renderer.php
+class core_grading_renderer extends plugin_renderer_base {
+    public function management_method_selector(grading_manager $manager, moodle_url $targeturl) {
+    public function management_action_icon(moodle_url $url, $text, $icon) {
+    public function management_message($message) {
+    public function pick_action_icon(moodle_url $url, $text, $icon = '', $class = '') {
+
+grade/report/overview/renderer.php
+class gradereport_overview_renderer extends plugin_renderer_base {
+    public function graded_users_selector($report, $course, $userid, $groupid, $includeall) {
+
+grade/report/user/renderer.php
+class gradereport_user_renderer extends plugin_renderer_base {
+    public function graded_users_selector($report, $course, $userid, $groupid, $includeall) {
+
+lib/outputrenderers.php
+class renderer_base {
+    public function __construct(moodle_page $page, $target) {
+    public function render(renderable $widget) {
+    public function add_action_handler(component_action $action, $id = null) {
+    public function has_started() {
+    public function pix_url($imagename, $component = 'moodle') {
+class plugin_renderer_base extends renderer_base {
+    public function __construct(moodle_page $page, $target) {
+    public function render(renderable $widget) {
+    public function __call($method, $arguments) {
+class core_renderer extends renderer_base {
+    public function __construct(moodle_page $page, $target) {
+    public function doctype() {
+    public function htmlattributes() {
+    public function standard_head_html() {
+    public function standard_top_of_body_html() {
+    public function standard_footer_html() {
+    public function main_content() {
+    public function standard_end_of_body_html() {
+    public function login_info() {
+    public function home_link() {
+    public function redirect_message($encodedurl, $message, $delay, $debugdisableredirect) {
+    public function header() {
+    protected function render_page_layout($layoutfile) {
+    public function footer() {
+    public function container_end_all($shouldbenone = false) {
+    public function lang_menu() {
+    public function block_controls($controls) {
+    public function block(block_contents $bc, $region) {
+    protected function block_header(block_contents $bc) {
+    protected function block_content(block_contents $bc) {
+    protected function block_footer(block_contents $bc) {
+    protected function block_annotation(block_contents $bc) {
+    protected function init_block_hider_js(block_contents $bc) {
+    public function list_block_contents($icons, $items) {
+    public function blocks_for_region($region) {
+    public function block_move_target($target) {
+    public function action_link($url, $text, component_action $action = null, array $attributes=null) {
+    protected function render_action_link(action_link $link) {
+    public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
+    public function confirm($message, $continue, $cancel) {
+    public function single_button($url, $label, $method='post', array $options=null) {
+    protected function render_single_button(single_button $button) {
+    public function single_select($url, $name, array $options, $selected = '', $nothing = array('' => 'choosedots'), $formid = null) {
+    protected function render_single_select(single_select $select) {
+    public function url_select(array $urls, $selected, $nothing = array('' => 'choosedots'), $formid = null) {
+    protected function render_url_select(url_select $select) {
+    public function doc_link($path, $text = '') {
+    public function pix_icon($pix, $alt, $component='moodle', array $attributes = null) {
+    protected function render_pix_icon(pix_icon $icon) {
+    protected function render_pix_emoticon(pix_emoticon $emoticon) {
+    public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
+    public function old_help_icon($helpidentifier, $title, $component = 'moodle', $linktext = '') {
+    protected function render_old_help_icon(old_help_icon $helpicon) {
+    public function help_icon($identifier, $component = 'moodle', $linktext = '') {
+    protected function render_help_icon(help_icon $helpicon) {
+    public function help_icon_scale($courseid, stdClass $scale) {
+    public function spacer(array $attributes = null, $br = false) {
+    public function user_picture(stdClass $user, array $options = null) {
+    protected function render_user_picture(user_picture $userpicture) {
+    public function htmllize_file_tree($dir) {
+    public function file_picker($options) {
+    public function render_file_picker(file_picker $fp) {
+EOD;
+    public function update_module_button($cmid, $modulename) {
+    public function edit_button(moodle_url $url) {
+    public function close_window_button($text='') {
+    public function error_text($message) {
+    public function fatal_error($message, $moreinfourl, $link, $backtrace, $debuginfo = null) {
+    public function notification($message, $classes = 'notifyproblem') {
+    public function continue_button($url) {
+    public function paging_bar($totalcount, $page, $perpage, $baseurl, $pagevar = 'page') {
+    protected function render_paging_bar(paging_bar $pagingbar) {
+    public function skip_link_target($id = null) {
+    public function heading($text, $level = 2, $classes = 'main', $id = null) {
+    public function box($contents, $classes = 'generalbox', $id = null) {
+    public function box_start($classes = 'generalbox', $id = null) {
+    public function box_end() {
+    public function container($contents, $classes = null, $id = null) {
+    public function container_start($classes = null, $id = null) {
+    public function container_end() {
+    public function tree_block_contents($items, $attrs = array()) {
+    public function navbar() {
+    protected function render_navigation_node(navigation_node $item) {
+    public function rarrow() {
+    public function larrow() {
+    public function custom_menu($custommenuitems = '') {
+    protected function render_custom_menu(custom_menu $menu) {
+    protected function render_custom_menu_item(custom_menu_item $menunode) {
+    protected function theme_switch_links() {
+class core_renderer_cli extends core_renderer {
+    public function header() {
+    public function heading($text, $level = 2, $classes = 'main', $id = null) {
+    public function fatal_error($message, $moreinfourl, $link, $backtrace, $debuginfo = null) {
+    public function notification($message, $classes = 'notifyproblem') {
+class core_renderer_ajax extends core_renderer {
+    public function fatal_error($message, $moreinfourl, $link, $backtrace, $debuginfo = null) {
+    public function notification($message, $classes = 'notifyproblem') {}
+    public function redirect_message($encodedurl, $message, $delay, $debugdisableredirect) {}
+    public function header() {
+    public function footer() {}
+    public function heading($text, $level = 2, $classes = 'main', $id = null) {}
+class core_media_renderer extends plugin_renderer_base {
+    public function __construct() {
+    protected function get_players() {
+    protected function get_players_raw() {
+    public function embed_url(moodle_url $url, $name = '', $width = 0, $height = 0,
+    public function embed_alternatives($alternatives, $name = '', $width = 0, $height = 0,
+    public function can_embed_url(moodle_url $url, $options = array()) {
+    public function can_embed_urls(array $urls, $options = array()) {
+    public function get_embeddable_markers() {
+
+message/renderer.php
+class core_message_renderer extends plugin_renderer_base {
+    public function manage_messageoutputs($processors) {
+    public function manage_defaultmessageoutputs($processors, $providers, $preferences) {
+    public function manage_messagingoptions($processors, $providers, $preferences, $defaultpreferences, $notificationsdisabled = false) {
+
+mod/adobeconnect/renderer.php
+class mod_adobeconnect_renderer extends plugin_renderer_base {
+    public function display_meeting_detail ($meetingdetail, $cmid, $groupid = 0) {
+
+mod/assign/renderer.php
+class mod_assign_renderer extends plugin_renderer_base {
+    public function assign_files(context $context, $userid, $filearea, $component) {
+    public function render_assign_files(assign_files $tree) {
+    private function add_table_row_tuple(html_table $table, $first, $second) {
+    public function render_assign_quickgrading_result(assign_quickgrading_result $result) {
+    public function render_assign_form(assign_form $form) {
+    public function render_assign_user_summary(assign_user_summary $summary) {
+    public function render_assign_submit_for_grading_page($page) {
+    public function render_footer() {
+    public function render_assign_header(assign_header $header) {
+    public function render_assign_grading_summary(assign_grading_summary $summary) {
+    public function render_assign_feedback_status(assign_feedback_status $status) {
+    public function render_assign_submission_status(assign_submission_status $status) {
+    public function render_assign_submission_plugin_submission(assign_submission_plugin_submission $submissionplugin) {
+    public function render_assign_grading_table(assign_grading_table $table) {
+    public function render_assign_feedback_plugin_feedback(assign_feedback_plugin_feedback $feedbackplugin) {
+    protected function htmllize_tree(assign_files $tree, $dir) {
+    protected function flexible_table(flexible_table $table, $rowsperpage, $displaylinks) {
+    protected function moodleform(moodleform $mform) {
+
+mod/assignment/renderer.php
+class mod_assignment_renderer extends plugin_renderer_base {
+    public function assignment_files($context, $itemid, $filearea='submission') {
+    public function render_assignment_files(assignment_files $tree) {
+    protected function htmllize_tree($tree, $dir) {
+class assignment_files implements renderable {
+    public function __construct($context, $itemid, $filearea='submission') {
+    public function preprocess($dir, $filearea) {
+
+mod/choice/renderer.php
+class mod_choice_renderer extends plugin_renderer_base {
+    public function display_options($options, $coursemoduleid, $vertical = false) {
+    public function display_result($choices, $forcepublish = false) {
+    public function display_publish_name_vertical($choices) {
+    public function display_publish_anonymous_vertical($choices) {
+    public function display_publish_anonymous_horizontal($choices) {
+
+mod/data/renderer.php
+class mod_data_renderer extends plugin_renderer_base {
+    public function import_setting_mappings($datamodule, data_preset_importer $importer) {
+
+mod/folder/renderer.php
+class mod_folder_renderer extends plugin_renderer_base {
+    public function folder_tree($folder, $cm, $course) {
+    public function render_folder_tree(folder_tree $tree) {
+    protected function htmllize_tree($tree, $dir) {
+class folder_tree implements renderable {
+    public function __construct($folder, $cm, $course) {
+
+mod/forum/renderer.php
+class mod_forum_renderer extends plugin_renderer_base {
+    public function subscriber_selection_form(user_selector_base $existinguc, user_selector_base $potentialuc) {
+    public function subscriber_overview($users, $forum , $course) {
+    public function subscribed_users(user_selector_base $existingusers) {
+
+mod/lesson/renderer.php
+class mod_lesson_renderer extends plugin_renderer_base {
+    public function header($lesson, $cm, $currenttab = '', $extraeditbuttons = false, $lessonpageid = null) {
+    public function footer() {
+    public function lesson_inaccessible($message) {
+    public function login_prompt(lesson $lesson, $failedattempt = false) {
+    public function dependancy_errors($dependentlesson, $errors) {
+    public function message($message, single_button $button = null) {
+    public function continue_links(lesson $lesson, $lastpageseenid) {
+    public function display_page(lesson $lesson, lesson_page $page, $attempt) {
+    public function display_edit_collapsed(lesson $lesson, $pageid) {
+    public function display_edit_full(lesson $lesson, $pageid, $prevpageid, $single=false) {
+    public function add_page_links(lesson $lesson, $prevpageid=false) {
+    public function add_first_page_links(lesson $lesson) {
+    public function page_action_links(lesson_page $page, $printmove, $printaddpage=false) {
+    public function ongoing_score(lesson $lesson) {
+    public function progress_bar(lesson $lesson) {
+    public function slideshow_start(lesson $lesson) {
+    public function slideshow_end() {
+    public function paragraph($contents, $class='') {
+    public function add_highscores_form(lesson $lesson) {
+
+mod/quiz/renderer.php
+class mod_quiz_renderer extends plugin_renderer_base {
+    public function review_page(quiz_attempt $attemptobj, $slots, $page, $showall,
+    public function review_question_page(quiz_attempt $attemptobj, $slot, $seq,
+    public function review_question_not_allowed($message) {
+    protected function filter_review_summary_table($summarydata, $page) {
+    public function review_summary_table($summarydata, $page) {
+    public function questions(quiz_attempt $attemptobj, $reviewing, $slots, $page, $showall,
+    public function review_form($page, $showall, $displayoptions, $content, $attemptobj) {
+    public function finish_review_link($url) {
+    public function review_next_navigation(quiz_attempt $attemptobj, $page, $lastpage) {
+    public function countdown_timer(quiz_attempt $attemptobj, $timenow) {
+    public function restart_preview_button($url) {
+    public function navigation_panel(quiz_nav_panel_base $panel) {
+    protected function render_quiz_nav_question_button(quiz_nav_question_button $button) {
+    protected function render_mod_quiz_links_to_other_attempts(
+    public function start_attempt_page(quiz $quizobj, mod_quiz_preflight_check_form $mform) {
+    public function attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
+    public function quiz_notices($messages) {
+    public function attempt_form($attemptobj, $page, $slots, $id, $nextpage) {
+    public function initialise_timer($timerstartvalue) {
+    public function close_attempt_popup($url, $message = '') {
+    public function access_messages($messages) {
+    public function summary_page($attemptobj, $displayoptions) {
+    public function summary_table($attemptobj, $displayoptions) {
+    public function summary_page_controls($attemptobj) {
+    public function view_page($course, $quiz, $cm, $context, $viewobj) {
+    public function view_page_buttons(mod_quiz_view_object $viewobj) {
+    public function start_attempt_button($buttontext, moodle_url $url,
+    public function no_questions_message($canedit, $editurl) {
+    public function view_page_guest($course, $quiz, $cm, $context, $messages) {
+    public function view_page_notenrolled($course, $quiz, $cm, $context, $messages) {
+    public function view_information($quiz, $cm, $context, $messages) {
+    public function quiz_intro($quiz, $cm) {
+    public function view_table_heading() {
+    public function view_table($quiz, $context, $viewobj) {
+    public function attempt_state($attemptobj) {
+    public function view_best_score($viewobj) {
+    public function view_result_info($quiz, $context, $cm, $viewobj) {
+    public function review_link($url, $reviewinpopup, $popupoptions) {
+    public function no_review_message($message) {
+    public function quiz_attempt_summary_link_to_reports($quiz, $cm, $context,
+    public function graph(moodle_url $url, $title) {
+
+mod/wiki/renderer.php
+class mod_wiki_renderer extends plugin_renderer_base {
+    public function page_index() {
+    public function search_result($records, $subwiki) {
+    public function diff($pageid, $old, $new, $options = array()) {
+    public function diff_paging_bar($minpage, $maxpage, $page, $baseurl, $pagevar = 'page', $nocurr = false) {
+    public function wiki_info() {
+    public function tabs($page, $tabitems, $options) {
+    public function prettyview_link($page) {
+    public function wiki_print_subwiki_selector($wiki, $subwiki, $page, $pagetype = 'view') {
+        // Create private functions.
+    public function wiki_files_tree($context, $subwiki) {
+    public function render_wiki_files_tree(wiki_files_tree $tree) {
+    protected function htmllize_tree($tree, $dir) {
+class wiki_files_tree implements renderable {
+    public function __construct($context, $subwiki) {
+
+mod/workshop/allocation/manual/renderer.php
+class workshopallocation_manual_renderer extends mod_workshop_renderer  {
+    protected function render_workshopallocation_manual_allocations(workshopallocation_manual_allocations $data) {
+    protected function helper_participant(stdclass $allocation, array $userinfo) {
+    protected function helper_reviewers_of_participant(stdclass $allocation, array $userinfo, array $reviewers, $selfassessment) {
+    protected function helper_reviewees_of_participant(stdclass $allocation, array $userinfo, array $authors, $selfassessment) {
+    protected function helper_remove_allocation_icon($link) {
+
+mod/workshop/renderer.php
+class mod_workshop_renderer extends plugin_renderer_base {
+    protected function render_workshop_message(workshop_message $message) {
+    protected function render_workshop_submission(workshop_submission $submission) {
+    protected function render_workshop_submission_summary(workshop_submission_summary $summary) {
+    protected function render_workshop_example_submission(workshop_example_submission $example) {
+    protected function render_workshop_example_submission_summary(workshop_example_submission_summary $summary) {
+    protected function render_workshop_user_plan(workshop_user_plan $plan) {
+    protected function render_workshop_allocation_result(workshop_allocation_result $result) {
+    protected function render_workshop_grading_report(workshop_grading_report $gradingreport) {
+    protected function render_workshop_feedback_author(workshop_feedback_author $feedback) {
+    protected function render_workshop_feedback_reviewer(workshop_feedback_reviewer $feedback) {
+    private function helper_render_feedback($feedback) {
+    protected function render_workshop_assessment(workshop_assessment $assessment) {
+    protected function render_workshop_example_assessment(workshop_example_assessment $assessment) {
+    protected function render_workshop_example_reference_assessment(workshop_example_reference_assessment $assessment) {
+    public function perpage_selector($current=10) {
+    protected function helper_submission_attachments($submissionid, $format = 'html') {
+    protected function helper_user_plan_tasks(array $tasks) {
+    protected function helper_sortable_heading($text, $sortid=null, $sortby=null, $sorthow=null) {
+    protected function helper_grading_report_participant(stdclass $participant, array $userinfo) {
+    protected function helper_grading_report_submission(stdclass $participant) {
+    protected function helper_grading_report_assessment($assessment, $shownames, array $userinfo, $separator) {
+    protected function helper_grading_report_grade($grade, $over=null) {
+
+question/behaviour/adaptive/renderer.php
+class qbehaviour_adaptive_renderer extends qbehaviour_renderer {
+    public function controls(question_attempt $qa, question_display_options $options) {
+    public function feedback(question_attempt $qa, question_display_options $options) {
+    protected function penalty_info(question_attempt $qa, $mark,
+    protected function disregarded_info() {
+
+question/behaviour/adaptivenopenalty/renderer.php
+class qbehaviour_adaptivenopenalty_renderer extends qbehaviour_adaptive_renderer {
+    protected function penalty_info(question_attempt $qa, $mark,
+    protected function disregarded_info() {
+
+question/behaviour/deferredcbm/renderer.php
+class qbehaviour_deferredcbm_renderer extends qbehaviour_renderer {
+    protected function certainly_choices($controlname, $selected, $readonly) {
+    public function controls(question_attempt $qa, question_display_options $options) {
+    public function feedback(question_attempt $qa, question_display_options $options) {
+
+question/behaviour/immediatecbm/renderer.php
+class qbehaviour_immediatecbm_renderer extends qbehaviour_deferredcbm_renderer {
+    public function controls(question_attempt $qa, question_display_options $options) {
+
+question/behaviour/immediatefeedback/renderer.php
+class qbehaviour_immediatefeedback_renderer extends qbehaviour_renderer {
+    public function controls(question_attempt $qa, question_display_options $options) {
+
+question/behaviour/informationitem/renderer.php
+class qbehaviour_informationitem_renderer extends qbehaviour_renderer {
+    public function controls(question_attempt $qa, question_display_options $options) {
+
+question/behaviour/interactive/renderer.php
+class qbehaviour_interactive_renderer extends qbehaviour_renderer {
+    public function controls(question_attempt $qa, question_display_options $options) {
+    public function feedback(question_attempt $qa, question_display_options $options) {
+
+question/behaviour/missing/renderer.php
+class qbehaviour_missing_renderer extends qbehaviour_renderer {
+    public function controls(question_attempt $qa, question_display_options $options) {
+
+question/engine/renderer.php
+class core_question_renderer extends plugin_renderer_base {
+    public function get_page() {
+    public function question(question_attempt $qa, qbehaviour_renderer $behaviouroutput,
+    protected function info(question_attempt $qa, qbehaviour_renderer $behaviouroutput,
+    protected function number($number) {
+    protected function add_part_heading($heading, $content) {
+    protected function status(question_attempt $qa, qbehaviour_renderer $behaviouroutput,
+    protected function mark_summary(question_attempt $qa, question_display_options $options) {
+    protected function question_flag(question_attempt $qa, $flagsoption) {
+    protected function get_flag_html($flagged, $id = '') {
+    protected function edit_question_link(question_attempt $qa,
+    protected function formulation(question_attempt $qa, qbehaviour_renderer $behaviouroutput,
+    protected function outcome(question_attempt $qa, qbehaviour_renderer $behaviouroutput,
+    protected function manual_comment(question_attempt $qa, qbehaviour_renderer $behaviouroutput,
+    protected function response_history(question_attempt $qa, qbehaviour_renderer $behaviouroutput,
+
+question/renderer.php
+class core_question_bank_renderer extends plugin_renderer_base {
+    public function qtype_icon($qtype) {
+
+question/type/ddmarker/renderer.php
+class qtype_ddmarker_renderer extends qtype_ddtoimage_renderer_base {
+    public function formulation_and_controls(question_attempt $qa,
+    protected function hidden_field_choice(question_attempt $qa, $choiceno, $infinite, $value = null) {
+    protected function hint(question_attempt $qa, question_hint $hint)  {
+class qtype_ddmarker_list_renderer extends plugin_renderer_base {
+    public function render_qtype_ddmarker_list(qtype_ddmarker_list_item $top) {
+    public function render_qtype_ddmarker_list_item(qtype_ddmarker_list_item $listitem) {
+    public function item(qtype_ddmarker_list_item $item) {
+    protected function children(qtype_ddmarker_list_item $item) {
+
+question/type/description/renderer.php
+class qtype_description_renderer extends qtype_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    public function formulation_heading() {
+
+question/type/essay/renderer.php
+class qtype_essay_renderer extends qtype_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    public function files_read_only(question_attempt $qa, question_display_options $options) {
+    public function files_input(question_attempt $qa, $numallowed,
+    public function manual_comment(question_attempt $qa, question_display_options $options) {
+class qtype_essay_format_editor_renderer extends plugin_renderer_base {
+    protected function class_name() {
+    public function response_area_read_only($name, $qa, $step, $lines, $context) {
+    public function response_area_input($name, $qa, $step, $lines, $context) {
+    protected function prepare_response($name, question_attempt $qa,
+    protected function prepare_response_for_editing($name,
+    protected function get_editor_options($context) {
+    protected function get_filepicker_options($context, $draftitemid) {
+    protected function filepicker_html($inputname, $draftitemid) {
+class qtype_essay_format_editorfilepicker_renderer extends qtype_essay_format_editor_renderer {
+    protected function class_name() {
+    protected function prepare_response($name, question_attempt $qa,
+    protected function prepare_response_for_editing($name,
+    protected function get_editor_options($context) {
+    protected function specific_filepicker_options($acceptedtypes, $draftitemid, $context) {
+    protected function get_filepicker_options($context, $draftitemid) {
+    protected function filepicker_html($inputname, $draftitemid) {
+class qtype_essay_format_plain_renderer extends plugin_renderer_base {
+    protected function textarea($response, $lines, $attributes) {
+    protected function class_name() {
+    public function response_area_read_only($name, $qa, $step, $lines, $context) {
+    public function response_area_input($name, $qa, $step, $lines, $context) {
+class qtype_essay_format_monospaced_renderer extends qtype_essay_format_plain_renderer {
+    protected function class_name() {
+
+question/type/gapselect/renderer.php
+class qtype_gapselect_renderer extends qtype_elements_embedded_in_question_text_renderer {
+    protected function embedded_element(question_attempt $qa, $place,
+
+question/type/match/renderer.php
+class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    public function specific_feedback(question_attempt $qa) {
+    protected function format_choices($question) {
+    public function correct_response(question_attempt $qa) {
+
+question/type/multianswer/renderer.php
+class qtype_multianswer_renderer extends qtype_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    public function subquestion(question_attempt $qa,
+    public function correct_response(question_attempt $qa) {
+abstract class qtype_multianswer_subq_renderer_base extends qtype_renderer {
+    abstract public function subquestion(question_attempt $qa,
+    protected function feedback_popup(question_graded_automatically $subq,
+class qtype_multianswer_textfield_renderer extends qtype_multianswer_subq_renderer_base {
+    public function subquestion(question_attempt $qa, question_display_options $options,
+class qtype_multianswer_multichoice_inline_renderer
+    public function subquestion(question_attempt $qa, question_display_options $options,
+class qtype_multianswer_multichoice_vertical_renderer extends qtype_multianswer_subq_renderer_base {
+    public function subquestion(question_attempt $qa, question_display_options $options,
+    protected function choice_wrapper_start($class) {
+    protected function choice_wrapper_end() {
+    protected function all_choices_wrapper_start() {
+    protected function all_choices_wrapper_end() {
+class qtype_multianswer_multichoice_horizontal_renderer
+    protected function choice_wrapper_start($class) {
+    protected function choice_wrapper_end() {
+    protected function all_choices_wrapper_start() {
+    protected function all_choices_wrapper_end() {
+
+question/type/multichoice/renderer.php
+abstract class qtype_multichoice_renderer_base extends qtype_with_combined_feedback_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    protected function number_html($qnum) {
+    protected function number_in_style($num, $style) {
+    public function specific_feedback(question_attempt $qa) {
+class qtype_multichoice_single_renderer extends qtype_multichoice_renderer_base {
+    protected function get_input_type() {
+    protected function get_input_name(question_attempt $qa, $value) {
+    protected function get_input_value($value) {
+    protected function get_input_id(question_attempt $qa, $value) {
+    protected function is_right(question_answer $ans) {
+    protected function prompt() {
+    public function correct_response(question_attempt $qa) {
+class qtype_multichoice_multi_renderer extends qtype_multichoice_renderer_base {
+    protected function get_input_type() {
+    protected function get_input_name(question_attempt $qa, $value) {
+    protected function get_input_value($value) {
+    protected function get_input_id(question_attempt $qa, $value) {
+    protected function is_right(question_answer $ans) {
+    protected function prompt() {
+    public function correct_response(question_attempt $qa) {
+    protected function num_parts_correct(question_attempt $qa) {
+
+question/type/numerical/renderer.php
+class qtype_numerical_renderer extends qtype_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    public function specific_feedback(question_attempt $qa) {
+    public function correct_response(question_attempt $qa) {
+
+question/type/pmatch/renderer.php
+class qtype_pmatch_renderer extends qtype_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    public function specific_feedback(question_attempt $qa) {
+    public function correct_response(question_attempt $qa) {
+
+question/type/pmatchjme/renderer.php
+class qtype_pmatchjme_renderer extends qtype_pmatch_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    protected function require_js($toreplaceid, question_attempt $qa, $readonly, $correctness) {
+    protected function hidden_fields(question_attempt $qa) {
+    protected function hidden_field_for_qt_var(question_attempt $qa, $varname) {
+    protected function fraction_for_last_response(question_attempt $qa) {
+    protected function get_last_response(question_attempt $qa) {
+    public function specific_feedback(question_attempt $qa) {
+
+question/type/shortanswer/renderer.php
+class qtype_shortanswer_renderer extends qtype_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    public function specific_feedback(question_attempt $qa) {
+    public function correct_response(question_attempt $qa) {
+
+question/type/truefalse/renderer.php
+class qtype_truefalse_renderer extends qtype_renderer {
+    public function formulation_and_controls(question_attempt $qa,
+    public function specific_feedback(question_attempt $qa) {
+    public function correct_response(question_attempt $qa) {
+
+rss/renderer.php
+class core_rss_renderer extends plugin_renderer_base {
+    public function user_reset_rss_token_confirmation() {
+    public function user_rss_token_box($token) {
+
+user/renderer.php
+class core_user_renderer extends plugin_renderer_base {
+    public function user_files_tree() {
+    public function render_user_files_tree(user_files_tree $tree) {
+    protected function htmllize_tree($tree, $dir) {
+class user_files_tree implements renderable {
+    public function __construct() {
+
+webservice/renderer.php
+class core_webservice_renderer extends plugin_renderer_base {
+    public function admin_authorised_user_selector(&$options) {
+    public function admin_authorised_user_list($users, $serviceid) {
+    public function admin_remove_service_function_confirmation($function, $service) {
+    public function admin_remove_service_confirmation($service) {
+    public function admin_delete_token_confirmation($token) {
+    public function admin_service_function_list($functions, $service) {
+    public function user_reset_token_confirmation($token) {
+    public function user_webservice_tokens_box($tokens, $userid, $documentation = false) {
+    public function detailed_description_html($params) {
+    public function description_in_indented_xml_format($returndescription, $indentation = "") {
+EOF;
+    public function xmlrpc_param_description_html($paramdescription, $indentation = "") {
+EOF;
+    public function colored_box_with_pre_tag($title, $content, $rgb = 'FEEBE5') {
+    public function rest_param_description_html($paramdescription, $paramstring) {
+EOF;
+    public function documentation_html($functions, $printableformat, $activatedprotocol,
