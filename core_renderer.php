@@ -34,6 +34,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $this->contenttype = 'text/html; charset=utf-8';
         return "<!DOCTYPE html>\n";
     }
+
     public function htmlattributes() {
         $parts = explode(' ', trim(get_html_lang(true)));
         return $parts[0] . ' ' . $parts[1]; // Ditch xml:lang part.
@@ -123,6 +124,35 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return $output;
     }
 
+    protected function block_header(block_contents $bc) {
+        $output = html::ul_open('nav nav-list');
+
+        if ($bc->title) {
+            $output .= html::li('nav-header', $bc->title);
+        }
+
+        if ($bc->controls) {
+            $output .= html::li('',  $this->block_controls($bc->controls));
+        }
+
+        return $output;
+    }
+
+    protected function block_content(block_contents $bc) {
+        // Probably only working for lists at the moment.
+        $output = $bc->content;
+        $output .= $this->block_footer($bc);
+
+        return $bc->content . $this->block_footer($bc);
+    }
+
+    protected function block_footer(block_contents $bc) {
+        $output = '';
+        if ($bc->footer) {
+            $output .= html::li('', $bc->footer);
+        }
+        return "$output</ul>";
+    }
 
     public function list_block_contents($icons, $items) {
         // Currently just ditches icons rather than convert them.
@@ -197,6 +227,57 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return html::a($attributes, $text);
     }
 
+    protected function render_single_button(single_button $button) {
+        // Just because it says "single_botton" doesn't mean it's going to be rendered on it's own
+        // but it does mean it gets it's own unique form and a div round it.
+
+        $attributes = array(
+                'title'    => $button->tooltip,
+                'class'    => classes::add($button->class, 'btn btn-primary'),
+                'value'    => $button->label,
+                'disabled' => $button->disabled ? 'disabled' : null,
+            );
+
+        // Should look at button->class and translate to Bootstrap
+        // button types e.g. primary, info, success, warning, danger, inverse
+        // and sizes like large, small, mini, block-level, or link
+        // not sure how best to get a comprehensive list of button classes
+        // in moodle, so for now appending their class to tooltip
+        // maybe their id, type or value might work better?
+        //
+        // Found so far:
+        // .singlebutton -> .btn?
+        // .continuebutton -> .btn-primary?
+
+        if ($button->actions) {
+            $id = html_writer::random_id('single_button');
+            $attributes['id'] = $id;
+            foreach ($button->actions as $action) {
+                $this->add_action_handler($action, $id);
+            }
+        }
+
+        $output = html::submit($attributes);
+
+        if ($button->method === 'post') {
+            $params['sesskey'] = sesskey();
+        }
+        $output .= html::hidden_inputs($button->url->params());
+
+        if ($button->method === 'get') {
+            $url = $button->url->out_omit_querystring(true);
+        } else {
+            $url = $button->url->out_omit_querystring();
+        }
+        if ($url === '') {
+            $url = '#';
+        }
+        $attributes = array(
+                'method' => $button->method,
+                'action' => $url,
+                'id'     => $button->formid);
+        return html::form($attributes, $output);
+    }
 
 
     public function doc_link($path, $text = '') {

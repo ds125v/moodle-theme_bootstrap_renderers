@@ -17,15 +17,15 @@ core_renderer.php
     public function home_link() { // mostly superficial, changes a Moodle logo image on the homepage to CSS label
     public function block_controls($controls) { // should output bootstrap icons
     public function block(block_contents $bc, $region) { // the outer block should look like a Bootstrap well
-    public function list_block_contents($icons, $items) { // list blocks e.g. activities should not have bullet points  
+    public function list_block_contents($icons, $items) { // list blocks e.g. activities should not have bullet points, should react to hover
     public function action_icon($url, pix_icon $pixicon, component_action $action = null, array $attributes = null, $linktext=false) {
-    // various action icons, though not all, should be replaced with Bootstrap equivalents e.g. icons next to course activites in edit mode
+    // various action icons, though not all e.g. duplicate or groups, should be replaced with Bootstrap equivalents e.g. icons next to course activites in edit mode
     public function confirm($message, $continue, $cancel) { // try the purgecaches page
-    public function doc_link($path, $text = '') { // (?) help icon should be Bootstrapped everywhere
+    public function doc_link($path, $text = '') { // (?) help icon should be Bootstrapped sometimes
     public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
-    // skips the module icon and the help icon should look nice
+    // at top of module setting pages skips the module icon and the help icon should look nice
     public function spacer(array $attributes = null, $br = false) { // some spacer icons should no longer be img tags 
     public function error_text($message) { // various short, roughly single sentence length, messages e.g. "Invalid login, please try again"
     public function notification($message, $classes = null) { various longer error messages, there's various in admin settings
-    protected function render_paging_bar(paging_bar $pagingbar) { // the site logs are a good place to test these, or participants lists
+    protected function render_paging_bar(paging_bar $pagingbar) { // the site logs with 'all days' is a good place to test these, or long participants lists
     public function navbar() { // What Bootstrap calls the breadcrumb trail
