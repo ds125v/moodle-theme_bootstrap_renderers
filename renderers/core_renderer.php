@@ -77,7 +77,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         }
         $controlshtml = array();
         foreach ($controls as $control) {
-            $controlshtml[] = html::a(array('href'=>$control['url'], 'title'=>$control['caption']), moodle::icon($control['icon']));
+            $controlshtml[] = html::a(array('href'=>$control['url'], 'title'=>$control['caption']), bootstrap::replace_moodle_icon($control['icon']));
         }
         return html::div('commands', implode(' ', $controlshtml));
     }
@@ -292,8 +292,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     protected function render_pix_icon(pix_icon $icon) {
 
-        if (isset(moodle::$icons[$icon->pix])) {
-            return moodle::icon($icon->pix);
+        if (bootstrap::replace_moodle_icon($icon->pix) !== false) {
+            return bootstrap::replace_moodle_icon($icon->pix);
             // Currently throws away any attributes attached to
             // the icon, like alt, which could be rendered
             // using .hide-text image replacement technique.

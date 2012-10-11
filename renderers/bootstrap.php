@@ -157,6 +157,60 @@ class bootstrap {
         $input_attributes['placeholder'] = $placeholder;
         $input_attributes['value'] = $value;
 
-        return html::form($form_attributes, html::div('input-append', html::input($input_attributes) . html::submit(array('value'=>$submit_text))));
+        return html::form($form_attributes,
+            html::div('input-append', html::input($input_attributes) . html::submit(array('value'=>$submit_text))));
+    }
+
+    /**
+     * This is the only function in the class with knowledge of Moodle,
+     * only because I've got nowhere else to put it.
+     */
+    public static function replace_moodle_icon($name) {
+        $icons = array(
+            'add' => 'plus',
+            'book' => 'book',
+            'chapter' => 'file',
+            'docs' => 'question-sign',
+            'generate' => 'gift',
+            'i/backup' => 'cog',
+            'i/checkpermissions' => 'user',
+            'i/edit' => 'pencil',
+            'i/filter' => 'filter',
+            'i/grades' => 'grades',
+            'i/group' => 'user',
+            'i/hide' => 'eye-open',
+            'i/move_2d' => 'move',
+            'i/navigationitem' => 'chevron-right',
+            'i/publish' => 'publish',
+            'i/reload' => 'refresh',
+            'i/report' => 'list-alt',
+            'i/restore' => 'cog',
+            'i/return' => 'repeat',
+            'i/roles' => 'user',
+            'i/settings' => 'list-alt',
+            'i/show' => 'eye-close',
+            'i/user' => 'user',
+            'i/users' => 'user',
+            'spacer' => 'spacer',
+            't/add' => 'plus',
+            't/copy' => 'copy', // Only in font awesome.
+            't/delete' => 'remove',
+            't/down' => 'arrow-down',
+            't/edit' => 'edit',
+            't/editstring' => 'tag',
+            't/hide' => 'eye-open',
+            't/left' => 'arrow-left',
+            't/move' => 'resize-vertical',
+            't/right' => 'arrow-right',
+            't/show' => 'eye-close',
+            't/switch_minus' => 'minus-sign',
+            't/switch_plus' => 'plus-sign',
+            't/up' => 'arrow-up',
+        );
+        if (isset($icons[$name])) {
+            return self::icon($icons[$name]);
+        } else {
+            return false;
+        }
     }
 }

@@ -18,7 +18,7 @@
  * renderers to align Moodle's HTML with that expected by Bootstrap
  *
  * @package    theme_bootstrap_renderers
- * @copyright  2012 
+ * @copyright  2012
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,6 +26,7 @@ require_once('renderers/html.php');
 require_once('renderers/bootstrap.php');
 require_once('renderers/classes.php');
 
+require_once('renderers/core_renderer.php');
 
 // TODO: interesting things in renderers that I haven't got around to yet:
 // backup/util/ui/renderer.php has some forms stuff, backup details in particular.
@@ -33,57 +34,3 @@ require_once('renderers/classes.php');
 // mod/choice/renderer.php seems fairly self-contained and straightforward.
 // mod/course/renderer.php and
 // mod/course/format/renderer.php are full of good stuff.
-
-class moodle {
-    // Moodle utility functions. TODO: think of a better name.
-    //
-    static public $icons = array(
-            'add' => 'plus',
-            'book' => 'book',
-            'chapter' => 'file',
-            'docs' => 'question-sign',
-            'generate' => 'gift',
-            'i/backup' => 'cog',
-            'i/checkpermissions' => 'user',
-            'i/edit' => 'pencil',
-            'i/filter' => 'filter',
-            'i/grades' => 'grades',
-            'i/group' => 'user',
-            'i/hide' => 'eye-open',
-            'i/move_2d' => 'move',
-            'i/navigationitem' => 'chevron-right',
-            'i/publish' => 'publish',
-            'i/reload' => 'refresh',
-            'i/report' => 'list-alt',
-            'i/restore' => 'cog',
-            'i/return' => 'repeat',
-            'i/roles' => 'user',
-            'i/settings' => 'list-alt',
-            'i/show' => 'eye-close',
-            'i/user' => 'user',
-            'i/users' => 'user',
-            'spacer' => 'spacer',
-            't/add' => 'plus',
-            't/copy' => 'copy', // Only in font awesome.
-            't/delete' => 'remove',
-            't/down' => 'arrow-down',
-            't/edit' => 'edit',
-            't/editstring' => 'tag',
-            't/hide' => 'eye-open',
-            't/left' => 'arrow-left',
-            't/move' => 'resize-vertical',
-            't/right' => 'arrow-right',
-            't/show' => 'eye-close',
-            't/switch_minus' => 'minus-sign',
-            't/switch_plus' => 'plus-sign',
-            't/up' => 'arrow-up',
-        );
-
-
-    public static function icon($name) {
-        return bootstrap::icon(self::$icons[$name]);
-    }
-}
-
-require_once('renderers/core_renderer.php');
-
