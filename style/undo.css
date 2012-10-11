@@ -82,6 +82,17 @@ block.invisible {
 .forumpost .row:after {
   content: none;
 }
+/* fieldset.hidden vs .hidden
+ *
+ * Moodle uses fieldset.hidden for mforms, to signify a collection of
+ * form elements that don't have a box drawn round them. Bootstrap
+ * uses hidden for stuff that is hidden in various responsive modes.
+ */
+
+fieldset.hidden {
+    display: block;
+    visibility: visible;
+}
 
 /* .controls vs .controls
  *
@@ -92,7 +103,7 @@ block.invisible {
 /* .btn vs .btn
  *
  * links, inputs and buttons are commonly styled with .btn in
- * bootstrap but it seems that some buttons in Moodle are 
+ * bootstrap but it seems that some buttons in Moodle are
  * wrapped in div.btn e.g. the login block's "login" button
  */
 
