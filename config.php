@@ -14,6 +14,8 @@ $THEME->javascripts_footer = array();
 
 $THEME->enable_dock = false;
 
+$THEME->doctype = 'html5';
+
 // Layouts.
 
 $basic = array(
