@@ -20,11 +20,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('bootstrap.php');
+class PaginationTest extends PHPUnit_Framework_TestCase {
 
-class bootstrapTest extends PHPUnit_Framework_TestCase {
-
-    public function test_initialism() {
+    public function test_something() {
 
         $expected = '<abbr class=initialism title="International Business Machines">IBM</abbr>';
         $actual = bootstrap::initialism('IBM', 'International Business Machines');

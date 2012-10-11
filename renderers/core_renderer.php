@@ -25,6 +25,7 @@
 require_once('html.php');
 require_once('bootstrap.php');
 require_once('classes.php');
+require_once('pagination.php');
 
 class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // Trying to keep the order of definition the same as
