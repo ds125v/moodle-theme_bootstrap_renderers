@@ -22,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('html.php');
-require_once('bootstrap.php');
-require_once('classes.php');
+require_once('renderers/html.php');
+require_once('renderers/bootstrap.php');
+require_once('renderers/classes.php');
 
 
 // TODO: interesting things in renderers that I haven't got around to yet:
@@ -85,5 +85,5 @@ class moodle {
     }
 }
 
-require_once('core_renderer.php');
+require_once('renderers/core_renderer.php');
 
