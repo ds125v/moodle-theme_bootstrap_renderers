@@ -6,11 +6,10 @@ A developer theme for working on Moodle renderers that output Bootstrap compatib
 TODO #1 (stuff I'm in the process of doing)
 ----
 
-* go through every renderer.php in Moodle (starting with outputrenderers.php) and rewrite to match Bootstrap expectations (see [/list_renderers.txt](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/list_renderers.txt))
+* go through every renderer.php in Moodle (starting with outputrenderers.php) and rewrite to match Bootstrap expectations (see [list_renderers.txt](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/info/list_renderers.txt))
 * file an enhancement request about classes in Moodle that clash with Bootstrap (see [/styles/undo.css](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/style/undo.css))
 * figure out how to switch off CSS coming from modules (current plan: delete almost all non-bootstrap ids and classes)
-* make the main branch stuff that's ready to test, put wip on dev branch(es)
-* write up testing and contribution guidelines
+* write up testing and contribution guidelines (just started [testing.txt](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/info/testing.txt))
 * make the random mode trigger various responsive CSS changes even on the largest of monitors
 * a settings page
 
