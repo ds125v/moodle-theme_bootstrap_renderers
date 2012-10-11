@@ -64,9 +64,9 @@ if ($hasheading || $hasnavbar) {
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes() ?>>
 <head>
-	<meta charset="utf-8">
- 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $PAGE->heading ?></title>
     <link rel="shortcut icon" href="<?php echo $favicon_url ?>">
     <!--[if lt IE 9]><?php echo $html5shiv ?><![endif]-->
@@ -81,14 +81,15 @@ echo $OUTPUT->doctype() ?>
     <div class="navbar-inner">
         <div class="container<?php echo $fluid ?>">
             <a class="brand" href="<?php echo new moodle_url("/")?>"><?php echo $PAGE->heading?></a>
-            <ul class="nav">
-                <li class="active"><a href="<?php echo new moodle_url("/")?>">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
             <div class=nav-collapse>
-                      <?php echo $OUTPUT->login_info() ?>
-                </form> 
+                <ul class="nav">
+                    <li class="active"><a href="<?php echo new moodle_url("/")?>">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="navbar-text pull-right">
+                  <?php echo $OUTPUT->login_info() ?>
+                </div>
             </div>
         </div>
     </div>
