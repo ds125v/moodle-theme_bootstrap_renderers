@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -27,3 +26,13 @@ $string['pluginname'] = 'Bootstrap Renderers';
 $string['region-side-post'] = 'Right';
 $string['region-side-pre'] = 'Left';
 $string['choosereadme'] = 'This is a developer theme that lets you focus on creating Moodle renderers that output Bootstrap compatible HTML without being distracted by legacy Moodle CSS or hacks and workarounds intended to make code that is not yet converted to renders fit in.';
+$string['subtheme'] = 'Subtheme';
+$string['subthemedesc'] = 'Choose a subtheme to display, or choose random for a random subtheme.';
+$string['responsive'] = 'Responsive Layout';
+$string['responsivedesc'] = 'Enable the layout to be responsive. Turning this setting off gives you a fixed layout.';
+$string['fixed'] = 'Fixed Navigation';
+$string['fixeddesc'] = 'Set navigation bar to a fixed width.';
+$string['navbarinvert'] = 'Invert Nav Bar';
+$string['navbarinvertdesc'] = 'Change the color of the navbar to the inverse of what it is now.';
+$string['awesomefont'] = 'Awesome Font';
+$string['awesomefontdesc'] = 'Enable awesome fonts.';
