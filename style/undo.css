@@ -35,7 +35,8 @@ li.activity.label,
   text-align: right;
 }
 
-/* invisible vs .invisible
+/* block.invisible vs .invisible
+ * block.hidden vs .invisible
  *
  * uses .invisible where the rest of Moodle uses .dimmed
  * fixible in block renderer?
@@ -55,12 +56,14 @@ li.activity.label,
  * dimming all the edit icons apart from unhide, might be a 
  * nice effect, though they'd still be active. Maybe reverse
  * it to white?
+ */
 
-block.invisible {
+.block.hidden,
+.block.invisible {
   visibility: visible;
+  display: block;
 }
 
-*/
 
 /* .row vs .row
  * 
