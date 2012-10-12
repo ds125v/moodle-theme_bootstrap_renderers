@@ -28,7 +28,7 @@ function processor($css, $theme) {
         $awesome = rand(0, 1);
     }
 
-    $themedir = new moodle_url("/theme/bootstrap_renderers");
+    $themedir = $theme->dir;
 
     $find[] = "[[bootstrap]]";
     $replace[] = file_get_contents("$themedir/style/$subtheme/bootstrap.css");
