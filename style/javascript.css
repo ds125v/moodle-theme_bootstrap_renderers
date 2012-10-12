@@ -9,11 +9,11 @@
  * than just to Bootstrap or the boostrap_renderers theme.
  */
 
-/* compensate for some broken javascript since #page-header not used,
+/* compensate for some broken javascript when #page-header not used,
  * the javascript sets the height of the object to 0px (effectively
  * hiding it)  see further discussion in MDL-34687
  */
-div.resourcecontent { 
+div.resourcecontent {
   width: 100%;
 }
 #resourceobject {
@@ -22,7 +22,18 @@ div.resourcecontent {
   min-height: 600px;
 }
 
-/* Activity chooser links don't become active, current workaround, turn it off. */
+/* Activity chooser links don't become active, current workaround, turn it off.
+ * The reason this happens is that it's looking for the #page-content
+ * wrapper. You can just add the #page-content class back but the layout of
+ * the main columns usually depends on it, so you'd probably want to delete
+ * any CSS classes that feature #page-content.
+ * */
+
+/* Drag and drop of blocks  doesn't work if you take away the .block-region
+ * class name. The only CSS attached to it seems to be .block-region.invisible,
+ * which creates a fading effect when hidden. Might also depend on block
+ * regions being called #region-pre and #region-post.
+ */
 
 /* This second section are things that can be broken just by not
  * including Moodle's standard css. Mostly this is things that should
