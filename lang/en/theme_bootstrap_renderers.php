@@ -23,7 +23,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+// General strings
 $string['pluginname'] = 'Bootstrap Renderers';
 $string['region-side-post'] = 'Right';
 $string['region-side-pre'] = 'Left';
 $string['choosereadme'] = 'This is a developer theme that lets you focus on creating Moodle renderers that output Bootstrap compatible HTML without being distracted by legacy Moodle CSS or hacks and workarounds intended to make code that is not yet converted to renders fit in.';
+
+// Settings page strings
+$string['notes-heading'] = 'notes';
+$string['notes-information'] = 'information';
