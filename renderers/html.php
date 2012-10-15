@@ -154,6 +154,7 @@ class html {
         return self::input($attributes);
     }
     public static function hidden_inputs($params) {
+        $output = '';
         foreach ($params as $name => $value) {
             $output[] = self::input_hidden($name, $value);
         }
