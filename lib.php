@@ -1,6 +1,8 @@
 <?php
 
 function processor($css, $theme) {
+	global $CFG;
+	
     // $subtheme = $theme->settings->subtheme;
     // $fixed = $theme->settings->fixed;
     // $random = $theme->settings->random;
@@ -27,7 +29,11 @@ function processor($css, $theme) {
         $awesome = rand(0, 1);
     }
 
-    $themedir = $theme->dir;
+    if (!empty($CFG->themedir)) {
+	    $themedir = $CFG->themedir . '/' . current_theme();
+    } else {
+	    $themedir = $CFG->dirroot . '/theme/' . current_theme();
+    }
 
     $find[] = "[[bootstrap]]";
     $replace[] = file_get_contents("$themedir/style/$subtheme/bootstrap.css");
