@@ -29,6 +29,14 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
     $settings->add($setting);
 	
+	// Fluid Layout
+    $name = 'theme_bootstrap_renderers/fluid';
+    $title = get_string('fluid','theme_bootstrap_renderers');
+    $description = get_string('fluiddesc', 'theme_bootstrap_renderers');
+    $default = '1';
+    $setting = new admin_setting_configcheckbox($name, $title, $description, $default);
+    $settings->add($setting);
+	
 	// Responsive Layout
     $name = 'theme_bootstrap_renderers/responsive';
     $title = get_string('responsive','theme_bootstrap_renderers');
@@ -37,7 +45,7 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configcheckbox($name, $title, $description, $default);
     $settings->add($setting);
 	
-	// Fixed Nav Padding
+	// Fixed Navbar
     $name = 'theme_bootstrap_renderers/fixed';
     $title = get_string('fixed','theme_bootstrap_renderers');
     $description = get_string('fixeddesc', 'theme_bootstrap_renderers');

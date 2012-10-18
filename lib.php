@@ -3,7 +3,7 @@
 function processor($css, $theme) {
     $subtheme = $theme->settings->subtheme;
     $responsive = $theme->settings->responsive;
-    $fixed = $theme->settings->fixed;
+    $fixed = !$theme->settings->fixed;
     $awesome = $theme->settings->awesome;
     // $random = $theme->settings->random;
 
