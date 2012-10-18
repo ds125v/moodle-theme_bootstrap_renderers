@@ -14,6 +14,7 @@ $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custom
 $haslogininfo =  (isguestuser() or isloggedin());
 
 $bodyclasses = array();
+$bodyclasses[] = 'jsenabled';
 if ($showsidepre && !$showsidepost) {
     $bodyclasses[] = 'side-pre-only';
 } else if ($showsidepost && !$showsidepre) {
@@ -24,7 +25,6 @@ if ($showsidepre && !$showsidepost) {
 if ($hascustommenu) {
     $bodyclasses[] = 'has_custom_menu';
 }
-$bodyclasses = s($PAGE->bodyclasses.' '.join(' ', $bodyclasses));
 
 $html5shiv = new moodle_url('/theme/bootstrap_renderers/html5shiv.js');
 $html5shiv = "<script src='$html5shiv'></script>";
@@ -78,7 +78,7 @@ echo $OUTPUT->doctype() ?>
     <?php echo $OUTPUT->standard_head_html(); ?>
 </head>
 
-<body id="<?php echo $PAGE->bodyid ?>" class="<?php $bodyclasses?>">
+<body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
 
 <div class="container<?php echo $fluid ?>">
 
