@@ -157,7 +157,7 @@ class html {
         foreach ($params as $name => $value) {
             $output[] = self::input_hidden($name, $value);
         }
-        if ($output) {
+        if (isset($output)) {
             return implode($output);
         }
     }
