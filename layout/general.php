@@ -14,6 +14,7 @@ $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custom
 $haslogininfo =  (isguestuser() or isloggedin());
 
 $bodyclasses = array();
+$bodyclasses[] = 'jsenabled';
 if ($showsidepre && !$showsidepost) {
     $bodyclasses[] = 'side-pre-only';
 } else if ($showsidepost && !$showsidepre) {
@@ -24,18 +25,22 @@ if ($showsidepre && !$showsidepost) {
 if ($hascustommenu) {
     $bodyclasses[] = 'has_custom_menu';
 }
-$bodyclasses = s($PAGE->bodyclasses.' '.join(' ', $bodyclasses));
 
 $html5shiv = new moodle_url('/theme/bootstrap_renderers/html5shiv.js');
 $html5shiv = "<script src='$html5shiv'></script>";
 
 $favicon_url = $OUTPUT->pix_url('favicon', 'theme');
 
-$random = true;
-if ($random) {
+
+if ($PAGE->theme->settings->subtheme == 'random') {
     $navbar_fixed = true;
-    $navbar_inverse = rand(0, 1);
-    $fluid = rand(0, 1);
+    $navbar_inverse = rand(0,1);
+    $fluid = rand(0,1);
+}
+else {
+    $navbar_fixed = !$PAGE->theme->settings->fixed;
+    $navbar_inverse = $PAGE->theme->settings->navbarinvert;
+    $fluid = $PAGE->theme->settings->fluid;
 }
 
 $navbar_fixed = $navbar_fixed ? 'navbar-fixed-top' : '';
@@ -73,7 +78,7 @@ echo $OUTPUT->doctype() ?>
     <?php echo $OUTPUT->standard_head_html(); ?>
 </head>
 
-<body id="<?php echo $PAGE->bodyid ?>" class="<?php $bodyclasses?>">
+<body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
 
 <div class="container<?php echo $fluid ?>">
 

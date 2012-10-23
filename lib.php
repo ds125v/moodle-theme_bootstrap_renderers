@@ -1,8 +1,10 @@
 <?php
 
 function processor($css, $theme) {
-    // $subtheme = $theme->settings->subtheme;
-    // $fixed = $theme->settings->fixed;
+    $subtheme = $theme->settings->subtheme;
+    $responsive = $theme->settings->responsive;
+    $fixed = !$theme->settings->fixed;
+    $awesome = $theme->settings->awesome;
     // $random = $theme->settings->random;
 
     $themes = array(
@@ -19,8 +21,7 @@ function processor($css, $theme) {
         'superhero' => '70px',
         'united' => '40px',
     );
-    $random = true;
-    if ($random) {
+    if ($theme->settings->subtheme == 'random') {
         $subtheme = array_rand($themes);
         $responsive = rand(0, 1);
         $fixed = rand(0, 1);
