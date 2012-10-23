@@ -14,7 +14,6 @@ $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custom
 $haslogininfo =  (isguestuser() or isloggedin());
 
 $bodyclasses = array();
-$bodyclasses[] = 'jsenabled';
 if ($showsidepre && !$showsidepost) {
     $bodyclasses[] = 'side-pre-only';
 } else if ($showsidepost && !$showsidepre) {
@@ -34,10 +33,9 @@ $favicon_url = $OUTPUT->pix_url('favicon', 'theme');
 
 if ($PAGE->theme->settings->subtheme == 'random') {
     $navbar_fixed = true;
-    $navbar_inverse = rand(0,1);
-    $fluid = rand(0,1);
-}
-else {
+    $navbar_inverse = rand(0, 1);
+    $fluid = rand(0, 1);
+} else {
     $navbar_fixed = !$PAGE->theme->settings->fixed;
     $navbar_inverse = $PAGE->theme->settings->navbarinvert;
     $fluid = $PAGE->theme->settings->fluid;
@@ -105,40 +103,39 @@ echo $OUTPUT->doctype() ?>
 <div id="region-main-box" class="row-fluid">
 
 <?php if ($hassidepre) : ?>
-	<aside class="span3">
-	<?php echo $OUTPUT->blocks_for_region('side-pre') ?>
-	</aside>
+    <aside class="span3">
+    <?php echo $OUTPUT->blocks_for_region('side-pre') ?>
+    </aside>
 <?php endif; ?>
 
 <?php if ($hassidepre AND $hassidepost) : ?>
-	<article class="span6">
+    <article class="span6">
 <?php else : ?>
-	<article class="span9">
+    <article class="span9">
 <?php endif; ?>
-	<?php echo core_renderer::MAIN_CONTENT_TOKEN ?>
-	</article>
-                
-                
-<?php if ($hassidepost) : ?>                
-	<aside class="span3">
-	<?php echo $OUTPUT->blocks_for_region('side-post') ?>
+        <?php echo core_renderer::MAIN_CONTENT_TOKEN ?>
+    </article>
+
+<?php if ($hassidepost) : ?>
+    <aside class="span3">
+    <?php echo $OUTPUT->blocks_for_region('side-post') ?>
     </aside>
-<?php endif; ?>          
+<?php endif; ?>
 </div>
 
 <?php if ($hasfooter) { ?>
     <footer role="contentinfo">
-	<nav role="navigation">
+    <nav role="navigation">
     <p><?php echo $OUTPUT->login_info()?></p>
     <p><?php echo page_doc_link(get_string('moodledocslink'))?></p>
-	 <?php
+    <?php
         echo $OUTPUT->home_link();
         echo $OUTPUT->standard_footer_html();
       ?>
       <p><a href=# class=pull-right>Back to top</a></p>
-	</nav>	
-	</footer>	
-<?php } ?>			
+    </nav>
+    </footer>
+<?php } ?>
 </div>
 </div>
 <?php echo $OUTPUT->standard_end_of_body_html(); ?>
