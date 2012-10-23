@@ -342,77 +342,19 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return bootstrap::alert_default($message);
     }
 
-    // These should all really be in the pagingbar object to save
-    // passing the paramaters about all over.
-    private function previous_link($baseurl, $pagevar, $current_page) {
-        $previous = get_string('previous');
-        if ($current_page == 0) {
-            return html::li('disabled', "<span>$previous</span>");
-        }
-        return html::li('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page-1)), $previous));
-    }
-    private function next_link($baseurl, $pagevar, $current_page, $last_page) {
-        $next = get_string('next');
-        if ($current_page == $last_page) {
-            return html::li('disabled', "<span>$next</span>");
-        }
-        return html::li ('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$current_page+1)), $next));
-    }
-    private function pagination_link($baseurl, $pagevar, $current_page, $target) {
-        $targetname = $target + 1;
-        if ($target == $current_page) {
-            return html::li('active', "<span>$targetname</span>");
-        }
-        return html::li('', html_writer::link(new moodle_url($baseurl, array($pagevar=>$target)), $targetname));
-    }
-
-    private function skipped_link() {
-        return html::li('disabled', '<span>…</span>');
-    }
 
     protected function render_paging_bar(paging_bar $pagingbar) {
-        // This is more complicated than it needs to be, see MDL-35367 for more.
         $pagingbar = clone($pagingbar);
         $pagingbar->prepare($this, $this->page, $this->target);
 
-        $perpage = $pagingbar->perpage;
-        $total = $pagingbar->totalcount;
-        $show_pagingbar = ($perpage > 0 && $total > $perpage);
+        $show_pagingbar = ($pagingbar->perpage > 0
+                        && $pagingbar->totalcount > $pagingbar->perpage);
         if (!$show_pagingbar) {
             return '';
         }
-
-        $baseurl = $pagingbar->baseurl;
-        $pagevar = $pagingbar->pagevar;
-        $current_page = (int)$pagingbar->page;
-
-        // Note: page 0 is displayed to users as page 1 and so on.
-        $lastpage = floor(($total - 1) / $perpage);
-
-        // Display a max of $padding*2 + 1 links.
-        $padding = 4;
-        $near_to_start = ($current_page - $padding) < 1;
-        $near_to_end = ($current_page + $padding) > $lastpage;
-
-        if (!$near_to_start && !$near_to_end) {
-            $skip[1] = $current_page - $padding + 2;
-            $skip[($current_page + $padding) - 1] = $lastpage;
-        } else if ($near_to_end) {
-            $skip[1] = $lastpage - (2*$padding) + 2;
-        } else if ($near_to_start) {
-            $skip[2*$padding-1] = $lastpage;
-        }
-
-        $links[] = $this->previous_link($baseurl, $pagevar, $current_page);
-        for ($i = 0; $i <= $lastpage; $i++) {
-            if (isset($skip[$i])) {
-                $links[] = $this->skipped_link();
-                $i = $skip[$i];
-            }
-            $links[] = $this->pagination_link($baseurl, $pagevar, $current_page, $i);
-        }
-        $links[] = $this->next_link($baseurl, $pagevar, $current_page, $lastpage);
-        return bootstrap::pagination(implode($links));
+        $pagination = pagination::from_paging_bar($pagingbar,
+            get_string('previous'), get_string('next'), '...');
+        return bootstrap::pagination($pagination->links());
     }
 
     public function navbar() {

@@ -15,15 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Bootstrap utility functions.
+ *
  * @package    theme_bootstrap_renderers
  * @copyright  2012
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 require_once('html.php');
 
 class bootstrap {
-    // Bootstrap utility functions.
 
     public static function icon($name) {
         return "<i class=icon-$name></i>";

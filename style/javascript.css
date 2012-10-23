@@ -22,6 +22,8 @@ div.resourcecontent {
   min-height: 600px;
 }
 
+/* hiding and showing activities via the eye breaks */
+
 /* Activity chooser links don't become active, current workaround, turn it off. */
 
 /* This second section are things that can be broken just by not

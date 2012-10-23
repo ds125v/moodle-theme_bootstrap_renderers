@@ -20,15 +20,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class PaginationTest extends PHPUnit_Framework_TestCase {
 
-    public function test_something() {
+require_once('bootstrap.php');
+
+class bootstrapTest extends PHPUnit_Framework_TestCase {
+
+    public function test_initialism_ibm() {
 
         $expected = '<abbr class=initialism title="International Business Machines">IBM</abbr>';
         $actual = bootstrap::initialism('IBM', 'International Business Machines');
 
         $this->assertSame($expected, $actual);
     }
+    public function test_initialism_moodle() {
+        $expected = '<abbr class=initialism title="Martin\'s Object-Oriented Dynamic Learning Environment">MOODLE</abbr>';
+        $actual = bootstrap::initialism('MOODLE', 'Martin\'s Object-Oriented Dynamic Learning Environment');
 
+        $this->assertSame($expected, $actual);
+    }
+    public function test_initialism_i18n() {
+        $expected = '<abbr class=initialism title=IÃ±tÃ«rnÃ¢tiÃ´nÃ lizÃ¦tiÃ¸n>i18n</abbr>';
+        $actual = bootstrap::initialism('i18n', 'IÃ±tÃ«rnÃ¢tiÃ´nÃ lizÃ¦tiÃ¸n');
+
+        $this->assertSame($expected, $actual);
+    }
 }
-
