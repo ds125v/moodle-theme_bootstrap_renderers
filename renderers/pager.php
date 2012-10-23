@@ -30,7 +30,7 @@ require_once('classes.php');
 class pager {
     private $padding;
     private $pages_to_show;
-    private $last_page;
+    public $last_page;
     private $current_page;
 
     public function __construct(

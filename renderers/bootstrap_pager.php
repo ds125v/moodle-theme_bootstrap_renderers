@@ -33,10 +33,11 @@ class bootstrap_pager {
     private $current_page;
     private $total_pages;
 
-    public function __construct($base_url, $current_page, $total_pages) {
+    public function __construct($base_url, $current_page, $total_pages, $pagevar='page') {
         $this->base_url = $base_url;
         $this->current_page = $current_page;
         $this->total_pages = $total_pages;
+        $this->pagevar = $pagevar;
     }
 
     public function for_pages($page_numbers) {
@@ -64,8 +65,7 @@ class bootstrap_pager {
         return html::li(html::a($attributes, $text));
     }
     private function url_for_page($page) {
-        $pagevar = get_string('pagevar');
-        return $this->base_url .'&'. $pagevar .'='. ($page-1);
+        return $this->base_url .'&'. $this->pagevar .'='. ($page-1);
     }
 
     private function current() {
@@ -92,6 +92,6 @@ class bootstrap_pager {
         }
     }
     private function skipped() {
-        return html::li('disabled', html::span(get_string('skipped')));
+        return html::li('disabled', html::span('...'));
     }
 }

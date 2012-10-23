@@ -30,7 +30,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
 
         private $disabled_previous = '<li class=disabled><span>previous</span></li>';
         private $disabled_next = '<li class=disabled><span>next</span></li>';
-        private $skipped_link = '<li class=disabled><span>skipped</span></li>';
+        private $skipped_link = '<li class=disabled><span>...</span></li>';
 
     private function active($text) {
         return "<li class=active><span>$text</span></li>";
@@ -40,13 +40,13 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
             $number = $text;
         }
         $var = $number - 1;
-        $attributes['href'] = "example.com?&pagevar=$var";
+        $attributes['href'] = "example.com?one=fish&two=fish&page=$var";
         return html::li('', html::a($attributes, $text));
     }
 
     public function test_first_page_of_two() {
 
-        $pager = new bootstrap_pager('example.com?', 1, 2);
+        $pager = new bootstrap_pager('example.com?one=fish&two=fish', 1, 2);
 
         $links = $pager->for_pages(array(1, 2));
 
@@ -67,7 +67,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
     public function test_last_page_of_two() {
-        $pager = new bootstrap_pager('example.com?', 2, 2);
+        $pager = new bootstrap_pager('example.com?one=fish&two=fish', 2, 2);
 
         $links = $pager->for_pages(array(1, 2));
 
@@ -89,7 +89,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
     }
     public function test_first_page_of_nine() {
 
-        $pager = new bootstrap_pager('example.com?', 1, 9);
+        $pager = new bootstrap_pager('example.com?one=fish&two=fish', 1, 9);
 
         $links = $pager->for_pages(array(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
@@ -118,7 +118,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
     public function test_last_page_of_nine() {
-        $pager = new bootstrap_pager('example.com?', 9, 9);
+        $pager = new bootstrap_pager('example.com?one=fish&two=fish', 9, 9);
 
         $links = $pager->for_pages(array(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
@@ -144,7 +144,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
     }
     public function test_first_page_of_ten() {
 
-        $pager = new bootstrap_pager('example.com?', 1, 10);
+        $pager = new bootstrap_pager('example.com?one=fish&two=fish', 1, 10);
 
         $links = $pager->for_pages(array(1, 2, 3, 4, 5, 6, 7, 'skip', 10));
 
@@ -177,7 +177,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
     public function test_last_page_of_ten() {
-        $pager = new bootstrap_pager('example.com?', 10, 10);
+        $pager = new bootstrap_pager('example.com?one=fish&two=fish', 10, 10);
 
         $links = $pager->for_pages(array(1, 'skip', 4, 5, 6, 7, 8, 9, 10));
 

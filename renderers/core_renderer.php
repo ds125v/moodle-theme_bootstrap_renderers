@@ -25,7 +25,8 @@
 require_once('html.php');
 require_once('bootstrap.php');
 require_once('classes.php');
-require_once('pagination.php');
+require_once('pager.php');
+require_once('bootstrap_pager.php');
 
 class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // Trying to keep the order of definition the same as
@@ -352,9 +353,10 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if (!$show_pagingbar) {
             return '';
         }
-        $pagination = pagination::from_paging_bar($pagingbar,
-            get_string('previous'), get_string('next'), '...');
-        return bootstrap::pagination($pagination->links());
+        $pager = new pager($pagingbar->perpage, $pagingbar->totalcount, $pagingbar->page);
+        $pages = $pager->pages();
+        $pagination = new bootstrap_pager(html_entity_decode($pagingbar->baseurl), $pagingbar->page, $pager->last_page);
+        return bootstrap::pagination($pagination->for_pages($pages));
     }
 
     public function navbar() {
