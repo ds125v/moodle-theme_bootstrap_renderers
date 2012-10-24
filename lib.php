@@ -1,11 +1,6 @@
 <?php
 
 function processor($css, $theme) {
-    $subtheme = $theme->settings->subtheme;
-    $responsive = $theme->settings->responsive;
-    $fixed = !$theme->settings->fixed;
-    $awesome = $theme->settings->awesome;
-    // $random = $theme->settings->random;
 
     $themes = array(
         'amelia' => '50px',
@@ -21,14 +16,21 @@ function processor($css, $theme) {
         'superhero' => '70px',
         'united' => '40px',
     );
-    if ($theme->settings->subtheme == 'random') {
+
+    $subtheme = $theme->settings->subtheme;
+    $responsive = $theme->settings->responsive;
+    $fixed = $theme->settings->fixed;
+    $awesome = $theme->settings->awesome;
+
+    if ($subtheme == 'random') {
         $subtheme = array_rand($themes);
         $responsive = rand(0, 1);
-        $fixed = rand(0, 1);
         $awesome = rand(0, 1);
+        $fixed = $_SERVER['REQUEST_TIME'] % 2;
     }
 
     $themedir = $theme->dir;
+    $themewww = $CFG->themewww ? $CFG->themewww.'/'.current_theme(): current_theme();
 
     $find[] = "[[bootstrap]]";
     $replace[] = file_get_contents("$themedir/style/$subtheme/bootstrap.css");
@@ -36,32 +38,32 @@ function processor($css, $theme) {
     $find[] = "[[fixed-nav-padding]]";
     // This needs to be between bootstrap and bootstrap-responsive.
     $padding = $themes[$subtheme];
-    if ($fixed) {
+    if ($fixed === 1) {
         $replace[] = "body {padding-top: $padding;}";
     } else {
         $replace[] = '';
     }
 
     $find[] = "[[bootstrap-responsive]]";
-    if ($responsive) {
+    if ($responsive === 1) {
         $replace[] = file_get_contents("$themedir/style/bootstrap/bootstrap-responsive.css");
     } else {
         $replace[] = '';
     }
 
     $find[] = "[[font-awesome]]";
-    if ($awesome) {
+    if ($awesome === 1) {
         $fix = '[class*="icon-"] {background-image: none;}';
         $replace[] = file_get_contents("$themedir/style/font-awesome/font-awesome.css") . $fix;
 
         $find[] = "../font/fontawesome-webfont";
-        $replace[] = current_theme() . '/font/fontawesome-webfont';
+        $replace[] = "$themewww/font/fontawesome-webfont";
     } else {
         $replace[] = '';
     }
 
     $find[] = "../img/glyphicons-halflings";
-    $replace[] = current_theme() . '/pix/glyphicons-halflings';
+    $replace[] = "$themewww/pix/glyphicons-halflings";
 
     return str_replace($find, $replace, $css);
 }

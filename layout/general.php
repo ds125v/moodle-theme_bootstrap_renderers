@@ -31,14 +31,14 @@ $html5shiv = "<script src='$html5shiv'></script>";
 $favicon_url = $OUTPUT->pix_url('favicon', 'theme');
 
 
-if ($PAGE->theme->settings->subtheme == 'random') {
-    $navbar_fixed = true;
+$navbar_fixed = $PAGE->theme->settings->fixed;
+$navbar_inverse = $PAGE->theme->settings->navbarinvert;
+$fluid = $PAGE->theme->settings->fluid;
+
+if ($PAGE->theme->settings->subtheme === 'random') {
     $navbar_inverse = rand(0, 1);
     $fluid = rand(0, 1);
-} else {
-    $navbar_fixed = !$PAGE->theme->settings->fixed;
-    $navbar_inverse = $PAGE->theme->settings->navbarinvert;
-    $fluid = $PAGE->theme->settings->fluid;
+    $navbar_fixed = $_SERVER['REQUEST_TIME'] % 2;
 }
 
 $navbar_fixed = $navbar_fixed ? 'navbar-fixed-top' : '';
