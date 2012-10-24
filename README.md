@@ -11,7 +11,6 @@ TODO #1 (stuff I'm in the process of doing)
 * figure out how to switch off CSS coming from modules (current plan: delete almost all non-bootstrap ids and classes)
 * write up testing and contribution guidelines (just started [testing.txt](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/info/testing.txt))
 * make the random mode trigger various responsive CSS changes even on the largest of monitors
-* a settings page
 
 TODO #2 (stuff I'm secretly hoping someone else will do, to save me the bother)
 ----------------
@@ -23,6 +22,6 @@ TODO #2 (stuff I'm secretly hoping someone else will do, to save me the bother)
 * set up public demo site in Random mode to cycle through swatches and options
 * get TinyMCE to pick up the editor.css and use the classes it finds there
 * restyle the TinyMCE editor interface using Bootstrap
-* find a simpler editor that is Bootstrap aware and plug it into Moodle 
+* find a simpler editor that is Bootstrap aware and plug it into Moodle e.g. (bootstrap-wysihtml5)[http://jhollingworth.github.com/bootstrap-wysihtml5/] 
 * restyle the YUI UI components with Bootstrap 
 * wire up all the javascript gadgets from Bootstrap with JQuery, then try using the YUI port
