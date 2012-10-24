@@ -55,7 +55,7 @@ class bootstrap_pager {
         if ($page === 'skip') {
             return $this->skipped();
         }
-        if ($page === $this->current_page) {
+        if ($page == $this->current_page) {
             return $this->current();
         }
         if ($text === null) {
