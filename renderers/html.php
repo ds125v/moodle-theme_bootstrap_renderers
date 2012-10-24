@@ -171,9 +171,7 @@ class html {
         foreach ($params as $name => $value) {
             $output[] = self::input_hidden($name, $value);
         }
-        if (isset($output)) {
-            return implode($output);
-        }
+        return implode($output);
     }
     public static function submit($attributes) {
         $attributes['type'] = 'submit';

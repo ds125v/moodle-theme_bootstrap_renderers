@@ -101,4 +101,12 @@ class htmlTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($expected, $actual);
 
     }
+    public function test_empty_hidden_inputs() {
+
+        $actual = html::hidden_inputs(array());
+        $expected = '';
+
+        $this->assertSame($expected, $actual);
+
+    }
 }
