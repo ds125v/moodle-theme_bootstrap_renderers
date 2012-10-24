@@ -36,6 +36,12 @@ li.activity.label,
   text-align: right;
 }
 
+// Some of this dialog is sized in ems so a different font size
+// effects the whole layout.
+.choosercontainer #chooseform .option label {
+    font-size: 12px;
+}
+
 /* block.invisible vs .invisible
  * block.hidden vs .invisible
  *
