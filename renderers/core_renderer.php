@@ -353,9 +353,10 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if (!$show_pagingbar) {
             return '';
         }
-        $pager = new pager($pagingbar->perpage, $pagingbar->totalcount, $pagingbar->page);
+        $current_page = $pagingbar->page + 1; // Counting from one, not zero.
+        $pager = new pager($pagingbar->perpage, $pagingbar->totalcount, $current_page);
         $pages = $pager->pages();
-        $pagination = new bootstrap_pager(html_entity_decode($pagingbar->baseurl), $pagingbar->page+1, $pager->last_page);
+        $pagination = new bootstrap_pager(html_entity_decode($pagingbar->baseurl), $current_page, $pager->last_page);
         return bootstrap::pagination($pagination->for_pages($pages));
     }
 
