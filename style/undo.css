@@ -117,6 +117,24 @@ fieldset.hidden {
  * wrapped in div.btn e.g. the login block's "login" button
  */
 
+div.c1.btn {
+    display: block;
+    padding: 0;
+    margin-bottom: 0px;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    vertical-align: inherit;
+    cursor: normal;
+    color: inherit;
+    text-shadow: inherit;
+    background-color: inherit;
+    background-image: none;
+    background-repeat: none;
+    border: none;
+    border-radius: none;
+    box-shadow: none;
+}
 /* .container vs .container
  *
  * bootstrap uses .container to set the width of the layout at 960px or so, Moodle uses it
