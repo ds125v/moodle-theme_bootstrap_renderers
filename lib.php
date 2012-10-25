@@ -24,6 +24,8 @@
 
 function processor($css, $theme) {
 
+	global $CFG;
+
     $themes = array(
         'amelia' => '50px',
         'bootstrap' => '40px',
