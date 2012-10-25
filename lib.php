@@ -67,21 +67,21 @@ function processor($css, $theme) {
     $find[] = "[[fixed-nav-padding]]";
     // This needs to be between bootstrap and bootstrap-responsive.
     $padding = $themes[$subtheme];
-    if ($navbar_fixed === 1) {
+    if ($navbar_fixed == 1) {
         $replace[] = "body {padding-top: $padding;}";
     } else {
         $replace[] = '';
     }
 
     $find[] = "[[bootstrap-responsive]]";
-    if ($responsive === 1) {
+    if ($responsive == 1) {
         $replace[] = file_get_contents("$themedir/style/bootstrap/bootstrap-responsive.css");
     } else {
         $replace[] = '';
     }
 
     $find[] = "[[font-awesome]]";
-    if ($awesome === 1) {
+    if ($awesome == 1) {
         $fix = '[class*="icon-"] {background-image: none;}';
         $replace[] = file_get_contents("$themedir/style/font-awesome/font-awesome.css") . $fix;
 
