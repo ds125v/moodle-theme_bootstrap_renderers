@@ -1,4 +1,26 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * layout with HTML consistent with that expected by Bootstrap
+ *
+ * @package    theme_bootstrap_renderers
+ * @copyright  2012
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 $hasheading = ($PAGE->heading);
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
@@ -38,7 +60,10 @@ $fluid = $PAGE->theme->settings->fluid;
 if ($PAGE->theme->settings->subtheme === 'random') {
     $navbar_inverse = rand(0, 1);
     $fluid = rand(0, 1);
-    $navbar_fixed = $_SERVER['REQUEST_TIME'] % 2;
+    if (!empty($CFG->themedesignermode)) {
+        // Needs to match with setting in CSS so doesn't work if CSS is cached.
+        $navbar_fixed = (floor($_SERVER['REQUEST_TIME'] / 100)) % 2;
+    }
 }
 
 $navbar_fixed = $navbar_fixed ? 'navbar-fixed-top' : '';

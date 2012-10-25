@@ -1,4 +1,26 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Theme lib php
+ *
+ * @package    theme_bootstrap_renderers
+ * @copyright  2012
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 function processor($css, $theme) {
 
@@ -19,18 +41,24 @@ function processor($css, $theme) {
 
     $subtheme = $theme->settings->subtheme;
     $responsive = $theme->settings->responsive;
-    $fixed = $theme->settings->fixed;
+    $navbar_fixed = $theme->settings->fixed;
     $awesome = $theme->settings->awesome;
 
     if ($subtheme == 'random') {
         $subtheme = array_rand($themes);
         $responsive = rand(0, 1);
         $awesome = rand(0, 1);
-        $fixed = $_SERVER['REQUEST_TIME'] % 2;
+        if (!empty($CFG->themedesignermode)) {
+            $navbar_fixed = (floor($_SERVER['REQUEST_TIME'] / 100)) % 2;
+        }
     }
 
     $themedir = $theme->dir;
-    $themewww = $CFG->themewww ? $CFG->themewww.'/'.current_theme(): current_theme();
+    $themewww = current_theme();
+    global $CFG;
+    if (isset($CFG->themewww)) {
+        $themewww = $CFG->themewww.'/'.current_theme();
+    }
 
     $find[] = "[[bootstrap]]";
     $replace[] = file_get_contents("$themedir/style/$subtheme/bootstrap.css");
@@ -38,7 +66,7 @@ function processor($css, $theme) {
     $find[] = "[[fixed-nav-padding]]";
     // This needs to be between bootstrap and bootstrap-responsive.
     $padding = $themes[$subtheme];
-    if ($fixed === 1) {
+    if ($navbar_fixed === 1) {
         $replace[] = "body {padding-top: $padding;}";
     } else {
         $replace[] = '';
