@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 require_once('html.php');
 
 class htmlTest extends PHPUnit_Framework_TestCase {
@@ -77,13 +78,9 @@ class htmlTest extends PHPUnit_Framework_TestCase {
     public static function submits() {
 
         return array(
-            array(array(
-                'value'=>'hello',
-            ),
+            array(array( 'value'=>'hello'),
             '<input class=btn type=submit value=hello>'),
-            array(array(
-                'value'=>'hello', 'disabled'=>'disabled',
-            ),
+            array(array( 'value'=>'hello', 'disabled'=>'disabled'),
             '<input class=btn disabled type=submit value=hello>'),
             array(array(
                 'value'=>'hello',
@@ -100,6 +97,14 @@ class htmlTest extends PHPUnit_Framework_TestCase {
     public function test_submit($attributes, $expected) {
 
         $actual = html::submit($attributes);
+
+        $this->assertSame($expected, $actual);
+
+    }
+    public function test_empty_hidden_inputs() {
+
+        $actual = html::hidden_inputs(array());
+        $expected = '';
 
         $this->assertSame($expected, $actual);
 

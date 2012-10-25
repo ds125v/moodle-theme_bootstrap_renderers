@@ -22,10 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 require_once('classes.php');
 
 class html {
-    // HTML utility functions.
+
     private static $boolean_attributes = array(
         'autoplay',
         'checked',
@@ -78,7 +79,7 @@ class html {
             return $name;
         }
         $value = htmlspecialchars($value);
-        if (strpbrk($value, "= '")!==false || $value === '') {
+        if (strpbrk($value, "= '") !== false || $value === '') {
             $value = '"'.$value.'"';
         }
         return "$name=$value";
@@ -94,12 +95,16 @@ class html {
     }
 
     public static function attributes($attributes) {
-        $output = array();
-        uksort($attributes, array("html", "href_then_alphabetical"));
+        $sort_function = array("html", "href_then_alphabetical");
+        uksort($attributes, $sort_function);
         foreach ($attributes as $name => $value) {
             $output[] = self::attribute($name, $value);
         }
-        return ' ' . implode(' ', $output);
+        if (isset($output)) {
+            return ' ' . implode(' ', $output);
+        } else {
+            return '';
+        }
     }
 
     private static function classy_tag($tag, $attributes, $content = null) {
@@ -118,6 +123,10 @@ class html {
     public static function a($attributes, $content) {
         return self::classy_tag('a', $attributes, $content);
     }
+    public static function link($href, $content) {
+        $attributes['href'] = $href;
+        return self::classy_tag('a', $attributes, $content);
+    }
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
@@ -132,7 +141,11 @@ class html {
         return self::div($attributes, null);
     }
 
-    public static function span($attributes, $content) {
+    public static function span($attributes, $content=null) {
+        if ($content === null) {
+            $content = $attributes;
+            $attributes = array();
+        }
         return self::classy_tag('span', $attributes, $content);
     }
 
@@ -154,12 +167,11 @@ class html {
         return self::input($attributes);
     }
     public static function hidden_inputs($params) {
+        $output = array();
         foreach ($params as $name => $value) {
             $output[] = self::input_hidden($name, $value);
         }
-        if (isset($output)) {
-            return implode($output);
-        }
+        return implode($output);
     }
     public static function submit($attributes) {
         $attributes['type'] = 'submit';
@@ -178,7 +190,11 @@ class html {
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
-    public static function li($attributes, $content) {
+    public static function li($attributes, $content=null) {
+        if ($content === null) {
+            $content = $attributes;
+            $attributes = array();
+        }
         return self::classy_tag('li', $attributes, $content);
     }
     public static function li_implode($items, $glue='</li><li>') {

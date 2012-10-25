@@ -18,6 +18,16 @@ th,td {
     padding: 0;
 }
 
+/* Not sure why I need to set this, min-height is already set but
+ * seems to be getting ignored.
+ */
+html {
+    height: 100%;
+}
+body {
+    min-height: 100%;
+}
+
 /* .label vs .label
  */
 
@@ -29,10 +39,17 @@ li.activity.label,
   border: inherit;
   text-shadow: none;
   padding: 4px 8px;
+  white-space: normal;
 }
 .file-picker td.label,
 .userprofile table.list tr th.label {
   text-align: right;
+}
+
+// Some of this dialog is sized in ems so a different font size
+// effects the whole layout.
+.choosercontainer #chooseform .option label {
+    font-size: 12px;
 }
 
 /* block.invisible vs .invisible
@@ -110,6 +127,24 @@ fieldset.hidden {
  * wrapped in div.btn e.g. the login block's "login" button
  */
 
+div.c1.btn {
+    display: block;
+    padding: 0;
+    margin-bottom: 0px;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    vertical-align: inherit;
+    cursor: normal;
+    color: inherit;
+    text-shadow: inherit;
+    background-color: inherit;
+    background-image: none;
+    background-repeat: none;
+    border: none;
+    border-radius: none;
+    box-shadow: none;
+}
 /* .container vs .container
  *
  * bootstrap uses .container to set the width of the layout at 960px or so, Moodle uses it

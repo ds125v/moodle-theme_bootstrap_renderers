@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 class classes {
     public static function add($current, $new) {
         if (is_string($current)) {

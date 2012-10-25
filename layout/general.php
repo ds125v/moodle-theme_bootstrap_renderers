@@ -1,4 +1,26 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * layout with HTML consistent with that expected by Bootstrap
+ *
+ * @package    theme_bootstrap_renderers
+ * @copyright  2012
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 $hasheading = ($PAGE->heading);
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
@@ -14,7 +36,6 @@ $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custom
 $haslogininfo =  (isguestuser() or isloggedin());
 
 $bodyclasses = array();
-$bodyclasses[] = 'jsenabled';
 if ($showsidepre && !$showsidepost) {
     $bodyclasses[] = 'side-pre-only';
 } else if ($showsidepost && !$showsidepre) {
@@ -31,15 +52,17 @@ $html5shiv = "<script src='$html5shiv'></script>";
 $favicon_url = $OUTPUT->pix_url('favicon', 'theme');
 
 
-if ($PAGE->theme->settings->subtheme == 'random') {
-    $navbar_fixed = true;
-    $navbar_inverse = rand(0,1);
-    $fluid = rand(0,1);
-}
-else {
-    $navbar_fixed = !$PAGE->theme->settings->fixed;
-    $navbar_inverse = $PAGE->theme->settings->navbarinvert;
-    $fluid = $PAGE->theme->settings->fluid;
+$navbar_fixed = $PAGE->theme->settings->fixed;
+$navbar_inverse = $PAGE->theme->settings->navbarinvert;
+$fluid = $PAGE->theme->settings->fluid;
+
+if ($PAGE->theme->settings->subtheme === 'random') {
+    $navbar_inverse = rand(0, 1);
+    $fluid = rand(0, 1);
+    if (!empty($CFG->themedesignermode)) {
+        // Needs to match with setting in CSS so doesn't work if CSS is cached.
+        $navbar_fixed = (floor($_SERVER['REQUEST_TIME'] / 100)) % 2;
+    }
 }
 
 $navbar_fixed = $navbar_fixed ? 'navbar-fixed-top' : '';
@@ -104,40 +127,39 @@ echo $OUTPUT->doctype() ?>
 <div id="region-main-box" class="row-fluid">
 
 <?php if ($hassidepre) : ?>
-	<aside class="span3">
-	<?php echo $OUTPUT->blocks_for_region('side-pre') ?>
-	</aside>
+    <aside class="span3">
+    <?php echo $OUTPUT->blocks_for_region('side-pre') ?>
+    </aside>
 <?php endif; ?>
 
 <?php if ($hassidepre AND $hassidepost) : ?>
-	<article class="span6">
+    <article class="span6">
 <?php else : ?>
-	<article class="span9">
+    <article class="span9">
 <?php endif; ?>
-	<?php echo core_renderer::MAIN_CONTENT_TOKEN ?>
-	</article>
-                
-                
-<?php if ($hassidepost) : ?>                
-	<aside class="span3">
-	<?php echo $OUTPUT->blocks_for_region('side-post') ?>
+        <?php echo core_renderer::MAIN_CONTENT_TOKEN ?>
+    </article>
+
+<?php if ($hassidepost) : ?>
+    <aside class="span3">
+    <?php echo $OUTPUT->blocks_for_region('side-post') ?>
     </aside>
-<?php endif; ?>          
+<?php endif; ?>
 </div>
 
 <?php if ($hasfooter) { ?>
     <footer role="contentinfo">
-	<nav role="navigation">
+    <nav role="navigation">
     <p><?php echo $OUTPUT->login_info()?></p>
     <p><?php echo page_doc_link(get_string('moodledocslink'))?></p>
-	 <?php
+    <?php
         echo $OUTPUT->home_link();
         echo $OUTPUT->standard_footer_html();
       ?>
       <p><a href=# class=pull-right>Back to top</a></p>
-	</nav>	
-	</footer>	
-<?php } ?>			
+    </nav>
+    </footer>
+<?php } ?>
 </div>
 </div>
 <?php echo $OUTPUT->standard_end_of_body_html(); ?>

@@ -22,6 +22,8 @@ div.resourcecontent {
   min-height: 600px;
 }
 
+/* hiding and showing activities via the eye breaks */
+
 /* Activity chooser links don't become active, current workaround, turn it off.
  * The reason this happens is that it's looking for the #page-content
  * wrapper. You can just add the #page-content class back but the layout of
