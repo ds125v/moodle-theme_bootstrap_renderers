@@ -55,7 +55,6 @@ function processor($css, $theme) {
 
     $themedir = $theme->dir;
     $themewww = current_theme();
-    global $CFG;
     if (isset($CFG->themewww)) {
         $themewww = $CFG->themewww.'/'.current_theme();
     }
