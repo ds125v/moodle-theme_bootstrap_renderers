@@ -25,7 +25,6 @@ if ($showsidepre && !$showsidepost) {
 if ($hascustommenu) {
     $bodyclasses[] = 'has_custom_menu';
 }
-
 $html5shiv = new moodle_url('/theme/bootstrap_renderers/html5shiv.js');
 $html5shiv = "<script src='$html5shiv'></script>";
 
