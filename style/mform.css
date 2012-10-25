@@ -20,6 +20,11 @@
 .form-setting,
 .form-input,
 .form-buttons input,
+.loginpanel .loginsub > div.desc,
+.loginpanel .rememberpass,
+.loginpanel .forgetpass,
+.loginpanel .guestsub,
+.loginpanel h2,
 .mform .fitem .felement {
   *display: inline-block;
   *padding-left: 20px;
@@ -64,6 +69,22 @@
   clear: none;
 }
 
+.loginbox.onecolumn {
+    width: 50%;
+    margin: auto;
+}
+.loginbox.twocolumns {
+    width: 100%;
+}
+.loginbox.twocolumns .loginpanel {
+    width: 50%;
+    float: left;
+}
+.loginbox.twocolumns .signuppanel {
+    width: 50%;
+    float: right;
+}
+
 @media (max-width: 980px) {
     .form-label,
     .mform .fitem div.fitemtitle {
@@ -74,6 +95,11 @@
     }
     .form-input,
     .form-setting,
+    .loginpanel .loginsub > div.desc,
+    .loginpanel .rememberpass,
+    .loginpanel .forgetpass,
+    .loginpanel .guestsub,
+    .loginpanel h2,
     .mform .fitem .felement {
         margin-left: 0;
     }
