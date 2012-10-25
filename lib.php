@@ -30,7 +30,7 @@ function processor($css, $theme) {
     }
 
     $themedir = $theme->dir;
-    $themewww = $CFG->themewww ? $CFG->themewww.'/'.current_theme(): current_theme();
+    $themewww = isset($CFG->themewww) ? $CFG->themewww.'/'.current_theme() : current_theme();
 
     $find[] = "[[bootstrap]]";
     $replace[] = file_get_contents("$themedir/style/$subtheme/bootstrap.css");
