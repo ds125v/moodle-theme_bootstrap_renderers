@@ -321,12 +321,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         $title = get_string($helpicon->identifier, $helpicon->component);
 
-        if (empty($helpicon->linktext)) {
-            $alt = get_string('helpprefix2', '', trim($title, ". \t"));
-        } else {
-            $alt = get_string('helpwiththis');
-        }
-
         $output = html_writer::empty_tag('icon', array('class'=>'icon-question-sign'));
 
         // add the link text if given
