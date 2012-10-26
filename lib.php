@@ -24,34 +24,42 @@
 
 function processor($css, $theme) {
 
-	global $CFG;
+    global $CFG;
 
     $themes = array(
-        'amelia' => '50px',
-        'bootstrap' => '40px',
-        'cerulean' => '50px',
-        'cyborg' => '40px',
-        'journal' => '60px',
-        'readable' => '50px',
-        'simplex' => '40px',
-        'slate' => '40px',
-        'spacelab' => '40px',
-        'spruce' => '50px',
-        'superhero' => '70px',
-        'united' => '40px',
+        'amelia' => '50',
+        'bootstrap' => '40',
+        'cerulean' => '50',
+        'cyborg' => '40',
+        'journal' => '60',
+        'random' => '0',
+        'readable' => '50',
+        'simplex' => '40',
+        'slate' => '40',
+        'spacelab' => '40',
+        'spruce' => '50',
+        'superhero' => '70',
+        'united' => '40',
     );
 
     $subtheme = $theme->settings->subtheme;
     $responsive = $theme->settings->responsive;
     $navbar_fixed = $theme->settings->fixed;
     $awesome = $theme->settings->awesome;
+    $padding = $themes[$subtheme];
 
     if ($subtheme == 'random') {
         $subtheme = array_rand($themes);
+        $padding = $themes[$subtheme];
         $responsive = rand(0, 1);
         $awesome = rand(0, 1);
         if (!empty($CFG->themedesignermode)) {
             $navbar_fixed = (floor($_SERVER['REQUEST_TIME'] / 100)) % 2;
+            // TODO: adding setting for this.
+            $extra_padding = rand(0, 1);
+            if ($extra_padding == 1) {
+                $padding += 20;
+            }
         }
     }
 
@@ -66,9 +74,8 @@ function processor($css, $theme) {
 
     $find[] = "[[fixed-nav-padding]]";
     // This needs to be between bootstrap and bootstrap-responsive.
-    $padding = $themes[$subtheme];
     if ($navbar_fixed == 1) {
-        $replace[] = "body {padding-top: $padding;}";
+        $replace[] = "body {padding-top: {$padding}px;}";
     } else {
         $replace[] = '';
     }
