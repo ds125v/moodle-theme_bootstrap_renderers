@@ -127,29 +127,39 @@ echo $OUTPUT->doctype() ?>
 <div id="region-main-box" class="row-fluid">
 
 <?php if ($hassidepre) : ?>
-    <aside class="span3">
+    <?php if ($hassidepre AND $hassidepost) : ?>
+        <aside class=span3>
+    <?php else : ?>
+        <aside class=span4>
+    <?php endif; ?>
     <?php echo $OUTPUT->blocks_for_region('side-pre') ?>
-    </aside>
+        </aside>
 <?php endif; ?>
 
 <?php if ($hassidepre AND $hassidepost) : ?>
-    <article class="span6">
+    <article class=span6>
+<?php elseif ($hassidepre OR $hassidepost) : ?>
+    <article class=span8>
 <?php else : ?>
-    <article class="span9">
+    <article class=span12>
 <?php endif; ?>
         <?php echo core_renderer::MAIN_CONTENT_TOKEN ?>
     </article>
 
 <?php if ($hassidepost) : ?>
-    <aside class="span3">
+    <?php if ($hassidepre AND $hassidepost) : ?>
+        <aside class=span3>
+    <?php else : ?>
+        <aside class=span4>
+    <?php endif; ?>
     <?php echo $OUTPUT->blocks_for_region('side-post') ?>
-    </aside>
+        </aside>
 <?php endif; ?>
 </div>
 
 <?php if ($hasfooter) { ?>
-    <footer role="contentinfo">
-    <nav role="navigation">
+    <footer role=contentinfo>
+    <nav role=navigation>
     <p><?php echo $OUTPUT->login_info()?></p>
     <p><?php echo page_doc_link(get_string('moodledocslink'))?></p>
     <?php
