@@ -4,8 +4,8 @@
  * can just be pulled in by any bootswatch, and I'll make them responsive
  * while I'm here.
  *
- * TODO: Have used transparancy to fake the button surround for now, realy
- * need to make this a less file and bring it in on demand for it
+ * TODO: Have used transparancy to fake the button surround for now, really
+ * need to make this a .less file and bring it in on demand for it
  * to work properly with bootswatches and get the buttons looking right.
  *
  */
@@ -18,19 +18,20 @@
   text-align: right;
 }
 .form-setting,
+.form-description,
 .form-input,
 .form-buttons input,
 .loginpanel .loginsub > div.desc,
 .loginpanel .rememberpass,
 .loginpanel .forgetpass,
 .loginpanel .guestsub,
-.loginpanel h2,
 .mform .fitem .felement {
   *display: inline-block;
   *padding-left: 20px;
   margin-left: 200px;
   *margin-left: 0;
 }
+.form-item,
 .mform .fitem-item {
   margin-bottom: 20px;
   *zoom: 1;
@@ -68,6 +69,11 @@
   *zoom: 1;
   clear: none;
 }
+div.form-defaultinfo,
+.form-label span.form-shortname {
+    /* copied from <small> */
+    font-size: 85%;
+}
 
 .loginbox.onecolumn {
     width: 50%;
@@ -77,15 +83,33 @@
     width: 100%;
 }
 .loginbox.twocolumns .loginpanel {
-    width: 50%;
+    width: 48%;
     float: left;
 }
 .loginbox.twocolumns .signuppanel {
-    width: 50%;
+    width: 48%;
+    float: right;
+}
+input[type="password"],
+input[type="text"] {
+    /* Corrects some YUI settings. */
+    width: 206px;
+}
+.unmask {
+    display: inline-block;
+}
+.unmask label {
     float: right;
 }
 
+
 @media (max-width: 980px) {
+.loginbox.twocolumns .loginpanel,
+.loginbox.twocolumns .signuppanel {
+    width: 90%;
+    margin: auto;
+    float: none;
+}
     .form-label,
     .mform .fitem div.fitemtitle {
         float: none;
@@ -95,11 +119,11 @@
     }
     .form-input,
     .form-setting,
+    .form-description,
     .loginpanel .loginsub > div.desc,
     .loginpanel .rememberpass,
     .loginpanel .forgetpass,
     .loginpanel .guestsub,
-    .loginpanel h2,
     .mform .fitem .felement {
         margin-left: 0;
     }
@@ -111,5 +135,12 @@
     #fitem_id_submitbutton {
         padding-left: 10px;
         padding-right: 10px;
+    }
+    .form-label label {
+        display: inline-block;
+        min-width: 10em;
+    }
+    .form-label span {
+        margin-left: 100px;
     }
 }
