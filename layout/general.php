@@ -72,7 +72,7 @@ $fluid = $fluid ? '-fluid' : '';
 
 $header = '';
 if ($hasheading || $hasnavbar) {
-    $header .= "<header>";
+    $header .= "<header id=page-header>";
     if ($hasheading) {
         if (!empty($PAGE->layout_options['langmenu'])) {
             $header .= $OUTPUT->lang_menu();
@@ -125,33 +125,33 @@ echo $OUTPUT->doctype() ?>
 <?php echo $header; ?>
 
 <div class="container<?php echo $fluid ?>">
-<div id="region-main-box" class="row-fluid">
+<div id="page-content" class="row-fluid">
 
 <?php if ($hassidepre) : ?>
     <?php if ($hassidepre AND $hassidepost) : ?>
-        <aside class=span3>
+        <aside id=region-pre class=span3>
     <?php else : ?>
-        <aside class=span4>
+        <aside id=region-pre class=span4>
     <?php endif; ?>
     <?php echo $OUTPUT->blocks_for_region('side-pre') ?>
         </aside>
 <?php endif; ?>
 
 <?php if ($hassidepre AND $hassidepost) : ?>
-    <article class=span6>
+    <article id=region-content class=span6>
 <?php elseif ($hassidepre OR $hassidepost) : ?>
-    <article class=span8>
+    <article id=region-content class=span8>
 <?php else : ?>
-    <article class=span12>
+    <article id=region-content class=span12>
 <?php endif; ?>
         <?php echo core_renderer::MAIN_CONTENT_TOKEN ?>
     </article>
 
 <?php if ($hassidepost) : ?>
     <?php if ($hassidepre AND $hassidepost) : ?>
-        <aside class=span3>
+        <aside id=region-post class=span3>
     <?php else : ?>
-        <aside class=span4>
+        <aside id=region-post class=span4>
     <?php endif; ?>
     <?php echo $OUTPUT->blocks_for_region('side-post') ?>
         </aside>
@@ -159,7 +159,7 @@ echo $OUTPUT->doctype() ?>
 </div>
 
 <?php if ($hasfooter) { ?>
-    <footer role=contentinfo>
+    <footer id=page-footer role=contentinfo>
     <nav role=navigation>
     <p><?php echo $OUTPUT->login_info()?></p>
     <p><?php echo page_doc_link(get_string('moodledocslink'))?></p>
