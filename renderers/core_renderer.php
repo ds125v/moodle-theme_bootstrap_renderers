@@ -316,6 +316,36 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return "<h2>$text $help</h2>";
     }
 
+	protected function render_help_icon(help_icon $helpicon) {
+        global $CFG;
+
+        $title = get_string($helpicon->identifier, $helpicon->component);
+
+        $output = html_writer::empty_tag('icon', array('class'=>'icon-question-sign'));
+
+        // add the link text if given
+        if (!empty($helpicon->linktext)) {
+            // the spacing has to be done through CSS
+            $output .= $helpicon->linktext;
+        }
+
+        // now create the link around it - we need https on loginhttps pages
+        $url = new moodle_url($CFG->httpswwwroot.'/help.php', array('component' => $helpicon->component, 'identifier' => $helpicon->identifier, 'lang'=>current_language()));
+
+        // note: this title is displayed only if JS is disabled, otherwise the link will have the new ajax tooltip
+        $title = get_string('helpprefix2', '', trim($title, ". \t"));
+
+        $attributes = array('href'=>$url, 'title'=>$title, 'aria-haspopup' => 'true');
+        $id = html_writer::random_id('helpicon');
+        $attributes['id'] = $id;
+        $output = html_writer::tag('a', $output, $attributes);
+
+        $this->page->requires->js_init_call('M.util.help_icon.add', array(array('id'=>$id, 'url'=>$url->out(false))));
+
+        // and finally span
+        return html_writer::tag('span', $output, array('class' => 'helplink'));
+    }
+	
     public function spacer(array $attributes = null, $br = false) {
         return bootstrap::icon_spacer();
         // Don't bother outputting br's or attributes.
