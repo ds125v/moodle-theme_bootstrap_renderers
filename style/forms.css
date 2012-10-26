@@ -9,13 +9,16 @@
  * to work properly with bootswatches and get the buttons looking right.
  *
  */
-
 .form-label,
 .mform .fitem div.fitemtitle {
   float: left;
   width: 180px;
   padding-top: 5px;
   text-align: right;
+}
+.loginbox h2
+{
+	margin-left:115px;
 }
 .form-setting,
 .form-description,
@@ -74,7 +77,6 @@ div.form-defaultinfo,
     /* copied from <small> */
     font-size: 85%;
 }
-
 .loginbox.onecolumn {
     width: 50%;
     margin: auto;
@@ -103,13 +105,14 @@ input[type="text"] {
 }
 
 
-@media (max-width: 980px) {
+@media (max-width: 1075px) {
 .loginbox.twocolumns .loginpanel,
 .loginbox.twocolumns .signuppanel {
     width: 90%;
     margin: auto;
     float: none;
 }
+
     .form-label,
     .mform .fitem div.fitemtitle {
         float: none;
@@ -130,6 +133,10 @@ input[type="text"] {
     .mform .control-list {
         padding-top: 0;
     }
+	.loginbox h2
+	{
+		margin-left: 0px;
+	}
     .form-buttons input,
     #fgroup_id_buttonar,
     #fitem_id_submitbutton {
