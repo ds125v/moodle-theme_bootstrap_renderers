@@ -26,13 +26,12 @@ function processor($css, $theme) {
 
     global $CFG;
 
-    $themes = array(
+    $subtheme_paddings = array(
         'amelia' => '50',
         'bootstrap' => '40',
         'cerulean' => '50',
         'cyborg' => '40',
         'journal' => '60',
-        'random' => '0',
         'readable' => '50',
         'simplex' => '40',
         'slate' => '40',
@@ -46,16 +45,27 @@ function processor($css, $theme) {
     $responsive = $theme->settings->responsive;
     $navbar_fixed = $theme->settings->fixed;
     $awesome = $theme->settings->awesome;
-    $padding = $themes[$subtheme];
+    $padding = $subtheme_paddings[$subtheme];
+    $icon_color = 'inherit';
+    $icon_opacity = 1;
 
     if ($subtheme == 'random') {
-        $subtheme = array_rand($themes);
-        $padding = $themes[$subtheme];
+        $colors = array('inherit', 'red', 'yellow', 'pink', 'purple', 'orange', 'blue', 'green');
+        $color_key = array_rand($colors);
+        $icon_color = $colors[$color_key];
+
+        $opacities = array( 0.2, 0.4, 0.6, 0.8, 1);
+        $opacity_key = array_rand($opacities);
+        $icon_opacity = $colors[$opacity_key];
+
+        $subtheme = array_rand($subtheme_paddings);
+        $padding = $subtheme_paddings[$subtheme];
+
         $responsive = rand(0, 1);
         $awesome = rand(0, 1);
         if (!empty($CFG->themedesignermode)) {
             $navbar_fixed = (floor($_SERVER['REQUEST_TIME'] / 100)) % 2;
-            // TODO: adding setting for this.
+            // TODO: add setting for padding between breadcrumb and navbar.
             $extra_padding = rand(0, 1);
             if ($extra_padding == 1) {
                 $padding += 20;
@@ -69,33 +79,32 @@ function processor($css, $theme) {
         $themewww = $CFG->themewww.'/'.current_theme();
     }
 
-    $find[] = "[[bootstrap]]";
+    $find[] = "/*[[bootstrap]]*/";
     $replace[] = file_get_contents("$themedir/style/$subtheme/bootstrap.css");
 
-    $find[] = "[[fixed-nav-padding]]";
-    // This needs to be between bootstrap and bootstrap-responsive.
     if ($navbar_fixed == 1) {
+        $find[] = "/*[[fixed-nav-padding]]*/";
+        // This needs to be between bootstrap and bootstrap-responsive.
         $replace[] = "body {padding-top: {$padding}px;}";
-    } else {
-        $replace[] = '';
     }
 
-    $find[] = "[[bootstrap-responsive]]";
     if ($responsive == 1) {
+        $find[] = "/*[[bootstrap-responsive]]*/";
         $replace[] = file_get_contents("$themedir/style/bootstrap/bootstrap-responsive.css");
-    } else {
-        $replace[] = '';
     }
 
-    $find[] = "[[font-awesome]]";
     if ($awesome == 1) {
-        $fix = '[class*="icon-"] {background-image: none;}';
+        $find[] = "/*[[font-awesome]]*/";
+        // TODO: add setting for font awesome icon color.
+        $fix = "[class*=\"icon-\"] {color: $icon_color; background-image: none;}";
         $replace[] = file_get_contents("$themedir/style/font-awesome/font-awesome.css") . $fix;
 
         $find[] = "../font/fontawesome-webfont";
         $replace[] = "$themewww/font/fontawesome-webfont";
     } else {
-        $replace[] = '';
+        $find[] = "/*[[font-awesome]]*/";
+        // TODO: add setting for glyhpicon icon opacity.
+        $replace[] = "[class*=\"icon-\"] {opacity: $icon_opacity;}";
     }
 
     $find[] = "../img/glyphicons-halflings";
