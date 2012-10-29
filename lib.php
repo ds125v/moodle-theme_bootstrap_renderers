@@ -77,7 +77,7 @@ function less_compiler($css, $theme) {
     $less->setVariables(array(
         'swatch' => "'$swatch'",
         'navbarMargin' => $padding,
-        'php_fontAwesomePath' => "'$themewww'",
+        'php_fontAwesomePath' => "'$themewww/font'",
         'iconColor' => $icon_color,
         'iconOpacity' => $icon_opacity,
         'php_iconSpritePath' => "'$themewww/pix/glyphicons-halflings.png'",
