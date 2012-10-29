@@ -95,6 +95,7 @@ function less_compiler($css, $theme) {
 
     $less_input = '';
     $less_input .= '@import "bootstrap/less/bootstrap.less";';
+    $less_input .= 'body.navbar-fixed-top-padding{ padding-top: @navbarHeight + @padding};';
     if ($responsive) {
         $less_input .= '@import "bootstrap/less/responsive.less";';
     }
