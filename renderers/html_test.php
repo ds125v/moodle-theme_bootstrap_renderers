@@ -107,6 +107,140 @@ class htmlTest extends PHPUnit_Framework_TestCase {
         $expected = '';
 
         $this->assertSame($expected, $actual);
+    }
+    public function test_span_with_one_string_arg() {
 
+        $actual = html::span("some text");
+        $expected = '<span>some text</span>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_span_with_two_string_args() {
+
+        $actual = html::span('some classes', 'some text');
+        $expected = '<span class="some classes">some text</span>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_span_with_empty_second_arg() {
+
+        $actual = html::span('some classes', '');
+        $expected = '<span class="some classes"></span>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_span_with_attributes_arg() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::span($attributes);
+        $expected = '<span class=test data=0101></span>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_span_with_attributes_and_null_arg() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::span($attributes, null);
+        $expected = '<span class=test data=0101>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_span_with_attributes_and_empty_string_args() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::span($attributes, '');
+        $expected = '<span class=test data=0101></span>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_p_with_one_string_arg() {
+
+        $actual = html::p("some text");
+        $expected = '<p>some text</p>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_p_with_two_string_args() {
+
+        $actual = html::p('some classes', 'some text');
+        $expected = '<p class="some classes">some text</p>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_p_with_empty_second_arg() {
+
+        $actual = html::p('some classes', '');
+        $expected = '<p class="some classes"></p>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_p_with_attributes_arg() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::p($attributes);
+        $expected = '<p class=test data=0101></p>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_p_with_attributes_and_null_arg() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::p($attributes, null);
+        $expected = '<p class=test data=0101>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_p_with_attributes_and_empty_string_args() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::p($attributes, '');
+        $expected = '<p class=test data=0101></p>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_li_with_one_string_arg() {
+
+        $actual = html::li("some text");
+        $expected = '<li>some text</li>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_li_with_two_string_args() {
+
+        $actual = html::li('some classes', 'some text');
+        $expected = '<li class="some classes">some text</li>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_li_with_empty_second_arg() {
+
+        $actual = html::li('some classes', '');
+        $expected = '<li class="some classes"></li>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_li_with_attributes_arg() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::li($attributes);
+        $expected = '<li class=test data=0101></li>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_li_with_attributes_and_null_arg() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::li($attributes, null);
+        $expected = '<li class=test data=0101>';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_li_with_attributes_and_empty_string_args() {
+
+        $attributes = array('class' => 'test', 'data'=>'0101');
+        $actual = html::li($attributes, '');
+        $expected = '<li class=test data=0101></li>';
+
+        $this->assertSame($expected, $actual);
     }
 }

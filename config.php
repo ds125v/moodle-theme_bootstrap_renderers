@@ -23,7 +23,7 @@
 $THEME->name = 'bootstrap_renderers';
 $THEME->parents = array(); // Has to be present, even if empty.
 
-$THEME->sheets = array('bootstrap', 'undo', 'javascript', 'forms', 'tweaks');
+$THEME->sheets = array('less_compiler', 'undo');
 $THEME->editor_sheets = array('editor');
 
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';

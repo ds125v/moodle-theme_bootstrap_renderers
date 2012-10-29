@@ -22,34 +22,27 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-function processor($css, $theme) {
+require("less/lessc.inc.php");
 
+function processor($css, $theme) {
+    return less_compiler($css, $theme);
+}
+function less_compiler($css, $theme) {
+    $less_marker = 'This file will be entirely replaced with the output of less compilation.';
+    if (strpos($css, $less_marker) === false) {
+        return $css;
+    };
     global $CFG;
 
-    $subtheme_paddings = array(
-        'amelia' => '50',
-        'bootstrap' => '40',
-        'cerulean' => '50',
-        'cyborg' => '40',
-        'journal' => '60',
-        'readable' => '50',
-        'simplex' => '40',
-        'slate' => '40',
-        'spacelab' => '40',
-        'spruce' => '50',
-        'superhero' => '70',
-        'united' => '40',
-    );
-
-    $subtheme = $theme->settings->subtheme;
+    $swatch = $theme->settings->subtheme;
     $responsive = $theme->settings->responsive;
-    $navbar_fixed = $theme->settings->fixed;
     $awesome = $theme->settings->awesome;
-    $padding = $subtheme_paddings[$subtheme];
+    // TODO: add setting for padding between breadcrumb and fixed navbar.
+    $padding = 0;
     $icon_color = 'inherit';
     $icon_opacity = 1;
 
-    if ($subtheme == 'random') {
+    if ($swatch == 'random') {
         $colors = array('inherit', 'red', 'yellow', 'pink', 'purple', 'orange', 'blue', 'green');
         $color_key = array_rand($colors);
         $icon_color = $colors[$color_key];
@@ -58,57 +51,60 @@ function processor($css, $theme) {
         $opacity_key = array_rand($opacities);
         $icon_opacity = $colors[$opacity_key];
 
-        $subtheme = array_rand($subtheme_paddings);
-        $padding = $subtheme_paddings[$subtheme];
+        $swatches = array('amelia', 'cerulean', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'spruce', 'superhero', 'united');
+        $swatch = $swatches[array_rand($swatches)];
 
         $responsive = rand(0, 1);
         $awesome = rand(0, 1);
-        if (!empty($CFG->themedesignermode)) {
-            $navbar_fixed = (floor($_SERVER['REQUEST_TIME'] / 100)) % 2;
-            // TODO: add setting for padding between breadcrumb and navbar.
-            $extra_padding = rand(0, 1);
-            if ($extra_padding == 1) {
-                $padding += 20;
-            }
+        $extra_padding = rand(0, 1);
+        if ($extra_padding == 1) {
+            $padding = 20;
         }
     }
 
+    $current_theme = current_theme();
+
+    $cachedir = "$CFG->cachedir/theme/$current_theme";
+
     $themedir = $theme->dir;
-    $themewww = current_theme();
+
+    $themewww = $current_theme;
     if (isset($CFG->themewww)) {
-        $themewww = $CFG->themewww.'/'.current_theme();
+        $themewww = "$CFG->themewww/$current_theme";
     }
 
-    $find[] = "/*[[bootstrap]]*/";
-    $replace[] = file_get_contents("$themedir/style/$subtheme/bootstrap.css");
+    $less = new lessc;
+    $less->setVariables(array(
+        'swatch' => "'$swatch'",
+        'navbarMargin' => $padding,
+        'php_fontAwesomePath' => "'$themewww'",
+        'iconColor' => $icon_color,
+        'iconOpacity' => $icon_opacity,
+        'php_iconSpritePath' => "'$themewww/pix/glyphicons-halflings.png'",
+        'php_iconSpriteWhitePath' => "'$themewww/pix/glyphicons-halflings-white.png'",
+        'php_horizontalComponentOffset' => '200px',
+    ));
 
-    if ($navbar_fixed == 1) {
-        $find[] = "/*[[fixed-nav-padding]]*/";
-        // This needs to be between bootstrap and bootstrap-responsive.
-        $replace[] = "body {padding-top: {$padding}px;}";
-    }
-
-    if ($responsive == 1) {
-        $find[] = "/*[[bootstrap-responsive]]*/";
-        $replace[] = file_get_contents("$themedir/style/bootstrap/bootstrap-responsive.css");
-    }
-
-    if ($awesome == 1) {
-        $find[] = "/*[[font-awesome]]*/";
-        // TODO: add setting for font awesome icon color.
-        $fix = "[class*=\"icon-\"] {color: $icon_color; background-image: none;}";
-        $replace[] = file_get_contents("$themedir/style/font-awesome/font-awesome.css") . $fix;
-
-        $find[] = "../font/fontawesome-webfont";
-        $replace[] = "$themewww/font/fontawesome-webfont";
+    if ($awesome) {
+        $import_dirs[] = "$themedir/style/font-awesome";
     } else {
-        $find[] = "/*[[font-awesome]]*/";
-        // TODO: add setting for glyhpicon icon opacity.
-        $replace[] = "[class*=\"icon-\"] {opacity: $icon_opacity;}";
+        $import_dirs[] = "$themedir/style/glyphicons";
+    }
+    $import_dirs[] = "$themedir/style";
+    $less->setImportDir($import_dirs);
+
+    $less_input = '';
+    $less_input .= '@import "bootstrap/less/bootstrap.less";';
+    if ($responsive) {
+        $less_input .= '@import "bootstrap/less/responsive.less";';
+    }
+    if ($swatch != 'bootstrap') {
+        $less_input .= '@import "@{swatch}/variables.less";';
+        $less_input .= '@import "@{swatch}/bootswatch.less";';
+        $less_input .= '@import "bootstrap/less/utilities.less";';
     }
 
-    $find[] = "../img/glyphicons-halflings";
-    $replace[] = "$themewww/pix/glyphicons-halflings";
+    $less_input .= '@import "moodle/moodle.less";';
 
-    return str_replace($find, $replace, $css);
+    return $less->compile($less_input);
 }

@@ -60,15 +60,24 @@ $fluid = $PAGE->theme->settings->fluid;
 if ($PAGE->theme->settings->subtheme === 'random') {
     $navbar_inverse = rand(0, 1);
     $fluid = rand(0, 1);
-    if (!empty($CFG->themedesignermode)) {
-        // Needs to match with setting in CSS so doesn't work if CSS is cached.
-        $navbar_fixed = (floor($_SERVER['REQUEST_TIME'] / 100)) % 2;
-    }
 }
 
-$navbar_fixed = $navbar_fixed ? 'navbar-fixed-top' : '';
-$navbar_inverse = $navbar_inverse ? 'navbar-inverse' : '';
-$fluid = $fluid ? '-fluid' : '';
+if ($navbar_fixed == 1) {
+    $navbar_fixed = 'navbar-fixed-top';
+    $bodyclasses[] = $navbar_fixed.'-padding';
+} else {
+    $navbar_fixed = '';
+}
+if ($navbar_inverse == 1) {
+    $navbar_inverse = 'navbar-inverse';
+} else {
+    $navbar_inverse = '';
+}
+if ($fluid == 1) {
+    $fluid = '-fluid';
+} else {
+    $fluid = '';
+}
 
 $header = '';
 if ($hasheading || $hasnavbar) {
@@ -103,15 +112,15 @@ echo $OUTPUT->doctype() ?>
 
 <body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
 
-<div class="container<?php echo $fluid ?>">
+<div class=container<?php echo $fluid ?>>
 
 <div class="navbar <?php echo $navbar_inverse . ' ' . $navbar_fixed ?>">
-    <div class="navbar-inner">
-        <div class="container<?php echo $fluid ?>">
-            <a class="brand" href="<?php echo new moodle_url("/")?>"><?php echo $PAGE->heading?></a>
+    <div class=navbar-inner>
+        <div class=container<?php echo $fluid ?>>
+            <a class=brand href="<?php echo new moodle_url("/")?>"><?php echo $PAGE->heading?></a>
             <div class=nav-collapse>
-                <ul class="nav">
-                    <li class="active"><a href="<?php echo new moodle_url("/")?>">Home</a></li>
+                <ul class=nav>
+                    <li class=active><a href="<?php echo new moodle_url("/")?>">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -124,8 +133,8 @@ echo $OUTPUT->doctype() ?>
 </div>
 <?php echo $header; ?>
 
-<div class="container<?php echo $fluid ?>">
-<div id="page-content" class="row-fluid">
+<div class=container<?php echo $fluid ?>>
+<div id="page-content" class=row<?php echo $fluid ?>>
 
 <?php if ($hassidepre) : ?>
     <?php if ($hassidepre AND $hassidepost) : ?>

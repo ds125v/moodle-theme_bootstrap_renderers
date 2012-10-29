@@ -1,0 +1,36 @@
+.skip,
+.skip-block,
+.accesshide {
+    display: none;
+    /* Not a genuine accessability affordance, just hiding them
+     * TODO: fix this
+     */
+}
+#helppopupbox {
+    .alert;
+    // shadow taken from popover.less
+    .box-shadow(0 5px 10px rgba(0,0,0,.2));
+
+    h1 {
+        h4
+    }
+    a#closehelpbox img {display:none;}
+    a#closehelpbox:after {content: "\D7";}
+    a#closehelpbox {
+        .close
+    }
+}
+
+.fdescription.required img,
+img.req{
+    display: none;
+}
+.fdescription.required:after,
+.fitem.required .fitemtitle label:after {
+    content: "*";
+    color: red;
+}
+div.loginpanel,
+div.signuppanel {
+    .span6
+}
