@@ -61,13 +61,16 @@ function less_compiler($css, $theme) {
             $padding = 20;
         }
     }
-
+    $cache_name = md5(serialize(array($swatch, $responsive, $awesome, $extra_padding, $icon_color, $icon_opacity)));
     $current_theme = current_theme();
-
     $cachedir = "$CFG->cachedir/theme/$current_theme";
+    $cachefile = "$cachedir/$cache_name.css";
+
+    if (file_exists($cachefile)) {
+        return file_get_contents($cachefile);
+    }
 
     $themedir = $theme->dir;
-
     $themewww = $current_theme;
     if (isset($CFG->themewww)) {
         $themewww = "$CFG->themewww/$current_theme";
@@ -106,6 +109,7 @@ function less_compiler($css, $theme) {
     }
 
     $less_input .= '@import "moodle/moodle.less";';
-
-    return $less->compile($less_input);
+    $css = $less->compile($less_input);
+    file_put_contents($cachefile, $css);
+    return $css;
 }
