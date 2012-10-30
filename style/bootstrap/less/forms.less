@@ -81,7 +81,7 @@ input[type="color"],
   display: inline-block;
   height: @baseLineHeight;
   padding: 4px 6px;
-  margin-bottom: 9px;
+  margin-bottom: @baseLineHeight / 2;
   font-size: @baseFontSize;
   line-height: @baseLineHeight;
   color: @gray;
@@ -311,6 +311,11 @@ textarea[class*="span"],
 // Redeclare the fluid grid collapse since we undo the float for inputs
 .row-fluid .controls-row [class*="span"] {
   float: left;
+}
+// Explicity set top padding on all checkboxes/radios, not just first-child
+.controls-row .checkbox[class*="span"],
+.controls-row .radio[class*="span"] {
+  padding-top: 5px;
 }
 
 
