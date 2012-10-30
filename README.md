@@ -5,7 +5,7 @@ A developer theme for working on Moodle renderers that output Bootstrap compatib
 
 Check out a live demo, built from the latest code, which cycles though the various Bootstrap display options and Bootswatch colorschemes:
 
-[](http://moodle.iyware.com/?theme=bootstrap_renderersr)
+[http://moodle.iyware.com/?theme=bootstrap_renderers](http://moodle.iyware.com/?theme=bootstrap_renderers)
 
 TODO #1 (stuff I'm in the process of doing)
 ----
@@ -23,7 +23,6 @@ TODO #2 (stuff I'm secretly hoping someone else will do, to save me the bother)
 * make sure any future forms library (currently under discussion) fits the needs of Bootstrap
 * experiment with responsive layouts to see if two columns can be collapsed into one (putting pre- above post-) for medium screens
 * find out if anyone's doing work on a Zurb Foundation theme and see if we can work together: [http://foundation.zurb.com/](http://foundation.zurb.com/)
-* set up public demo site in Random mode to cycle through swatches and options
 * get TinyMCE to pick up the editor.css and use the classes it finds there
 * restyle the TinyMCE editor interface using Bootstrap
 * find a simpler editor that is Bootstrap aware and plug it into Moodle e.g. (bootstrap-wysihtml5)[http://jhollingworth.github.com/bootstrap-wysihtml5/] 
