@@ -1,7 +1,11 @@
 moodle-theme_bootstrap_renderers
 ================================
 
-A developer theme for working on Moodle renderers that output Bootstrap compatible HTML
+A developer theme for working on Moodle renderers that output Bootstrap compatible HTML.
+
+Check out a live demo, built from the latest code, which cycles though the various Bootstrap display options and Bootswatch colorschemes:
+
+[](http://moodle.iyware.com/?theme=bootstrap_renderersr)
 
 TODO #1 (stuff I'm in the process of doing)
 ----
