@@ -118,7 +118,7 @@ class html {
         return self::tag($tag, $attributes, $content);
     }
     private static function texty_tag($tag, $attributes) {
-        if (is_string($attributes)) {
+        if (!is_array($attributes)) {
             $content = $attributes;
             $attributes = array();
         } else {
