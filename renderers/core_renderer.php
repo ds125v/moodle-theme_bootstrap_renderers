@@ -103,8 +103,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $bc->add_class('block_with_controls');
         }
         $bc->add_class('well'); // Bootstrap style.
-        // Bit strange of bootstrap to hard code the style below but that's what the example does.
-        $bc->attributes['style'] = 'padding: 8px 0;';
+        $bc->add_class('well-small');
 
         $skiptitle = strip_tags($bc->title);
         if (empty($skiptitle)) {
