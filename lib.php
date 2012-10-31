@@ -38,6 +38,7 @@ function less_compiler($css, $theme) {
     $responsive = $theme->settings->responsive;
     $awesome = $theme->settings->awesome;
     // TODO: add setting for padding between breadcrumb and fixed navbar.
+    $extra_padding = 0;
     $padding = 0;
     $icon_color = 'inherit';
     $icon_opacity = 1;
