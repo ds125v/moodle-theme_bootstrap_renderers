@@ -117,6 +117,15 @@ class html {
         }
         return self::tag($tag, $attributes, $content);
     }
+    private static function texty_tag($tag, $attributes) {
+        if (!is_array($attributes)) {
+            $content = $attributes;
+            $attributes = array();
+        } else {
+            $content = '';
+        }
+        return self::tag($tag, $attributes, $content);
+    }
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
@@ -130,7 +139,10 @@ class html {
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
-    public static function p($attributes, $content) {
+    public static function p($attributes, $content=null) {
+        if (func_num_args() === 1) {
+            return self::texty_tag('p', $attributes);
+        }
         return self::classy_tag('p', $attributes, $content);
     }
 
@@ -142,9 +154,8 @@ class html {
     }
 
     public static function span($attributes, $content=null) {
-        if ($content === null) {
-            $content = $attributes;
-            $attributes = array();
+        if (func_num_args() === 1) {
+            return self::texty_tag('span', $attributes);
         }
         return self::classy_tag('span', $attributes, $content);
     }
@@ -191,9 +202,8 @@ class html {
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function li($attributes, $content=null) {
-        if ($content === null) {
-            $content = $attributes;
-            $attributes = array();
+        if (func_num_args() === 1) {
+            return self::texty_tag('li', $attributes);
         }
         return self::classy_tag('li', $attributes, $content);
     }

@@ -1,8 +1,0 @@
-.skip,
-.skip-block,
-.accesshide {
-    display: none;
-    /* Not a genuine accessability affordance, just hiding them
-     * TODO: fix this
-     */
-}

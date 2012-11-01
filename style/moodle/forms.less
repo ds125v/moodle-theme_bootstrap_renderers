@@ -1,0 +1,183 @@
+/**
+ * Moodle forms HTML isn't changeable via renderers (yet?) so this
+ * .less file imports styles from the bootstrap @variables file and 
+ * adds them to the existing Moodle form CSS ids and classes.
+ *
+ * Which exact files are imported is controlled by setting the 
+ * directory search path before calling this file.
+ */
+
+.form-label,
+.mform .fitem div.fitemtitle {
+    .form-horizontal .control-label
+}
+.fitem,
+.form-setting {
+    .form-horizontal .control-group
+}
+div.form-defaultinfo,
+.form-label span.form-shortname {
+    small
+}
+
+input[type="password"],
+input[type="text"] {
+    /* Corrects some YUI settings. */
+    width: 206px;
+}
+.form-checkbox,
+.fcheckbox span,
+.fradio,
+div.felement.fcheckbox,
+#defineroletable td.inherit label,
+#defineroletable td.allow label,
+#defineroletable td.prevent label,
+#defineroletable td.prohibit label,
+.mform fieldset .unmask,
+.fduration span,
+.fgroup span,
+.fdate_time_selector span,
+form#adminsettings .form-item .form-setting .form-password .unmask,
+.form-multicheckbox li { // containers for checkboxes
+  .checkbox
+}
+
+fieldset.felement.fgroup label, // labels round completion targets
+.fp-content-center td.mdl-right label, // labels in tables in file-picker
+input[type="checkbox"] + label { // labels just sitting after a checkbox
+    display: inline-block;
+}
+
+#defineroletable td.inherit label input[type="checkbox"],
+#defineroletable td.inherit label input[type="radio"],
+#defineroletable td.allow label input[type="checkbox"],
+#defineroletable td.allow label input[type="radio"],
+#defineroletable td.prevent label input[type="checkbox"],
+#defineroletable td.prevent label input[type="radio"],
+#defineroletable td.prohibit label input[type="checkbox"],
+#defineroletable td.prohibit label input[type="radio"],
+.form-checkbox input[type="checkbox"],
+.fcheckbox input[type="checkbox"],
+.form-multicheckbox input[type="checkbox"],
+.fradio input[type="radio"],
+.radio input[type="radio"],
+.unmask input[type="checkbox"],
+.fdate_time_selector span > input[type="checkbox"],
+.fgroup span > input[type="checkbox"],
+.fduration span > input[type="checkbox"] { 
+// copied from .checkbox input[type="checkbox"] 
+  float: left;
+  margin-left: -18px;
+}
+
+.fcheckbox,
+.fradio,
+div.felement.fcheckbox,
+.form-checkbox,
+.form-multicheckbox {
+  .controls > .checkbox
+}
+input[type="checkbox"] + label + input[type="checkbox"],
+input[type="checkbox"] + input[type="checkbox"] {
+  .checkbox.inline + .checkbox.inline
+}
+
+#fgroup_id_buttonar,
+#fitem_id_submitbutton,
+table#form td.submit,
+.form-buttons {
+  .form-actions
+}
+.mform fieldset .fitem_fsubmit .felement.fsubmit {
+    margin-left: 20px;
+}
+
+table#form td.submit,
+#adminsettings .form-buttons,
+.settingsform .form-buttons,
+.fp-content-center form + div,
+#group_id_buttonar {
+  .form-horizontal .form-actions;
+}
+.mform .fitem fieldset.felement,
+.mform .fitem .felement,
+#adminsettings .form-item .form-description,
+#adminsettings .settingsform .form-setting,
+#adminsettings .adminsettings .form-setting,
+.path-backup .mform .fitem fieldset.felement,
+.fp-content-center form tr td,
+#page-mod-forum-search .c1 {
+  .form-horizontal .controls;
+}
+
+.formsettingheading {
+  .form-horizontal .help-block
+}
+
+.form-multicheckbox ul {
+  ul.unstyled
+}
+#adminsettings h3.main,
+.backup-section h2.header,
+.backup-restore .backup-section .backup-sub-section h3.subheader {
+    legend
+}
+
+// buttons
+
+.path-admin .roleassigntable #buttonscell #add,
+.path-admin .roleassigntable #buttonscell #remove input,
+input[id$="_clearbutton"],
+button,
+input.form-submit,
+input[type="submit"],
+input[type="button"],
+input#id_submitbutton,
+input#id_submitbutton2,
+input#id_cancel {
+  .btn
+}
+
+input.form-submit,
+input#id_submitbutton,
+input#id_submitbutton2,
+td.submit input {
+  .btn-primary
+}
+input[id$="_clearbutton"]:active,
+td.submit input:active {
+  .btn-info.active
+}
+input[id$="_clearbutton"],
+input#id_cancel {
+  .btn-warning
+}
+.user-enroller-panel .uep-search-results .user .options .enrol {
+  .btn-mini
+}
+
+// login page
+
+.loginpanel  .form-label {
+    width: 80px;
+    padding-right: 20px;
+}
+.loginpanel  #loginbtn {
+    display: block;
+    margin-left: 100px;
+}
+.loginbox.onecolumn {
+    width: 50%;
+    margin: auto;
+}
+.loginbox.twocolumns {
+    width: 100%;
+}
+.loginbox.twocolumns .loginpanel {
+    width: 48%;
+    float: left;
+}
+.loginbox.twocolumns .signuppanel {
+    width: 48%;
+    float: right;
+}
