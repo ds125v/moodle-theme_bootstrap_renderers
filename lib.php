@@ -85,7 +85,7 @@ function less_compiler($css, $theme) {
         'iconColor' => $icon_color,
         'iconOpacity' => $icon_opacity,
         'php_iconSpritePath' => "'$themewww/pix/glyphicons-halflings.png'",
-        'php_iconSpriteWhitePath' => "'$themewww/pix/glyphicons-halflings-white.png'",
+        'php_iconWhiteSpritePath' => "'$themewww/pix/glyphicons-halflings-white.png'",
         'php_horizontalComponentOffset' => '200px',
     ));
 
