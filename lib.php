@@ -85,7 +85,7 @@ function less_compiler($css, $theme) {
         'iconColor' => $icon_color,
         'iconOpacity' => $icon_opacity,
         'php_iconSpritePath' => "'$themewww/pix/glyphicons-halflings.png'",
-        'php_iconSpriteWhitePath' => "'$themewww/pix/glyphicons-halflings-white.png'",
+        'php_iconWhiteSpritePath' => "'$themewww/pix/glyphicons-halflings-white.png'",
         'php_horizontalComponentOffset' => '200px',
     ));
 
@@ -99,7 +99,7 @@ function less_compiler($css, $theme) {
 
     $less_input = '';
     $less_input .= '@import "bootstrap/less/bootstrap.less";';
-    $less_input .= 'body.navbar-fixed-top-padding{ padding-top: @navbarHeight + @navbarMargin};';
+    $less_input .= '@media (min-width: 981px) {body.navbar-fixed-top-padding {padding-top: @navbarHeight + @navbarMargin}};';
     if ($responsive) {
         $less_input .= '@import "bootstrap/less/responsive.less";';
     }
