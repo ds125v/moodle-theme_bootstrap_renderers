@@ -161,6 +161,20 @@ class bootstrap {
             html::div('input-append', html::input($input_attributes) . html::submit(array('value'=>$submit_text))));
     }
 
+    public static function dropdown($text, $content) {
+        return html::li('dropdown',
+                html::a(array('class'=>'dropdown-toggle', 'href'=>'#', 'data-toggle'=>'dropdown'),
+                "$text <b class=caret></b>") . $content);
+    }
+    public static function list_divider() {
+        return html::li(array('class'=>'divider'));
+    }
+    public static function icon_link($href, $icon, $text) {
+        return html::a($href, self::icon($icon) . " $text");
+    }
+    public static function li_icon_link($href, $icon, $text) {
+        return html::li(self::icon_link($href, $icon, $text));
+    }
     /**
      * This is the only function in the class with knowledge of Moodle,
      * only because I've got nowhere else to put it.
