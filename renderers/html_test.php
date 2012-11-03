@@ -243,4 +243,27 @@ class htmlTest extends PHPUnit_Framework_TestCase {
 
         $this->assertSame($expected, $actual);
     }
+    public function test_simple_url() {
+
+        $actual = html::url('http://www.example.com');
+        $expected = 'http://www.example.com';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_url_with_single_param() {
+
+        $param = array('one'=>'fish');
+        $actual = html::url('http://www.example.com', $param);
+        $expected = 'http://www.example.com?one=fish';
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_url_with_two_params() {
+
+        $params = array('one'=>'money', 'two'=>'show');
+        $actual = html::url('http://www.example.com', $params);
+        $expected = 'http://www.example.com?one=money&two=show';
+
+        $this->assertSame($expected, $actual);
+    }
 }

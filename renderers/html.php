@@ -18,7 +18,7 @@
  * HTML utility functions
  *
  * @package    theme_bootstrap_renderers
- * @copyright  2012 
+ * @copyright  2012
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -170,6 +170,19 @@ class html {
     public static function input($attributes, $content = null) {
         return self::classy_tag('input', $attributes, $content);
     }
+    public static function label($attributes, $content = null) {
+        return self::texty_tag('label', $attributes, $content);
+    }
+    public static function checkbox($new_attributes, $label) {
+        $attributes = array('type'=>'checkbox', 'value'=>1);
+        if (!is_array($new_attributes)) {
+            $attributes['id'] = (string)$new_attributes;
+            $attributes['name'] = (string)$new_attributes;
+        } else {
+            $attributes = array_merge($attributes, $new_attributes);
+        }
+        return self::label(self::input($attributes) . " $label");
+    }
     public static function input_hidden($name, $value) {
         $attributes['type'] = 'hidden';
         $attributes['name'] = $name;
@@ -216,5 +229,21 @@ class html {
         } else {
             return '<li>'.implode($glue, $items).'</li>';
         }
+    }
+    public static function url($base, $params=null) {
+        if ($params === null) {
+            return $base;
+        } else {
+
+            return $base . '?' . self::params($params);
+        }
+    }
+    public static function params($params) {
+        foreach($params as $name=>$value) {
+            $name = urlencode($name);
+            $value = urlencode($value);
+            $output[] = "$name=$value";
+        }
+        return implode('&', $output);
     }
 }
