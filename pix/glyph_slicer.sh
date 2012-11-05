@@ -61,3 +61,8 @@ cp icon-copy*.png t/copy.png
 # will cut them according to position from sprites.less
 
 rm glyphs+2_*.png
+
+# optimize sizes
+optipng *.png
+optipng t/*.png
+optipng i/*.png
