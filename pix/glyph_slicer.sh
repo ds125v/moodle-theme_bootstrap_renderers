@@ -39,9 +39,9 @@ mv glyphs+2_91.png t/right.png
 mv glyphs+2_92.png t/up.png
 mv glyphs+2_93.png t/down.png
 mv glyphs+2_97.png t/add.png
+cp t/add.png t/enroladd.png
 mv glyphs+2_98.png t/minus.png
 mv glyphs+2_99.png i/course.png
-cp t/add.png t/enroladd.png
 mv glyphs+2_101.png i/cohort.png
 mv glyphs+2_104.png t/hide.png
 cp t/hide.png i/hide.png
