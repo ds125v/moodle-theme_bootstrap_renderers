@@ -23,10 +23,11 @@
  */
 
 require_once('html.php');
+require_once('bootsnipp.php');
 require_once('bootstrap.php');
+require_once('bootstrap_pager.php');
 require_once('classes.php');
 require_once('pager.php');
-require_once('bootstrap_pager.php');
 
 class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // Trying to keep the order of definition the same as
@@ -41,6 +42,54 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $parts = explode(' ', trim(get_html_lang(true)));
         return $parts[0] . ' ' . $parts[1]; // Ditch xml:lang part.
     }
+
+    public function login_info() {
+        global $USER, $CFG, $DB, $SESSION;
+
+        if (during_initial_install()) {
+            return '';
+        }
+
+        $course = $this->page->course;
+        if (empty($course->id)) {
+            // $course->id is not defined during installation
+            return '';
+        }
+
+        if (session_is_loggedinas()) {
+            $realuser = session_get_realuser();
+            $fullname = fullname($realuser, true);
+            $real_user_link = html::url("$CFG->wwwroot/course/loginas.php", array('id'=>$course->id, 'sesskey'=>sesskey()));
+        } else {
+            $realuserinfo = '';
+        }
+        if (!isloggedin()) {
+            return bootsnipp::sign_up_sign_in(new moodle_url('/login/index.php'));
+        }
+        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        $fullname = fullname($USER, true);
+        $profile_link = html::url("$CFG->wwwroot/user/profile.php", array('id'=>$USER->id));
+        $output = html::a($profile_link, $fullname);
+        if (is_mnet_remote_user($USER) and $idprovider = $DB->get_record('mnet_host', array('id'=>$USER->mnethostid))) {
+            $output .= " from <a href=\"{$idprovider->wwwroot}\">{$idprovider->name}</a>";
+        }
+
+        if (isguestuser()) {
+            $loggedinas = $realuserinfo.get_string('loggedinasguest');
+            // provide login dropdown, blend of sign in/ signed in?
+        } else if (is_role_switched($course->id)) {
+            // display switched user info, switch back in dropdown
+            $rolename = '';
+            if ($role = $DB->get_record('role', array('id'=>$USER->access['rsw'][$context->path]))) {
+                $rolename = ': '.format_string($role->name);
+            }
+            $loggedinas = get_string('loggedinas', 'moodle', $output).$rolename.
+                      " (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".sesskey()."\">".get_string('switchrolereturn').'</a>)';
+        } else {
+            $logout_link = html::url("$CFG->wwwroot/login/logout.php", array('sesskey'=>sesskey()));
+            return bootsnipp::signed_in($fullname, $profile_link, $logout_link);
+        }
+}
 
     public function home_link() {
         global $CFG, $SITE;

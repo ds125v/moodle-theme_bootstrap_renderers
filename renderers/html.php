@@ -130,7 +130,17 @@ class html {
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function a($attributes, $content) {
-        return self::classy_tag('a', $attributes, $content);
+        if (get_class($attributes) == 'moodle_url') {
+            $attributes = (string)$attributes;
+        }
+        if (is_string($attributes)) {
+            if ($attributes === '') {
+                $attributes = array();
+            } else {
+                $attributes = array('href'=>$attributes);
+            }
+        }
+        return self::tag('a', $attributes, $content);
     }
     public static function link($href, $content) {
         $attributes['href'] = $href;
@@ -239,7 +249,7 @@ class html {
         }
     }
     public static function params($params) {
-        foreach($params as $name=>$value) {
+        foreach ($params as $name => $value) {
             $name = urlencode($name);
             $value = urlencode($value);
             $output[] = "$name=$value";

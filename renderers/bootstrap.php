@@ -166,6 +166,13 @@ class bootstrap {
                 html::a(array('class'=>'dropdown-toggle', 'href'=>'#', 'data-toggle'=>'dropdown'),
                 "$text <b class=caret></b>") . $content);
     }
+    public static function dropdown_menu($text, $content) {
+                return self::dropdown($text, self::menu($content));
+    }
+    private static function menu($items) {
+        $attributes = array('class'=>'dropdown-menu', 'role'=>'menu', 'aria-labelledby'=>'dropdownMenu');
+        return html::ul($attributes, $items);
+    }
     public static function list_divider() {
         return html::li(array('class'=>'divider'));
     }
