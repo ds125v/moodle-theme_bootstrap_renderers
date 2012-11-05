@@ -75,6 +75,7 @@ li.activity.label,
  * it to white?
  */
 
+li.section.hidden,
 .block.hidden,
 .block.invisible {
   visibility: visible;
