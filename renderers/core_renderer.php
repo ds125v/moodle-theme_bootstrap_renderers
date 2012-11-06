@@ -443,54 +443,31 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return bootstrap::breadcrumb($links);
     }
     public function custom_menu($custommenuitems = '') {
-        return "<h1>hello</h1>";
         global $CFG;
-        if (empty($custommenuitems) && !empty($CFG->custommenuitems)) {
-            $custommenuitems = $CFG->custommenuitems;
-        }
         if (empty($custommenuitems)) {
-            return '';
+            if (empty($CFG->custommenuitems)) {
+                return '';
+            } else {
+                $custommenuitems = $CFG->custommenuitems;
+            }
         }
         $custommenu = new custom_menu($custommenuitems, current_language());
         return $this->render_custom_menu($custommenu);
     }
 
     protected function render_custom_menu(custom_menu $menu) {
-        static $menucount = 0;
-        // If the menu has no children return an empty string
         if (!$menu->has_children()) {
             return '';
         }
-        // Increment the menu count. This is used for ID's that get worked with
-        // in JavaScript as is essential
-        $menucount++;
-        // Initialise this custom menu (the custom menu object is contained in javascript-static
-        $jscode = js_writer::function_call_with_Y('M.core_custom_menu.init', array('custom_menu_'.$menucount));
-        $jscode = "(function(){{$jscode}})";
-        $this->page->requires->yui_module('node-menunav', $jscode);
-        // Build the root nodes as required by YUI
-        $content = html_writer::start_tag('div', array('id'=>'custom_menu_'.$menucount, 'class'=>'yui3-menu yui3-menu-horizontal javascript-disabled'));
-        $content .= html_writer::start_tag('div', array('class'=>'yui3-menu-content'));
-        $content .= html_writer::start_tag('ul');
-        // Render each child
         foreach ($menu->get_children() as $item) {
-            $content .= $this->render_custom_menu_item($item);
+            $items[] = $this->render_custom_menu_item($item);
         }
-        // Close the open tags
-        $content .= html_writer::end_tag('ul');
-        $content .= html_writer::end_tag('div');
-        $content .= html_writer::end_tag('div');
-        // Return the custom menu
-        return $content;
+        return html::ul('nav', $items);
     }
 
 
     protected function render_custom_menu_item(custom_menu_item $menunode) {
-        // Required to ensure we get unique trackable id's
-        static $submenucount = 0;
         if ($menunode->has_children()) {
-            // If the child has menus render it as a sub menu
-            $submenucount++;
             $content = html_writer::start_tag('li');
             if ($menunode->get_url() !== null) {
                 $url = $menunode->get_url();
@@ -509,17 +486,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $content .= html_writer::end_tag('div');
             $content .= html_writer::end_tag('li');
         } else {
-            // The node doesn't have children so produce a final menuitem
-            $content = html_writer::start_tag('li', array('class'=>'yui3-menuitem'));
-            if ($menunode->get_url() !== null) {
-                $url = $menunode->get_url();
-            } else {
-                $url = '#';
+            $icon = $menunode->get_title();
+            if (strpos($icon, 'icon-') === 0) {
+                $icon = substr($icon, 5);
             }
-            $content .= html_writer::link($url, $menunode->get_text(), array('class'=>'yui3-menuitem-content', 'title'=>$menunode->get_title()));
-            $content .= html_writer::end_tag('li');
+            return bootstrap::li_icon_link($menunode->get_url(), $icon, $menunode->get_text());
         }
-        // Return the sub menu
-        return $content;
     }
 }

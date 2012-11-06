@@ -124,11 +124,7 @@ echo $OUTPUT->doctype() ?>
             </a>
             <a class=brand href="<?php echo new moodle_url("/")?>"><?php echo $PAGE->heading?></a>
             <div class="nav-collapse collapse">
-                <ul class=nav>
-                    <li class=active><a href="<?php echo new moodle_url("/")?>"><i class=icon-home></i> Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+                  <?php echo $custommenu ?>
                 <div class="pull-right">
                   <?php echo $OUTPUT->login_info() ?>
 </div>
