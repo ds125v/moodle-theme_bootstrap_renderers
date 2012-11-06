@@ -130,7 +130,7 @@ class html {
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function a($attributes, $content) {
-        if (get_class($attributes) == 'moodle_url') {
+        if (is_object($attributes) && get_class($attributes) == 'moodle_url') {
             $attributes = (string)$attributes;
         }
         if (is_string($attributes)) {

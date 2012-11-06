@@ -42,11 +42,23 @@ class bootsnipp {
                     html::checkbox('rememberusername', 'Remember username') .
                     html::submit($submit)))));
     }
-    public static function signed_in($username, $profile_link, $logout_link) {
-        return html::ul('nav pull-right',
-        bootstrap::dropdown_menu("Welcome, $username",
-            bootstrap::li_icon_link($profile_link, 'user', 'Profile') .
-            bootstrap::list_divider() .
-            bootstrap::li_icon_link($logout_link, 'off', 'Logout')));
+    public static function guest_user() {
+        return "guest user!";
+    }
+    public static function signed_in($user, $mnet, $real, $role_switch, $logout) {
+        $links[] = bootstrap::li_icon_link($user['link'], 'user', 'Profile');
+        if ($mnet !== null) {
+            $links[] = bootstrap::li_icon_link($mnet['link'], 'globe', $mnet['name']);
+        }
+        if ($role_switch !== null) {
+            $links[] = bootstrap::li_icon_link($role_switch['link'], 'repeat', $role_switch['name']);
+        }
+        if ($real !== null) {
+            $links[] = bootstrap::li_icon_link($real['link'], 'user', $real['name']);
+        }
+        $links[] = bootstrap::list_divider();
+        $links[] = bootstrap::li_icon_link($logout['link'], 'off', $logout['name']);
+
+        return html::ul('nav pull-right', bootstrap::dropdown_menu($user['name'], $links));
     }
 }
