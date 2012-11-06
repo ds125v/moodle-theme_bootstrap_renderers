@@ -67,6 +67,9 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             return bootsnipp::sign_up_sign_in(new moodle_url('/login/index.php'));
         }
 
+        $logout['link'] = html::url("$CFG->wwwroot/login/logout.php", array('sesskey'=>sesskey()));
+        $logout['name'] = get_string('logout');
+
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
         $user['name'] = fullname($USER, true);
         $user['link'] = html::url("$CFG->wwwroot/user/profile.php", array('id'=>$USER->id));
@@ -79,7 +82,9 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         }
 
         if (isguestuser()) {
-            return bootsnipp::guest_user();
+            $guest['link'] = get_login_url();
+            $guest['name'] = get_string('login');
+            return bootsnipp::guest_user($user['name'], $guest, $logout);
         }
         if (is_role_switched($course->id)) {
             if ($role = $DB->get_record('role', array('id'=>$USER->access['rsw'][$context->path]))) {
@@ -90,10 +95,22 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         } else {
             $role_switch = null;
         }
-
-        $logout['link'] = html::url("$CFG->wwwroot/login/logout.php", array('sesskey'=>sesskey()));
-        $logout['name'] = get_string('logout');
-        return bootsnipp::signed_in($user, $mnet, $real, $role_switch, $logout);
+        if (isset($SESSION->justloggedin)) {
+            unset($SESSION->justloggedin);
+            if (!empty($CFG->displayloginfailures) && !isguestuser()) {
+                if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
+                    if ($count = count_login_failures($CFG->displayloginfailures, $USER->username, $USER->lastlogin)) {
+                            $loginfailures['link'] = "$CFG->wwwroot/report/log/index.php?chooselog=1&id=1&modid=site_errors";
+                            if (empty($count->accounts)) {
+                                $loginfailures['name'] = get_string('failedloginattempts', '', $count);
+                            } else {
+                                $loginfailures['name'] = get_string('failedloginattemptsall', '', $count);
+                            }
+                    }
+                }
+            }
+        }
+        return bootsnipp::signed_in($user, $loginfailures, $mnet, $real, $role_switch, $logout);
     }
 
     public function home_link() {
