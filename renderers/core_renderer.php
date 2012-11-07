@@ -98,14 +98,15 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         if (isset($SESSION->justloggedin)) {
             unset($SESSION->justloggedin);
             if (!empty($CFG->displayloginfailures) && !isguestuser()) {
-                if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
+                if (file_exists("$CFG->dirroot/report/log/index.php")
+                    and has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
                     if ($count = count_login_failures($CFG->displayloginfailures, $USER->username, $USER->lastlogin)) {
-                            $loginfailures['link'] = "$CFG->wwwroot/report/log/index.php?chooselog=1&id=1&modid=site_errors";
-                            if (empty($count->accounts)) {
-                                $loginfailures['name'] = get_string('failedloginattempts', '', $count);
-                            } else {
-                                $loginfailures['name'] = get_string('failedloginattemptsall', '', $count);
-                            }
+                        $loginfailures['link'] = "$CFG->wwwroot/report/log/index.php?chooselog=1&id=1&modid=site_errors";
+                        if (empty($count->accounts)) {
+                            $loginfailures['name'] = get_string('failedloginattempts', '', $count);
+                        } else {
+                            $loginfailures['name'] = get_string('failedloginattemptsall', '', $count);
+                        }
                     }
                 }
             }
@@ -456,41 +457,39 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function render_custom_menu(custom_menu $menu) {
-        if (!$menu->has_children()) {
-            return '';
-        }
         foreach ($menu->get_children() as $item) {
             $items[] = $this->render_custom_menu_item($item);
         }
-        return html::ul('nav', $items);
+        if (isset($items)) {
+            return html::ul('nav', $items);
+        } else {
+            return '';
+        }
     }
 
-
-    protected function render_custom_menu_item(custom_menu_item $menunode) {
-        if ($menunode->has_children()) {
-            $content = html_writer::start_tag('li');
-            if ($menunode->get_url() !== null) {
-                $url = $menunode->get_url();
-            } else {
-                $url = '#cm_submenu_'.$submenucount;
-            }
-            $content .= html_writer::link($url, $menunode->get_text(), array('class'=>'yui3-menu-label', 'title'=>$menunode->get_title()));
-            $content .= html_writer::start_tag('div', array('id'=>'cm_submenu_'.$submenucount, 'class'=>'yui3-menu custom_menu_submenu'));
-            $content .= html_writer::start_tag('div', array('class'=>'yui3-menu-content'));
-            $content .= html_writer::start_tag('ul');
-            foreach ($menunode->get_children() as $menunode) {
-                $content .= $this->render_custom_menu_item($menunode);
-            }
-            $content .= html_writer::end_tag('ul');
-            $content .= html_writer::end_tag('div');
-            $content .= html_writer::end_tag('div');
-            $content .= html_writer::end_tag('li');
-        } else {
-            $icon = $menunode->get_title();
-            if (strpos($icon, 'icon-') === 0) {
-                $icon = substr($icon, 5);
-            }
-            return bootstrap::li_icon_link($menunode->get_url(), $icon, $menunode->get_text());
+    protected function render_custom_menu_item(custom_menu_item $menunode, $submenu=null) {
+        if ('list_divider' === $menunode->get_text()) {
+            return bootstrap::list_divider();
         }
+        if (!$menunode->has_children()) {
+            return $this->render_custom_menu_leaf($menunode);
+        }
+        foreach ($menunode->get_children() as $child) {
+            $items[] = $this->render_custom_menu_item($child, true);
+        }
+        if ($submenu === true) {
+            return html::li(bootstrap::dropdown_submenu($menunode->get_text(), $items));
+        } else {
+            return html::li(bootstrap::dropdown_menu($menunode->get_text(), $items));
+        }
+    }
+    private function render_custom_menu_leaf(custom_menu_item $menunode) {
+        $icon = $menunode->get_title();
+        if (strpos($icon, 'icon-') === 0) {
+            $icon = substr($icon, 5);
+        } else {
+            $icon = '';
+        }
+        return bootstrap::li_icon_link($menunode->get_url(), $icon, $menunode->get_text());
     }
 }
