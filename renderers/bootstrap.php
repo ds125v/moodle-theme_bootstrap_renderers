@@ -97,29 +97,33 @@ class bootstrap {
         return self::badge('inverse', $text);
     }
 
-    public static function alert($type, $text) {
+    public static function alert($type, $text, $close=false) {
         if ($type != '') {
             $type = ' alert-' . $type;
         }
+        if ($close === true) {
+            $button = '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+            $text = $button.$text;
+        }
         return "<div class=\"alert$type\">$text</div>";
     }
-    public static function alert_default($text) {
-        return self::alert('', $text);
+    public static function alert_default($text, $close=false) {
+        return self::alert('', $text, $close);
     }
-    public static function alert_success($text) {
-        return self::alert('success', $text);
+    public static function alert_success($text, $close=false) {
+        return self::alert('success', $text, $close);
     }
-    public static function alert_error($text) {
-        return self::alert('error', $text);
+    public static function alert_error($text, $close=false) {
+        return self::alert('error', $text, $close);
     }
-    public static function alert_info($text) {
-        return self::alert('info', $text);
+    public static function alert_info($text, $close=false) {
+        return self::alert('info', $text, $close);
     }
-    public static function alert_block($text) {
-        return self::alert('block', $text);
+    public static function alert_block($text, $close=false) {
+        return self::alert('block', $text, $close);
     }
-    public static function alert_block_info($text) {
-        return self::alert('block alert-info', $text);
+    public static function alert_block_info($text, $close=false) {
+        return self::alert('block alert-info', $text, $close);
     }
 
     public static function initialism($short, $full) {
