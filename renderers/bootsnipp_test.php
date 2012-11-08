@@ -27,4 +27,15 @@ require_once('bootsnipp.php');
 
 class bootsnipp_test extends PHPUnit_Framework_TestCase {
 
+    public function test_guest_user() {
+        $guest['name'] = 'Login';
+        $guest['link'] = 'http://www.example.com/login/index.php';
+        $logout['name'] = 'Logout';
+        $logout['link'] = 'http://www.example.com/login/logout.php?sesskey=abcdefghij';
+        $actual = bootsnipp::guest_user('Guest User', $guest, $logout);
+        $this->assertContains('icon-off', $actual);
+        $this->assertContains('icon-user', $actual);
+    }
+
+
 }
