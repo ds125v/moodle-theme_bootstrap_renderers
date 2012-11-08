@@ -1,44 +1,68 @@
 #!/bin/bash
-convert -page 480x168+5+5 -background transparent $1 -flatten with_padding.png
+convert -page 480x168+5+5 -background transparent glyphicons-halflings*.png -flatten with_padding.png
 
-convert with_padding.png -crop 20x7@ +repage +adjoin glyphs+1_%d.png
+convert with_padding.png -crop 20x7@ +repage +adjoin glyphs+2_%d.png
 
-convert glyphs+1_* -shave 5x5 glyphs+2_%d.png
+rm with_padding.png
+
+mogrify  -shave 5x5 glyphs+2_*.png
 
 # move and rename
-mkdir -p pix/t
-mkdir -p pix/i
-mv glyphs+2_5.png pix/t/hide.png
-cp pix/t/hide.png pix/i/hide.png
-mv glyphs+2_6.png pix/t/show.png
-cp pix/t/show.png pix/i/show.png
-mv glyphs+2_15.png pix/t/expanded.png
-mv glyphs+2_20.png pix/t/move.png
-mv glyphs+2_39.png pix/i/settings.png
-mv glyphs+2_41.png pix/i/filter.png
-mv glyphs+2_44.png pix/t/delete.png
-mv glyphs+2_57.png pix/t/backup.png
-mv glyphs+2_58.png pix/t/restore.png
-mv glyphs+2_85.png pix/i/info.png
-mv glyphs+2_95.png pix/i/marked.png
-mv glyphs+2_96.png pix/t/editstring.png
-mv glyphs+2_100.png pix/i/edit.png
-cp pix/i/edit.png pix/t/edit.png
-mv glyphs+2_101.png pix/i/cohort.png
-mv glyphs+2_103.png pix/i/move_2d.png
-mv glyphs+2_106.png pix/i/marker.png
-mv glyphs+2_116.png pix/t/collapsed.png
-mv glyphs+2_117.png pix/i/users.png
-cp pix/i/users.png pix/i/roles.png
-mv glyphs+2_118.png pix/t/switch_plus.png
-mv glyphs+2_119.png pix/t/switch_minus.png
-mv glyphs+2_122.png pix/help.png
-mv glyphs+2_129.png pix/t/left.png
-mv glyphs+2_130.png pix/t/right.png
-mv glyphs+2_131.png pix/t/up.png
-mv glyphs+2_132.png pix/t/down.png
-mv glyphs+2_136.png pix/t/add.png
-cp pix/t/add.png pix/t/enroladd.png
-mv glyphs+2_137.png pix/t/minus.png
+mkdir -p t
+mkdir -p i
+mv glyphs+2_5.png i/marked.png
+mv glyphs+2_6.png i/marker.png
+mv glyphs+2_7.png i/users.png
+cp i/users.png i/roles.png
+cp i/users.png i/group.png
+mv glyphs+2_11.png i/report.png
+mv glyphs+2_12.png i/grades.png
+mv glyphs+2_13.png t/delete.png
+mv glyphs+2_18.png i/checkpermissions.png
+mv glyphs+2_25.png t/backup.png
+cp t/backup.png i/backup.png
+mv glyphs+2_26.png t/restore.png
+mv glyphs+2_29.png i/return.png
+cp t/restore.png i/restore.png
+mv glyphs+2_60.png t/editstring.png
+mv glyphs+2_64.png i/edit.png
+cp i/edit.png t/edit.png
+mv glyphs+2_65.png i/publish.png
+mv glyphs+2_67.png i/move_2d.png
+mv glyphs+2_79.png t/collapsed.png
+mv glyphs+2_80.png t/switch_plus.png
+mv glyphs+2_81.png t/switch_minus.png
+mv glyphs+2_84.png help.png
+mv glyphs+2_85.png i/info.png
+mv glyphs+2_90.png t/left.png
+mv glyphs+2_91.png t/right.png
+mv glyphs+2_92.png t/up.png
+mv glyphs+2_93.png t/down.png
+mv glyphs+2_97.png t/add.png
+cp t/add.png t/enroladd.png
+mv glyphs+2_98.png t/minus.png
+mv glyphs+2_99.png i/course.png
+mv glyphs+2_101.png i/cohort.png
+mv glyphs+2_104.png t/hide.png
+cp t/hide.png i/hide.png
+mv glyphs+2_105.png t/show.png
+cp t/show.png i/show.png
+mv glyphs+2_113.png t/expanded.png
+mv glyphs+2_118.png t/move.png
+mv glyphs+2_135.png i/settings.png
+mv glyphs+2_137.png i/filter.png
+
+
+# extra icons, created to match
+cp icon-copy*.png t/copy.png
 
 # some irregular ones
+# not done any yet
+# will cut them according to position from sprites.less
+
+rm glyphs+2_*.png
+
+# optimize sizes
+optipng *.png
+optipng t/*.png
+optipng i/*.png

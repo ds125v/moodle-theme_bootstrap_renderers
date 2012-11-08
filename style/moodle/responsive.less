@@ -1,0 +1,72 @@
+// Responsive code that changes with width
+
+// Forms
+@media (max-width: 480px) {
+  // Remove the horizontal form styles
+    .form-label,
+    .mform .fitem div.fitemtitle {
+    // copied from .control-label {
+      float: none;
+      width: auto;
+      padding-top: 0;
+      text-align: left;
+    }
+    .form-label span.form-shortname,
+    div.form-defaultinfo {
+        display: none;
+    }
+    // Move over all input controls and content
+    .mform .fitem .felement,
+    .form-item .form-description {
+      margin-left: 0;
+    }
+    // Move over buttons in .form-actions to align with .controls
+    table#form td.submit,
+    .form-buttons,
+    #fitem_id_submitbutton,
+    .fp-content-center form + div,
+    #group_id_buttonar,
+    .form-horizontal .form-actions,
+    .fitem_fsubmit .felement.fsubmit {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    #helppopupbox {
+        width: auto !important;
+        left: 0 !important;
+    }
+}
+// 3 columns into 2
+// TODO check effect of clear when left column is
+// shorter than content. Does it leave a gap?
+// Might have to float centre right
+@media (min-width: 768px) and (max-width: 979px) {
+    .row-fluid #region-post.span3 {
+        clear: left;
+        margin-left: 0;
+    }
+    .row-fluid #region-post.span3,
+    .row-fluid #region-pre.span3 {
+        // copied from .fluid span4 
+        width: 31.914893617021%;
+        *width: 31.86170212766%;
+    }
+    .row-fluid #region-content.span6 {
+        // copied from .fluid span8
+        width: 65.957446808511%;
+        *width: 65.904255319149%;
+        // TODO seems to be too wide, not sure why
+        width: 65.3%;
+        *width: 65%;
+    }
+}
+
+// login page columns
+
+@media (max-width: 480px) {
+    .loginbox.twocolumns .loginpanel,
+    .loginbox.twocolumns .signuppanel {
+        width: 100%;
+        clear: left;
+    }
+}

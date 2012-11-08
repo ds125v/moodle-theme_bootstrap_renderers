@@ -23,10 +23,11 @@
  */
 
 require_once('html.php');
+require_once('bootsnipp.php');
 require_once('bootstrap.php');
+require_once('bootstrap_pager.php');
 require_once('classes.php');
 require_once('pager.php');
-require_once('bootstrap_pager.php');
 
 class theme_bootstrap_renderers_core_renderer extends core_renderer {
     // Trying to keep the order of definition the same as
@@ -40,6 +41,77 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     public function htmlattributes() {
         $parts = explode(' ', trim(get_html_lang(true)));
         return $parts[0] . ' ' . $parts[1]; // Ditch xml:lang part.
+    }
+
+    public function login_info() {
+        global $USER, $CFG, $DB, $SESSION;
+
+        if (during_initial_install()) {
+            return '';
+        }
+
+        $course = $this->page->course;
+        if (empty($course->id)) {
+            // $course->id is not defined during installation
+            return '';
+        }
+
+        if (session_is_loggedinas()) {
+            $real_user = session_get_realuser();
+            $real['name'] = fullname($real_user, true);
+            $real['link'] = html::url("$CFG->wwwroot/course/loginas.php", array('id'=>$course->id, 'sesskey'=>sesskey()));
+        } else {
+            $real_info = null;
+        }
+        if (!isloggedin()) {
+            return bootsnipp::sign_up_sign_in(new moodle_url('/login/index.php'));
+        }
+
+        $logout['link'] = html::url("$CFG->wwwroot/login/logout.php", array('sesskey'=>sesskey()));
+        $logout['name'] = get_string('logout');
+
+        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        $user['name'] = fullname($USER, true);
+        $user['link'] = html::url("$CFG->wwwroot/user/profile.php", array('id'=>$USER->id));
+
+        if (is_mnet_remote_user($USER) and $idprovider = $DB->get_record('mnet_host', array('id'=>$USER->mnethostid))) {
+            $mnet['link'] = $idprovider->wwwroot;
+            $mnet['name'] = $idprovider->name;
+        } else {
+            $mnet_info = null;
+        }
+
+        if (isguestuser()) {
+            $guest['link'] = get_login_url();
+            $guest['name'] = get_string('login');
+            return bootsnipp::guest_user($user['name'], $guest, $logout);
+        }
+        if (is_role_switched($course->id)) {
+            if ($role = $DB->get_record('role', array('id'=>$USER->access['rsw'][$context->path]))) {
+                $user['name'] .= ': ' . format_string($role->name);
+            }
+            $role_switch['link'] = "$CFG->wwwroot/course/view.php?id=$course->id&switchrole=0&sesskey=" .sesskey();
+            $role_switch['name'] = get_string('switchrolereturn');
+        } else {
+            $role_switch = null;
+        }
+        if (isset($SESSION->justloggedin)) {
+            unset($SESSION->justloggedin);
+            if (!empty($CFG->displayloginfailures) && !isguestuser()) {
+                if (file_exists("$CFG->dirroot/report/log/index.php")
+                    and has_capability('report/log:view', get_context_instance(CONTEXT_SYSTEM))) {
+                    if ($count = count_login_failures($CFG->displayloginfailures, $USER->username, $USER->lastlogin)) {
+                        $loginfailures['link'] = "$CFG->wwwroot/report/log/index.php?chooselog=1&id=1&modid=site_errors";
+                        if (empty($count->accounts)) {
+                            $loginfailures['name'] = get_string('failedloginattempts', '', $count);
+                        } else {
+                            $loginfailures['name'] = get_string('failedloginattemptsall', '', $count);
+                        }
+                    }
+                }
+            }
+        }
+        return bootsnipp::signed_in($user, $loginfailures, $mnet, $real, $role_switch, $logout);
     }
 
     public function home_link() {
@@ -406,5 +478,54 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $links[] = $this->render($item);
         }
         return bootstrap::breadcrumb($links);
+    }
+    public function custom_menu($custommenuitems = '') {
+        global $CFG;
+        if (empty($custommenuitems)) {
+            if (empty($CFG->custommenuitems)) {
+                return '';
+            } else {
+                $custommenuitems = $CFG->custommenuitems;
+            }
+        }
+        $custommenu = new custom_menu($custommenuitems, current_language());
+        return $this->render_custom_menu($custommenu);
+    }
+
+    protected function render_custom_menu(custom_menu $menu) {
+        foreach ($menu->get_children() as $item) {
+            $items[] = $this->render_custom_menu_item($item);
+        }
+        if (isset($items)) {
+            return html::ul('nav', $items);
+        } else {
+            return '';
+        }
+    }
+
+    protected function render_custom_menu_item(custom_menu_item $menunode, $submenu=null) {
+        if ('list_divider' === $menunode->get_text()) {
+            return bootstrap::list_divider();
+        }
+        if (!$menunode->has_children()) {
+            return $this->render_custom_menu_leaf($menunode);
+        }
+        foreach ($menunode->get_children() as $child) {
+            $items[] = $this->render_custom_menu_item($child, true);
+        }
+        if ($submenu === true) {
+            return html::li(bootstrap::dropdown_submenu($menunode->get_text(), $items));
+        } else {
+            return html::li(bootstrap::dropdown_menu($menunode->get_text(), $items));
+        }
+    }
+    private function render_custom_menu_leaf(custom_menu_item $menunode) {
+        $icon = $menunode->get_title();
+        if (strpos($icon, 'icon-') === 0) {
+            $icon = substr($icon, 5);
+        } else {
+            $icon = '';
+        }
+        return bootstrap::li_icon_link($menunode->get_url(), $icon, $menunode->get_text());
     }
 }

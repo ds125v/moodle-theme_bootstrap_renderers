@@ -116,19 +116,20 @@ echo $OUTPUT->doctype() ?>
 <div class="navbar <?php echo $navbar_inverse . ' ' . $navbar_fixed ?>">
     <div class=navbar-inner>
         <div class=container<?php echo $fluid ?>>
+            <a class="btn btn-navbar" data-toggle=collapse data-target=".nav-collapse">
+                <span class=icon-bar></span>
+                <span class=icon-bar></span>
+                <span class=icon-bar></span>
+            </a>
             <a class=brand href="<?php echo new moodle_url("/")?>"><?php echo $PAGE->heading?></a>
-            <div class=nav-collapse>
-                <ul class=nav>
-                    <li class=active><a href="<?php echo new moodle_url("/")?>">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <div class="navbar-text pull-right">
+            <div class="nav-collapse collapse">
+                  <?php echo $custommenu ?>
+                <div class="pull-right">
                   <?php echo $OUTPUT->login_info() ?>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <?php echo $header; ?>
 
