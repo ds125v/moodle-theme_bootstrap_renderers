@@ -68,7 +68,7 @@ function less_compiler($css, $theme) {
     $cachefile = "$cachedir/$cache_name.css";
 
     if (file_exists($cachefile)) {
-       // return file_get_contents($cachefile);
+       return file_get_contents($cachefile);
     }
 
     $themedir = $theme->dir;
