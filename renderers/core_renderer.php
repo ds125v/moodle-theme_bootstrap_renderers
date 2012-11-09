@@ -63,7 +63,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $real['name'] = fullname($real_user, true);
             $real['link'] = html::url("$CFG->wwwroot/course/loginas.php", array('id'=>$course->id, 'sesskey'=>sesskey()));
         } else {
-            $real_info = null;
+            $real = null;
         }
         if (!isloggedin()) {
             return bootsnipp::sign_up_sign_in(new moodle_url('/login/index.php'));
@@ -80,7 +80,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $mnet['link'] = $idprovider->wwwroot;
             $mnet['name'] = $idprovider->name;
         } else {
-            $mnet_info = null;
+            $mnet = null;
         }
 
         if (isguestuser()) {
@@ -112,6 +112,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                     }
                 }
             }
+        } else {
+            $loginfailures = null;
         }
         return bootsnipp::signed_in($user, $loginfailures, $mnet, $real, $role_switch, $logout);
     }
