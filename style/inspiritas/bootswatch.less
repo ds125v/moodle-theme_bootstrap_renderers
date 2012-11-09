@@ -1,0 +1,634 @@
+/*
+ * Fonts
+ */
+
+@font-face { 
+    font-family: 'League Gothic';
+    src: url('fonts/league_gothic-webfont.eot');
+    src: url('fonts/league_gothic-webfont.eot?#iefix') format('eot'), url('fonts/league_gothic-webfont.woff') format('woff'), url('fonts/league_gothic-webfont.ttf') format('truetype'), url('fonts/league_gothic-webfont.svg#webfont3XnFyBvL') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face { 
+    font-family: 'Museo Slab';
+    src: url('fonts/museo_slab_500-webfont.eot');
+    src: url('fonts/museo_slab_500-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/museo_slab_500-webfont.woff') format('woff'), url('fonts/museo_slab_500-webfont.ttf') format('truetype'), url('fonts/museo_slab_500-webfont.svg#MuseoSlab500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* 
+ * Scaffolding overrides
+ */
+
+body {
+    background: url('images/bg.png') repeat @bodyBackground;
+}
+
+.navbar {
+    .brand {
+        font-family: @brandFontFamily;
+        font-size: @navbarInverseBrandFontSize;
+
+        // Align it with the text of the sidebar links
+        margin-left: 15px;
+
+        text-shadow: 0 1px 1px @black;
+    }
+
+    .tagline {
+        float: left;
+        line-height: @navbarInverseBrandFontSize + 24px;
+        color: @grayLight;
+        font-weight: italic;
+        font-size: @fontSizeMini;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.45);
+    }
+
+    .auth {
+        line-height: 18px;
+        min-width: 150px;
+        color: @grayLight;
+        margin-right: @gridGutterWidth;
+        position: relative;
+        top: 10px;
+
+        img.avatar {
+            position: relative;
+            top: -2px;
+
+            border: 3px solid #2c3234;
+            float: left;
+        }
+
+        span.name {
+            margin-left: 10px;
+
+            position: relative;
+            top: 3px;
+
+            font-weight: bold;
+            color: @white;
+            font-size: @fontSizeMini;
+            text-transform: uppercase;
+            text-shadow: 0 1px 1px @black;
+        }
+
+        span.links {
+            margin-left: 10px;
+
+            a {
+                color: @orange;
+                font-size: @fontSizeMini;
+            }
+
+            a + a {
+                margin-left: 3px;
+            }
+        }
+    }
+
+    .nav-collapse.collapse.in {
+        .auth {
+            float: left;
+            margin-left: @gridGutterWidth768;
+            margin-bottom: 30px;
+        }
+    }
+}
+
+body > .container {
+    // Color the whole container like the sidebar to fix faux columns
+    background: url('images/sidebar_bg.png') repeat @sidebarBackground;
+
+    .border-radius(@borderRadiusLarge);
+
+    // Make some space, eh.
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+
+/*
+ * Sidebar
+ *
+ * The .container holds the sidebar's background and the sidebar is transparent, to allow
+ * the sidebar to appear to span the whole height of the .container.
+ *
+ */
+
+.container aside {
+    // Add border-radius in upper-left corner.
+    .border-radius(@baseBorderRadius 0 0 0);
+
+    nav { 
+        margin-top: 20px;
+        border-top: 1px solid #1c1f20; 
+
+        ul li {
+            font-size: @fontSizeLarge;
+            background: #20282B;
+            border-top: 1px solid rgba(255,255,255, 0.05);
+            border-bottom: 1px solid rgba(0,0,0, 0.75);
+            border-right: 1px solid rgba(0,0,0, 0.75);
+            border-left: 1px solid rgba(0,0,0, 0.75);
+            float: none;
+
+            i {
+                margin-right: 5px;
+            }
+
+            // A nice, pumpkin-y orange selected menu item
+            &.selected {
+                .gradientBar(#ff764e, #d64926); 
+                border-top: 1px solid #d27349; 
+                border-bottom: 1px solid rgba(0,0,0,0.9);
+
+                a:hover {
+                    // When hovering the selected item, don't make it 
+                    // darker, instead do nothing
+                    background-color: transparent !important;
+                }
+            }
+
+            a {
+                // Make the <a> elements take full width by using 
+                // display: block, increasing the click area.
+                font-family: @serifFontFamily;
+                padding: @paddingMedium;
+                display: block; 
+                color: @white;
+                text-shadow: 0 1px 1px rgba(0,0,0,0.75);
+
+                // Make the background of the button darker when hovering
+                &:hover {
+                    background-color: @blueBlacker !important;
+                    // Keep the white color (override)
+                    color: @white;
+                }
+            }
+        }
+    }
+
+}
+
+/*
+ * Content - the main content area with white background
+ */
+
+#content {
+    border: 1px solid #b8c1c7;
+    border-left: 1px solid #2d3134;
+    background-color: @white;
+
+    // Add border-radius in upper-right and lower-right corners
+    .border-radius(0 @baseBorderRadius @baseBorderRadius 0);
+
+    // Stats on the Dashboard
+    .kpi {
+        font-size: @fontSizeHuge;
+        font-family: @serifFontFamily;
+    }
+
+    .kpi + div small {
+        .text-overflow();
+        display: block;
+    }
+
+    small {
+        color: @gray777;
+    }
+
+    /*
+     * The main header of each page, in the example page this is called 'Dashboard'
+     */
+    header {
+        .gradientBar(@pageHeaderBackground, @pageHeaderBackgroundHighlight);
+
+        border-top: 1px solid rgba(255,255,255,0.55);
+        border-bottom: 1px solid #a3a3a3;
+
+        padding-left: @gridGutterWidth;
+        padding-bottom: 0;
+
+        .border-radius(0 @baseBorderRadius 0 0);
+
+        text-shadow: 0 1px 1px @white;
+
+        /*
+         * Allow a <div class="pull-right"> in a page-header, 
+         * where buttons can be placed.
+         */
+        .pull-right {
+            line-height: @fontSizeHuge + 18px;
+            margin-right: @gridGutterWidth;
+        }
+
+        .btn {
+            // Darken borders on buttons in page headers
+            border-color: rgba(0,0,0,.25) rgba(0,0,0,.25) rgba(0,0,0,.30);
+        }
+
+
+        h1, h2 {
+            // Decrease header size somewhat
+            font-size: @fontSizeHuge;
+            line-height: @fontSizeHuge + 22px;
+            // Repeat to override
+            text-shadow: 0 1px 1px @white;
+            font-weight: normal;
+            margin: 0;
+        }
+    }
+
+    .sub-header {
+        padding-left: @gridGutterWidth;
+        .gradientBar(#e5edf2, #cdd5da);
+        text-shadow: 0px 1px 0px rgba(255,255,255, 0.75);
+        border-top: 1px solid #CFD6DB;
+        border-bottom: 1px solid rgba(0,0,0, 0.3);
+
+        h2, h3 {
+            font-size: @fontSizeSmall;
+            margin: 0;
+            font-family: @sansFontFamily;
+            font-weight: normal;
+            line-height: @baseLineHeight + 6px;
+        }
+    }
+
+    section {
+        .row-fluid {
+            padding: 12px @gridGutterWidth 10px;
+            .box-sizing(border-box); // TODO: responsive? decrease width
+        }
+    }
+
+    .row-fluid-alternate-bg {
+        background-color: #fafafa;
+    }
+}
+
+/*
+ * Tables
+ */
+
+.table-striped {
+    tbody {
+        tr:nth-child(odd) td {
+            background-color: @blueLighter;
+        }
+    }
+}
+
+.table-hover {
+    tbody {
+        tr:hover {
+            td, th {
+                background-color: @blueLight;
+            }
+        }
+    }
+}
+
+.table {
+    tbody {
+        td {
+            color: @gray777;
+            font-size: @fontSizeMini;
+
+            &.primary {
+                color: @textColor;
+            }
+
+            .progress-mini {
+                max-width: 80px;
+            }
+        }
+    }
+}
+
+.full-section {
+    margin-bottom: 0;
+
+    td:first-child, th:first-child {
+        padding-left: @gridGutterWidth;
+    }
+
+    td:last-child, th:last-child {
+        padding-right: @gridGutterWidth;
+    }
+}
+
+/*
+ * Responsiveness
+ *
+ * When adding margins and paddings throughout the theme, Bootstrap provides us with nice
+ * variables to get the width of the grid gutters. However, these variables are static and 
+ * does not take into account the current screen size, which might alter the width of the gutters.
+ *
+ * Therefore, we use @gridGutterWidth as a basic value and then, below, we override each attribute 
+ * that uses this variable.
+ *
+ */
+
+// Small laptops, portrait tablets
+@media (min-width: 768px) and (max-width: 979px) {
+
+    /* 
+     *
+     * Some positioning tweaks for the content area
+     *
+     * We want to remove the margin-left of the content area, to position it just next to the sidebar.
+     * If we do that, the width of the element is modified and thus we readd the width of the removed margin.
+     *
+     * However, since the size of the margin differs in different screen sizes, we need to do this multiple times
+     * using media queries.
+     * 
+     * The width of the content area is defined by @contentColumns in variables.less.
+     *
+     */
+    #content-wrapper {
+        margin-left: 0;
+        width: (@gridColumnWidth768 * @contentColumns) + (@gridGutterWidth768 * (@contentColumns - 1)) + @gridGutterWidth768;
+    }
+
+    .navbar .auth {
+        margin-right: @gridGutterWidth768;
+    }
+
+    #content {
+        header {
+            padding-left: @gridGutterWidth768;
+
+            .pull-right {
+                margin-right: @gridGutterWidth768;
+            }
+        }
+
+        .sub-header {
+            padding-left: @gridGutterWidth768;
+        }
+
+        section {
+            .row-fluid {
+                padding-left: @gridGutterWidth768;
+                padding-right: @gridGutterWidth768;
+            }
+        }
+    }
+
+    .full-section {
+        td:first-child, th:first-child {
+            padding-left: @gridGutterWidth1200;
+        }
+
+        td:last-child, th:last-child {
+            padding-right: @gridGutterWidth1200;
+        }
+    }
+}
+
+// Default
+@media (min-width: 980px) and (max-width: 1199px) {
+    #content-wrapper {
+        margin-left: 0;
+        width: (@gridColumnWidth * @contentColumns) + (@gridGutterWidth * (@contentColumns - 1)) + @gridGutterWidth;
+    }
+
+}
+
+// Large display
+@media (min-width: 1200px) {
+    #content-wrapper {
+        margin-left: 0;
+        width: (@gridColumnWidth1200 * @contentColumns) + (@gridGutterWidth1200 * (@contentColumns - 1)) + @gridGutterWidth1200;
+    }
+
+    .navbar .auth {
+        margin-right: @gridGutterWidth1200;
+    }
+
+    #content {
+        header {
+            padding-left: @gridGutterWidth1200;
+
+            .pull-right {
+                margin-right: @gridGutterWidth1200;
+            }
+        }
+
+        .sub-header {
+            padding-left: @gridGutterWidth1200;
+        }
+
+        section {
+            .row-fluid {
+                padding-left: @gridGutterWidth1200;
+                padding-right: @gridGutterWidth1200;
+            }
+        }
+    }
+
+    .full-section {
+        td:first-child, th:first-child {
+            padding-left: @gridGutterWidth1200;
+        }
+
+        td:last-child, th:last-child {
+            padding-right: @gridGutterWidth1200;
+        }
+    }
+}
+
+
+/*
+ * Forms
+ *
+ * TODO: append/prepend
+ *
+ */
+
+/*
+ * Provide a nice outline for all <input type="text">, with different
+ * colors depending on the state of the input (error, warning, success).
+ *
+ * We use a 'hardened' box-shadow to create the outline.
+ *
+ */
+.control-group {
+
+    /*
+     * Keep the standard text color of input labels when
+     * the input has an error. Colorizing it makes it too colorful
+     * for Inspiritas.
+     */
+    label {
+        color: @textColor !important;
+    }
+
+    .help-inline {
+        // Increase from 5px
+        padding-left: 15px;
+    }
+
+    /*
+     * Create the outline using box-shadow (see above comment)
+     */
+    input[type=text], textarea {
+        @shadow: 0 0 0 @inputOutlineSize @inputOutlineColor, 
+            inset 0 2px 3px @inputOutlineColor;
+        .box-shadow(@shadow);
+
+    }
+
+    /*
+     * Override the default focus outline for the elements that are using our 
+     * nicer outline.
+     */
+    textarea:focus, input[type=text]:focus {
+        .box-shadow(0 0 0 @inputOutlineSize #e3eff5);
+    }
+
+    /*
+     * Color the outline differently depending on state.
+     */
+    &.error {
+        input[type=text], textarea {
+            box-shadow: 0 0 0 @inputOutlineSize @errorOutlineColor,
+                inset 0 2px 3px @errorOutlineColor;
+        }
+    }
+
+    &.warning {
+        input[type=text], textarea {
+            box-shadow: 0 0 0 @inputOutlineSize @warningOutlineColor,
+                inset 0 2px 3px @warningOutlineColor;
+        }
+    }
+
+    &.success {
+        input[type=text], textarea {
+            box-shadow: 0 0 0 @inputOutlineSize @successOutlineColor,
+                inset 0 2px 3px @successOutlineColor;
+        }
+    }
+}
+
+.form-horizontal {
+    margin-top: 8px;
+
+    .control-group {
+        // Increase row height of each input, we've added so much outline
+        margin-bottom: 25px;
+    }
+
+    // Left-align the centered, Bootstrappy-looking, input labels
+    .control-label {
+        text-align: left;
+    }
+
+    .help-block {
+        font-size: @fontSizeSmall;
+        line-height: @fontSizeSmall + 4px;
+    }
+}
+
+.form-actions {
+    margin: 0;
+}
+
+/*
+ * Buttons
+ */
+
+.btn {
+    text-shadow: @white !important;
+    .box-shadow(none);
+
+    &:hover {
+        // Don't fade the background upwards
+        background-position: 0 0;
+
+        // Create a blue outline
+        .box-shadow(0 0 5px #b6d4e8); 
+    }
+}
+
+
+.btn-primary {
+    text-shadow: 0 1px 2px @orangeDark !important;
+
+    &:hover {
+        // Don't fade the background upwards
+        background-position: 0 0;
+
+        // Decrease the contrast of the top border's color
+        border-top-color: rgba(0,0,0,.0);
+
+        // Create an orange outline
+        .box-shadow(0 0 4px @orangeLighter);
+    }
+}
+
+/*
+ * Progress bars
+ *
+ * Use only the basic progress bar, don't add lots of colors to it.
+ *
+ * We've added a basic and a mini version (for use in tables).
+ *
+ */
+
+.progress {
+    // Make the background slightly darker
+    #gradient > .vertical(#cccfd1, #dfe1e4);
+
+    border-bottom: 1px solid white;
+    .border-radius(@borderRadiusHuge);
+    height: 16px;
+
+    .bar {
+        #gradient > .vertical(#f5763e, #ce4f17);
+
+        // Add a highlight
+        .box-shadow(inset 0 1px 0px #fba559);
+
+        .border-radius(@borderRadiusHuge);
+        border: 1px solid #bd6c49;
+
+        // Darken bottom border because of gradient
+        border-bottom: 1px solid #98350a;
+    }
+
+    &.progress-mini {
+        height: 12px;
+
+        margin-top: 4px;
+
+        // Allow inline usage
+        margin-bottom: 0;
+    }
+
+    &.no-margin {
+        margin-bottom: 0;
+    }
+}
+
+// Striped progress bars are supported but not looking super-nice
+.progress-striped {
+    .bar {
+        #gradient > .striped(#e1632b);
+
+        // Add a highlight
+        .box-shadow(inset 0 1px 0px #fba559);
+
+        .border-radius(@borderRadiusHuge);
+        border: 1px solid #bd6c49;
+
+        // Darken bottom border because of gradient
+        border-bottom: 1px solid #98350a;
+    }
+}
