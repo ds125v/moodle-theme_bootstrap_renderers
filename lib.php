@@ -25,13 +25,11 @@
 require("less/lessc.inc.php");
 
 function processor($css, $theme) {
-    return less_compiler($css, $theme);
-}
-function less_compiler($css, $theme) {
     $less_marker = 'This file will be entirely replaced with the output of less compilation.';
-    if (strpos($css, $less_marker) === false) {
-        return $css;
-    };
+    $css = str_replace($less_marker, less_compiler($theme), $css);
+    return $css;
+}
+function less_compiler($theme) {
     global $CFG;
 
     $swatch = $theme->settings->subtheme;
@@ -66,10 +64,6 @@ function less_compiler($css, $theme) {
     $current_theme = current_theme();
     $cachedir = "$CFG->cachedir/theme/$current_theme";
     $cachefile = "$cachedir/$cache_name.css";
-
-    if (file_exists($cachefile)) {
-       return file_get_contents($cachefile);
-    }
 
     $themedir = $theme->dir;
     $themewww = $current_theme;
@@ -110,11 +104,10 @@ function less_compiler($css, $theme) {
     }
 
     $less_input .= '@import "moodle/moodle.less";';
-    $css = $less->compile($less_input);
+    $output = $less->compile($less_input);
 
     $search[] = 'fonts/';
     $replace[] = "$themewww/font/";
-    $css = str_replace($search, $replace, $css);
-    file_put_contents($cachefile, $css);
-    return $css;
+    $output = str_replace($search, $replace, $output);
+    return $output;
 }
