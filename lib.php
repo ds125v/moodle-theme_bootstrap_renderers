@@ -26,7 +26,9 @@ require("less/lessc.inc.php");
 
 function processor($css, $theme) {
     $less_marker = 'This file will be entirely replaced with the output of less compilation.';
-    $css = str_replace($less_marker, less_compiler($theme), $css);
+    if (strpos($css, $less_marker) !== false) {
+        $css = str_replace($less_marker, less_compiler($theme), $css);
+    }
     return $css;
 }
 function less_compiler($theme) {
