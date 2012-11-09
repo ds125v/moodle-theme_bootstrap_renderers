@@ -37,9 +37,6 @@
     }
 }
 // 3 columns into 2
-// TODO check effect of clear when left column is
-// shorter than content. Does it leave a gap?
-// Might have to float centre right
 @media (min-width: 768px) and (max-width: 979px) {
     .row-fluid #region-post.span3 {
         clear: left;
@@ -52,6 +49,7 @@
         *width: 31.86170212766%;
     }
     .row-fluid #region-content.span6 {
+        float: right; // So that right column rises to join bottom of left column
         // copied from .fluid span8
         width: 65.957446808511%;
         *width: 65.904255319149%;

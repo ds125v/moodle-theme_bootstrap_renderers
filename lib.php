@@ -68,7 +68,7 @@ function less_compiler($css, $theme) {
     $cachefile = "$cachedir/$cache_name.css";
 
     if (file_exists($cachefile)) {
-        return file_get_contents($cachefile);
+       return file_get_contents($cachefile);
     }
 
     $themedir = $theme->dir;
@@ -111,6 +111,10 @@ function less_compiler($css, $theme) {
 
     $less_input .= '@import "moodle/moodle.less";';
     $css = $less->compile($less_input);
+
+    $search[] = 'fonts/';
+    $replace[] = "$themewww/font/";
+    $css = str_replace($search, $replace, $css);
     file_put_contents($cachefile, $css);
     return $css;
 }

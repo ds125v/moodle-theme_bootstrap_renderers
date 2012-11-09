@@ -110,7 +110,7 @@ echo $OUTPUT->doctype() ?>
 </head>
 
 <body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
-
+<?php echo $OUTPUT->standard_top_of_body_html() ?>
 <div class=container<?php echo $fluid ?>>
 
 <div class="navbar <?php echo $navbar_inverse . ' ' . $navbar_fixed ?>">

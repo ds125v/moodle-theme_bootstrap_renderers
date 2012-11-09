@@ -108,7 +108,7 @@ class htmlTest extends PHPUnit_Framework_TestCase {
 
         $this->assertSame($expected, $actual);
     }
-    public function test_span_with_one_string_arg() {
+    public function test_span_given_a_single_string_arg_uses_it_as_content() {
 
         $actual = html::span("some text");
         $expected = '<span>some text</span>';
