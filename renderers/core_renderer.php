@@ -78,7 +78,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $mnet['link'] = $idprovider->wwwroot;
             $mnet['name'] = $idprovider->name;
         } else {
-            $mnet_info = null;
+            $mnet = null;
         }
 
         if (isguestuser()) {
@@ -110,6 +110,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                     }
                 }
             }
+        } else {
+            $loginfailures = null;
         }
         return bootsnipp::signed_in($user, $loginfailures, $mnet, $real, $role_switch, $logout);
     }
