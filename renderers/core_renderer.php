@@ -45,7 +45,9 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     public function login_info() {
         global $USER, $CFG, $DB, $SESSION;
-
+		$mnet = null;
+		$loginfailures = null;
+		$real = null;
         if (during_initial_install()) {
             return '';
         }
