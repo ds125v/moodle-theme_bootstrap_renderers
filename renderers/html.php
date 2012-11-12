@@ -117,14 +117,14 @@ class html {
         }
         return self::tag($tag, $attributes, $content);
     }
-    private static function texty_tag($tag, $attributes) {
-        if (!is_array($attributes)) {
+    private static function texty_tag($tag, $attributes, $content=null) {
+        if ($content === null && !is_array($attributes)) {
             $content = $attributes;
             $attributes = array();
-        } else {
+        } else if ($content === null && is_array($attributes)) {
             $content = '';
         }
-        return self::tag($tag, $attributes, $content);
+        return self::classy_tag($tag, $attributes, $content);
     }
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
