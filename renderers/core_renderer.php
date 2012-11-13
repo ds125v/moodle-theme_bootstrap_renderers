@@ -271,8 +271,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         $output = $this->render($continue);
         $output = strstr($output, '</form>', true); // Cut off final </form> tag.
-        $output = "<p>$message</p>$output $cancel</form>";
-        return bootstrap::alert_block($output);
+        $output = "<p>$message</p><p>$output $cancel</form></p>";
+        return bootstrap::alert_default($output);
     }
     private function make_button($button, $text, $method='get') {
         if ($button instanceof single_button) {
@@ -402,10 +402,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         return bootstrap::alert_error($message);
     }
 
-    public function notification($message, $classes = null) {
-        // TODO rewrite recognized classnames to bootstrap alert equivalent
-        // only two are mentioned in documentation, there may be more.
-
+    public function notification($message, $classes = 'notifyproblem') {
         $message = clean_text($message);
 
         if ($classes == 'notifyproblem') {
@@ -413,6 +410,15 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         }
         if ($classes == 'notifysuccess') {
             return bootstrap::alert_success($message);
+        }
+        if ($classes == 'notifymessage') {
+            return bootstrap::alert_info($message);
+        }
+        if ($classes == 'notifymessage') {
+            return bootstrap::alert_default($message);
+        }
+        if ($classes == 'redirectmessage') {
+            return bootstrap::alert_block_info($message);
         }
         return bootstrap::alert_default($message);
     }
