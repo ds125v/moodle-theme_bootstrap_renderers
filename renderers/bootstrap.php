@@ -42,33 +42,6 @@ class bootstrap {
         // No actual spacer icon provided by bootstrap, but magically it still works.
     }
 
-    public static function label($type, $text) {
-        if ($type != '') {
-            $type = ' label-' . $type;
-        }
-        // Bootstrap label classes can be added to other things
-        // but are usually spans (or a tags for clickable links).
-        return "<span class=\"label$type\">$text</i>";
-    }
-    public static function label_default($text) {
-        return self::label('', $text);
-    }
-    public static function label_success($text) {
-        return self::label('success', $text);
-    }
-    public static function label_warning($text) {
-        return self::label('warning', $text);
-    }
-    public static function label_important($text) {
-        return self::label('important', $text);
-    }
-    public static function label_info($text) {
-        return self::label('info', $text);
-    }
-    public static function label_inverse($text) {
-        return self::label('inverse', $text);
-    }
-
 
     public static function badge($type, $text) {
         if ($type != '') {

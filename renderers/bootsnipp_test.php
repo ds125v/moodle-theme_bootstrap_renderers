@@ -25,7 +25,7 @@
 
 require_once('bootsnipp.php');
 
-class bootsnipp_test extends PHPUnit_Framework_TestCase {
+class bootsnippTest extends PHPUnit_Framework_TestCase {
 
     public function test_guest_user() {
         $guest['name'] = 'Login';

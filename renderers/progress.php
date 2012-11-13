@@ -27,7 +27,7 @@ require_once('classes.php');
 
 class progress {
 
-    public function bar($percent) {
+    public static function bar($percent) {
         return "<div class=progress><div class=bar style=\"width: $percent%\"></div></div>";
     }
 }

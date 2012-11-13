@@ -15,15 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * renderers to align Moodle's HTML with that expected by Bootstrap
+ * Testing stubs for Moodle global functions
  *
  * @package    theme_bootstrap_renderers
  * @copyright  2012
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($CFG->dirroot . "/mod/forum/renderer.php");
-
-class theme_bootstrap_renderers_mod_forum_renderer extends mod_forum_renderer {
-
+/**
+ * get_string stub
+ *
+ * simply returns the string it is given. Possibly it should mark the
+ * string is some way e.g. _likethis_ to make untranslated strings
+ * stand out.
+ *
+ * TODO: extend for getting strings from modules
+ *
+ * @param string $string 
+ * @access public
+ * @return void
+ */
+function get_string($string) {
+    return $string;
 }

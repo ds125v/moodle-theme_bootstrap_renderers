@@ -21,12 +21,10 @@
  */
 
 require('bootstrap_pager.php');
+require('stubs.php');
 
-function get_string($string) {
-    return $string;
-}
 
-class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
+class bootstrap_pagerTest extends PHPUnit_Framework_TestCase {
 
         private $disabled_previous = '<li class=disabled><span>previous</span></li>';
         private $disabled_next = '<li class=disabled><span>next</span></li>';

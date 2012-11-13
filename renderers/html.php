@@ -51,7 +51,7 @@ class html {
         return classes::replace($classes, self::$to_zurb[$tag]);
     }
 
-    private static function tag($tagname, $attributes, $contents) {
+    public static function tag($tagname, $attributes, $contents) {
         if (self::$zurb && isset($attributes['class'])) {
             $attributes['class'] = self::bootstrap_to_zurb($tagname, $attributes['class']);
         }
@@ -169,6 +169,18 @@ class html {
         }
         return self::classy_tag('span', $attributes, $content);
     }
+    public static function table($attributes, $content=null) {
+        if (func_num_args() === 1) {
+            return self::texty_tag('table', $attributes);
+        }
+        return self::classy_tag('table', $attributes, $content);
+    }
+    public static function h2($attributes, $content=null) {
+        if (func_num_args() === 1) {
+            return self::texty_tag('h2', $attributes);
+        }
+        return self::classy_tag('h2', $attributes, $content);
+    }
 
     public static function abbr($attributes, $content) {
         return self::classy_tag('abbr', $attributes, $content);
@@ -218,6 +230,7 @@ class html {
     public static function ul($attributes, $content) {
         return self::classy_tag('ul', $attributes, self::li_implode($content));
     }
+
     public static function ul_open($attributes) {
         return self::ul($attributes, null);
     }
