@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1352803863">
-  <project timestamp="1352803863">
+<coverage generated="1352896868">
+  <project timestamp="1352896868">
     <file name="/var/www/themes/bootstrap_renderers/renderers/block_settings_renderer.php">
       <class name="theme_bootstrap_renderers_block_settings_renderer" namespace="global" fullPackage="theme.bootstrap.renderers.block.settings">
         <metrics methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="46" coveredstatements="0" elements="49" coveredelements="0"/>
@@ -395,7 +395,7 @@
     </file>
     <file name="/var/www/themes/bootstrap_renderers/renderers/core_renderer.php">
       <class name="theme_bootstrap_renderers_core_renderer" namespace="global" fullPackage="theme.bootstrap.renderers.core">
-        <metrics methods="27" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="397" coveredstatements="0" elements="424" coveredelements="0"/>
+        <metrics methods="27" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="404" coveredstatements="0" elements="431" coveredelements="0"/>
       </class>
       <line num="2" type="stmt" count="0"/>
       <line num="3" type="stmt" count="0"/>
@@ -738,10 +738,11 @@
       <line num="401" type="stmt" count="0"/>
       <line num="402" type="stmt" count="0"/>
       <line num="403" type="stmt" count="0"/>
-      <line num="405" type="method" name="notification" crap="12" count="0"/>
+      <line num="405" type="method" name="notification" crap="42" count="0"/>
       <line num="406" type="stmt" count="0"/>
-      <line num="407" type="stmt" count="0"/>
+      <line num="408" type="stmt" count="0"/>
       <line num="409" type="stmt" count="0"/>
+      <line num="410" type="stmt" count="0"/>
       <line num="411" type="stmt" count="0"/>
       <line num="412" type="stmt" count="0"/>
       <line num="413" type="stmt" count="0"/>
@@ -750,59 +751,59 @@
       <line num="416" type="stmt" count="0"/>
       <line num="417" type="stmt" count="0"/>
       <line num="418" type="stmt" count="0"/>
-      <line num="421" type="method" name="render_paging_bar" crap="12" count="0"/>
+      <line num="419" type="stmt" count="0"/>
+      <line num="420" type="stmt" count="0"/>
+      <line num="421" type="stmt" count="0"/>
       <line num="422" type="stmt" count="0"/>
       <line num="423" type="stmt" count="0"/>
-      <line num="425" type="stmt" count="0"/>
-      <line num="426" type="stmt" count="0"/>
-      <line num="427" type="stmt" count="0"/>
+      <line num="424" type="stmt" count="0"/>
+      <line num="427" type="method" name="render_paging_bar" crap="12" count="0"/>
       <line num="428" type="stmt" count="0"/>
       <line num="429" type="stmt" count="0"/>
-      <line num="430" type="stmt" count="0"/>
       <line num="431" type="stmt" count="0"/>
       <line num="432" type="stmt" count="0"/>
       <line num="433" type="stmt" count="0"/>
       <line num="434" type="stmt" count="0"/>
       <line num="435" type="stmt" count="0"/>
-      <line num="437" type="method" name="navbar" crap="6" count="0"/>
+      <line num="436" type="stmt" count="0"/>
+      <line num="437" type="stmt" count="0"/>
       <line num="438" type="stmt" count="0"/>
       <line num="439" type="stmt" count="0"/>
+      <line num="440" type="stmt" count="0"/>
       <line num="441" type="stmt" count="0"/>
-      <line num="442" type="stmt" count="0"/>
-      <line num="443" type="stmt" count="0"/>
+      <line num="443" type="method" name="navbar" crap="6" count="0"/>
       <line num="444" type="stmt" count="0"/>
       <line num="445" type="stmt" count="0"/>
-      <line num="446" type="stmt" count="0"/>
       <line num="447" type="stmt" count="0"/>
-      <line num="448" type="method" name="custom_menu" crap="12" count="0"/>
+      <line num="448" type="stmt" count="0"/>
       <line num="449" type="stmt" count="0"/>
       <line num="450" type="stmt" count="0"/>
       <line num="451" type="stmt" count="0"/>
       <line num="452" type="stmt" count="0"/>
       <line num="453" type="stmt" count="0"/>
-      <line num="454" type="stmt" count="0"/>
+      <line num="454" type="method" name="custom_menu" crap="12" count="0"/>
       <line num="455" type="stmt" count="0"/>
       <line num="456" type="stmt" count="0"/>
       <line num="457" type="stmt" count="0"/>
       <line num="458" type="stmt" count="0"/>
       <line num="459" type="stmt" count="0"/>
-      <line num="461" type="method" name="render_custom_menu" crap="12" count="0"/>
+      <line num="460" type="stmt" count="0"/>
+      <line num="461" type="stmt" count="0"/>
       <line num="462" type="stmt" count="0"/>
       <line num="463" type="stmt" count="0"/>
       <line num="464" type="stmt" count="0"/>
       <line num="465" type="stmt" count="0"/>
-      <line num="466" type="stmt" count="0"/>
-      <line num="467" type="stmt" count="0"/>
+      <line num="467" type="method" name="render_custom_menu" crap="12" count="0"/>
       <line num="468" type="stmt" count="0"/>
       <line num="469" type="stmt" count="0"/>
       <line num="470" type="stmt" count="0"/>
-      <line num="472" type="method" name="render_custom_menu_item" crap="30" count="0"/>
+      <line num="471" type="stmt" count="0"/>
+      <line num="472" type="stmt" count="0"/>
       <line num="473" type="stmt" count="0"/>
       <line num="474" type="stmt" count="0"/>
       <line num="475" type="stmt" count="0"/>
       <line num="476" type="stmt" count="0"/>
-      <line num="477" type="stmt" count="0"/>
-      <line num="478" type="stmt" count="0"/>
+      <line num="478" type="method" name="render_custom_menu_item" crap="30" count="0"/>
       <line num="479" type="stmt" count="0"/>
       <line num="480" type="stmt" count="0"/>
       <line num="481" type="stmt" count="0"/>
@@ -812,16 +813,22 @@
       <line num="485" type="stmt" count="0"/>
       <line num="486" type="stmt" count="0"/>
       <line num="487" type="stmt" count="0"/>
-      <line num="488" type="method" name="render_custom_menu_leaf" crap="6" count="0"/>
+      <line num="488" type="stmt" count="0"/>
       <line num="489" type="stmt" count="0"/>
       <line num="490" type="stmt" count="0"/>
       <line num="491" type="stmt" count="0"/>
       <line num="492" type="stmt" count="0"/>
       <line num="493" type="stmt" count="0"/>
-      <line num="494" type="stmt" count="0"/>
+      <line num="494" type="method" name="render_custom_menu_leaf" crap="6" count="0"/>
       <line num="495" type="stmt" count="0"/>
       <line num="496" type="stmt" count="0"/>
-      <metrics loc="497" ncloc="374" classes="1" methods="27" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="424" coveredstatements="0" elements="451" coveredelements="0"/>
+      <line num="497" type="stmt" count="0"/>
+      <line num="498" type="stmt" count="0"/>
+      <line num="499" type="stmt" count="0"/>
+      <line num="500" type="stmt" count="0"/>
+      <line num="501" type="stmt" count="0"/>
+      <line num="502" type="stmt" count="0"/>
+      <metrics loc="503" ncloc="384" classes="1" methods="27" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="431" coveredstatements="0" elements="458" coveredelements="0"/>
     </file>
     <file name="/var/www/themes/bootstrap_renderers/renderers/course_format_renderer.php">
       <line num="2" type="stmt" count="0"/>
@@ -1306,6 +1313,6 @@
       <line num="91" type="stmt" count="3"/>
       <metrics loc="93" ncloc="45" classes="1" methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="25" elements="33" coveredelements="31"/>
     </file>
-    <metrics files="17" loc="1917" ncloc="1155" classes="14" methods="130" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="1114" coveredstatements="228" elements="1244" coveredelements="277"/>
+    <metrics files="17" loc="1923" ncloc="1165" classes="14" methods="130" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="1121" coveredstatements="228" elements="1251" coveredelements="277"/>
   </project>
 </coverage>
