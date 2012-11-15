@@ -25,7 +25,7 @@
 
 require_once('bootsnipp.php');
 
-class bootsnipp_test extends PHPUnit_Framework_TestCase {
+class bootsnippTest extends PHPUnit_Framework_TestCase {
 
     public function test_guest_user() {
         $guest['name'] = 'Login';
@@ -33,9 +33,40 @@ class bootsnipp_test extends PHPUnit_Framework_TestCase {
         $logout['name'] = 'Logout';
         $logout['link'] = 'http://www.example.com/login/logout.php?sesskey=abcdefghij';
         $actual = bootsnipp::guest_user('Guest User', $guest, $logout);
-        $this->assertContains('icon-off', $actual);
-        $this->assertContains('icon-user', $actual);
-    }
 
+        $this->assertSelectEquals('ul.pull-right li a', 'Guest User', 1,  $actual);
+
+        $this->assertSelectCount('ul.pull-right li ul li' , 3,  $actual);
+        $this->assertSelectCount('ul.pull-right li ul li a' , 2,  $actual);
+
+        $this->assertSelectCount('ul.pull-right li ul li a i.icon-user', 1,  $actual);
+        $this->assertSelectEquals('ul.pull-right li ul li a', 'Login', 1,  $actual);
+
+        $this->assertSelectCount('ul.pull-right li ul li.divider' , 1,  $actual);
+
+        $this->assertSelectCount('ul.pull-right li ul li a i.icon-off', 1,  $actual);
+        $this->assertSelectEquals('ul.pull-right li ul li a', 'Logout', 1,  $actual);
+    }
+    public function test_signed_in() {
+        $user['name'] = 'Test Name';
+        $user['link'] = 'http://www.example.com/profile/index.php';
+        $logout['name'] = 'Logout';
+        $logout['link'] = 'http://www.example.com/login/logout.php?sesskey=abcdefghij';
+
+        $actual = bootsnipp::signed_in($user, null, null, null, null, $logout);
+
+        $this->assertSelectEquals('ul.pull-right li a', 'Test Name', 1,  $actual);
+
+        $this->assertSelectCount('ul.pull-right li ul li' , 3,  $actual);
+        $this->assertSelectCount('ul.pull-right li ul li a' , 2,  $actual);
+
+        $this->assertSelectCount('ul.pull-right li ul li a i.icon-user', 1,  $actual);
+        $this->assertSelectEquals('ul.pull-right li ul li a', 'Profile', 1,  $actual);
+
+        $this->assertSelectCount('ul.pull-right li ul li.divider' , 1,  $actual);
+
+        $this->assertSelectCount('ul.pull-right li ul li a i.icon-off', 1,  $actual);
+        $this->assertSelectEquals('ul.pull-right li ul li a', 'Logout', 1,  $actual);
+    }
 
 }

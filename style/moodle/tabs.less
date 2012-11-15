@@ -1,0 +1,69 @@
+/**
+ * Moodle tabs HTML isn't changeable via renderers (yet?) so this
+ * .less file imports styles from the bootstrap @variables file and 
+ * adds them to the existing Moodle form CSS ids and classes.
+ *
+ * Which exact files are imported is controlled by setting the 
+ * directory search path before calling this file allowing
+ * bootswatches or your own less variables to affect dispay.
+ *
+ * TODO curretly this only pulls in some colors, not the full
+ * style from the Bootstrap/swatch less
+ */
+
+.tabtree {
+  border-bottom: 1px solid #ddd;
+  padding-left: 50px;
+}
+.tabtree ul.tabrow0 {
+  margin: 0px;
+}
+.tabtree:after,
+.tabtree:before,
+.tabtree ul.tabrow0:before,
+.tabtree ul.tabrow0:after {
+  display: table;
+  content: "";
+}
+.tabtree:after,
+.tabtree ul.tabrow0:after {
+  clear: both;
+}
+
+.tabtree ul li {
+  display:block;
+  float:left;
+  margin-bottom: -1px;
+}
+.tabtree ul li.selected a, 
+.tabtree ul li.selected a:hover {
+  color: @gray;
+  background-color: @white;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+.tabtree ul li a:hover {
+  border-color: @grayLighter @grayLighter #ddd;
+  background-color: @grayLighter;
+}
+.tabtree ul li a {
+  display: block;
+  padding-right: 12px;
+  padding-left: 12px;
+  margin-right: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  line-height: @baseLineHeight;
+  border: 1px solid transparent;
+  .border-radius(4px 4px 0 0);
+  &:hover {
+    border-color: @grayLighter @grayLighter #ddd;
+  }
+}
+.tabtree ul li a,
+.tabtree ul li a:hover,
+.tabtree ul li a.selected,
+.tabtree ul li a.selected:hover {
+  text-decoration: none;
+}

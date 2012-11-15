@@ -58,7 +58,7 @@ class classesTest extends PHPUnit_Framework_TestCase {
      */
     public function test_add($existing, $new, $expected) {
 
-        $actual = classes::add($existing, $new);
+        $actual = classes::add_to($existing, $new);
 
         $this->assertSame($expected, $actual);
     }
@@ -69,9 +69,9 @@ class classesTest extends PHPUnit_Framework_TestCase {
     public function test_add_to_array($existing, $new, $expected) {
 
         $attributes['class'] = $existing;
-        $actual = classes::add($attributes, $new);
+        $actual = classes::add_to($attributes, $new);
 
-        $this->assertArrayHasKey('class', $attributes);
+        $this->assertArrayHasKey('class', $actual);
         $this->assertSame($expected, $actual['class']);
     }
     /**
@@ -81,10 +81,10 @@ class classesTest extends PHPUnit_Framework_TestCase {
     public function test_create_class_key_on_add_to_array($first, $second, $expected) {
 
         $attributes = array();
-        $one_added = classes::add($attributes, $first);
+        $one_added = classes::add_to($attributes, $first);
         $this->assertArrayHasKey('class', $one_added);
 
-        $two_added = classes::add($one_added, $second);
+        $two_added = classes::add_to($one_added, $second);
         $this->assertArrayHasKey('class', $two_added);
 
         $this->assertSame($expected, $two_added['class']);
@@ -96,6 +96,8 @@ class classesTest extends PHPUnit_Framework_TestCase {
             array("well", array('well'=>'panel'), "panel"),
             array("active", array('active'=>'current'), "current"),
             array("disabled", array('disabled'=>'unavailable'), "unavailable"),
+            array("unchanged", array('notfound'=>'stillnotfound'), "unchanged"),
+            array("", array('notfound'=>'stillnotfound'), ""),
             array("btn well active disabled", array('btn'=>'button', 'well'=>'panel', 'active'=>'current', 'disabled'=>'unavailable'), "button panel current unavailable"),
         );
 
@@ -113,5 +115,23 @@ class classesTest extends PHPUnit_Framework_TestCase {
         $actual = classes::replace($existing, $replacements);
 
         $this->assertSame($expected, $actual);
+    }
+    /**
+     * @dataProvider replace
+     * @depends test_replace
+     */
+    public function test_replace_in_array($existing, $replacements, $expected) {
+
+        $attributes['class'] = $existing;
+        $actual = classes::replace($attributes, $replacements);
+
+        $this->assertArrayHasKey('class', $actual);
+        $this->assertSame($expected, $actual['class']);
+
+        $attributes = array();
+        $actual = classes::replace($attributes, $replacements);
+
+        $this->assertArrayHasKey('class', $actual);
+        $this->assertSame('', $actual['class']);
     }
 }

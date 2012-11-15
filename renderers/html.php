@@ -24,17 +24,10 @@
 
 
 require_once('classes.php');
+require_once('attributes.php');
 
 class html {
 
-    private static $boolean_attributes = array(
-        'autoplay',
-        'checked',
-        'disabled',
-        'readonly',
-        'required',
-        'selected',
-    );
 
     private static $zurb = false;
 
@@ -51,61 +44,17 @@ class html {
         return classes::replace($classes, self::$to_zurb[$tag]);
     }
 
-    private static function tag($tagname, $attributes, $contents) {
+    public static function tag($tagname, $attributes, $contents) {
         if (self::$zurb && isset($attributes['class'])) {
             $attributes['class'] = self::bootstrap_to_zurb($tagname, $attributes['class']);
         }
         if ($contents === null) {
-            return "<$tagname" . self::attributes($attributes) . '>';
+            return "<$tagname" . attributes::all($attributes) . '>';
         } else {
-            return "<$tagname" . self::attributes($attributes) . ">$contents</$tagname>";
+            return "<$tagname" . attributes::all($attributes) . ">$contents</$tagname>";
         }
     }
 
-    public static function attribute($name, $value) {
-        if (is_array($value)) {
-            debugging("Passed an array for the HTML attribute $name", DEBUG_DEVELOPER);
-        }
-        if (strpos($name, " ")!==false) {
-            debugging("Attribute names can't have spaces in them like \"$name\"", DEBUG_DEVELOPER);
-        }
-        if ($value === null) {
-            return '';
-        }
-        if ($value instanceof moodle_url) {
-            $value = $value->out();
-        }
-        if ($name === $value && in_array($name, self::$boolean_attributes)) {
-            return $name;
-        }
-        $value = htmlspecialchars($value);
-        if (strpbrk($value, "= '") !== false || $value === '') {
-            $value = '"'.$value.'"';
-        }
-        return "$name=$value";
-    }
-    public static function href_then_alphabetical($left, $right) {
-        if ($left === 'href') {
-            return -1;
-        } else if ($right === 'href') {
-            return 1;
-        } else {
-            return strcmp($left, $right);
-        }
-    }
-
-    public static function attributes($attributes) {
-        $sort_function = array("html", "href_then_alphabetical");
-        uksort($attributes, $sort_function);
-        foreach ($attributes as $name => $value) {
-            $output[] = self::attribute($name, $value);
-        }
-        if (isset($output)) {
-            return ' ' . implode(' ', $output);
-        } else {
-            return '';
-        }
-    }
 
     private static function classy_tag($tag, $attributes, $content = null) {
         if (is_string($attributes)) {
@@ -117,14 +66,14 @@ class html {
         }
         return self::tag($tag, $attributes, $content);
     }
-    private static function texty_tag($tag, $attributes) {
-        if (!is_array($attributes)) {
+    private static function texty_tag($tag, $attributes, $content=null) {
+        if ($content === null && !is_array($attributes)) {
             $content = $attributes;
             $attributes = array();
-        } else {
+        } else if ($content === null && is_array($attributes)) {
             $content = '';
         }
-        return self::tag($tag, $attributes, $content);
+        return self::classy_tag($tag, $attributes, $content);
     }
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
@@ -142,6 +91,20 @@ class html {
         }
         return self::tag('a', $attributes, $content);
     }
+    public static function a_button($attributes, $content) {
+        if (is_object($attributes) && get_class($attributes) == 'moodle_url') {
+            $attributes = (string)$attributes;
+        }
+        if (is_string($attributes)) {
+            if ($attributes === '') {
+                $attributes = array();
+            } else {
+                $attributes = array('href'=>$attributes);
+            }
+        }
+        $attributes = classes::add_to($attributes, 'btn');
+        return self::tag('a', $attributes, $content);
+    }
     public static function link($href, $content) {
         $attributes['href'] = $href;
         return self::classy_tag('a', $attributes, $content);
@@ -156,7 +119,10 @@ class html {
         return self::classy_tag('p', $attributes, $content);
     }
 
-    public static function div($attributes, $content) {
+    public static function div($attributes, $content=null) {
+        if (func_num_args() === 1) {
+            return self::texty_tag('div', $attributes);
+        }
         return self::classy_tag('div', $attributes, $content);
     }
     public static function div_open($attributes) {
@@ -168,6 +134,18 @@ class html {
             return self::texty_tag('span', $attributes);
         }
         return self::classy_tag('span', $attributes, $content);
+    }
+    public static function table($attributes, $content=null) {
+        if (func_num_args() === 1) {
+            return self::texty_tag('table', $attributes);
+        }
+        return self::classy_tag('table', $attributes, $content);
+    }
+    public static function h2($attributes, $content=null) {
+        if (func_num_args() === 1) {
+            return self::texty_tag('h2', $attributes);
+        }
+        return self::classy_tag('h2', $attributes, $content);
     }
 
     public static function abbr($attributes, $content) {
@@ -209,7 +187,7 @@ class html {
     }
     public static function submit($attributes) {
         $attributes['type'] = 'submit';
-        $attributes = classes::add($attributes, 'btn');
+        $attributes = classes::add_to($attributes, 'btn');
         return self::input($attributes);
     }
     /**
@@ -218,6 +196,7 @@ class html {
     public static function ul($attributes, $content) {
         return self::classy_tag('ul', $attributes, self::li_implode($content));
     }
+
     public static function ul_open($attributes) {
         return self::ul($attributes, null);
     }

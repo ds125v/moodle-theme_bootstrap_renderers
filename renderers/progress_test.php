@@ -15,21 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * renderers to align Moodle's HTML with that expected by Bootstrap
- *
  * @package    theme_bootstrap_renderers
  * @copyright  2012
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('renderers/core_renderer.php');
-require_once('renderers/block_settings_renderer.php');
-require_once('renderers/core_backup_renderer.php');
 
-require_once('renderers/mod_forum_renderer.php');
-require_once('renderers/mod_choice_renderer.php');
-require_once('renderers/course_renderer.php');
-require_once('renderers/course_format_renderer.php');
+require_once('progress.php');
 
-require_once('renderers/core_admin_renderer.php');
+class progressTest extends PHPUnit_Framework_TestCase {
+    public function test_full_progress_bar() {
 
+        $expected = '<div class=progress><div class=bar style="width: 100%"></div></div>';
+        $actual = progress::bar(100);
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_empty_progress_bar() {
+
+        $expected = '<div class=progress><div class=bar style="width: 0%"></div></div>';
+        $actual = progress::bar(0);
+
+        $this->assertSame($expected, $actual);
+    }
+
+}

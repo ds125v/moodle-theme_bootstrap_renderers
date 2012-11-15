@@ -21,15 +21,13 @@
  */
 
 require('bootstrap_pager.php');
+require_once('stubs.php');
 
-function get_string($string) {
-    return $string;
-}
 
 class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
 
-        private $disabled_previous = '<li class=disabled><span>previous</span></li>';
-        private $disabled_next = '<li class=disabled><span>next</span></li>';
+        private $disabled_previous = '<li class=disabled><span>_previous</span></li>';
+        private $disabled_next = '<li class=disabled><span>_next</span></li>';
         private $skipped_link = '<li class=disabled><span>...</span></li>';
 
     private function active($text) {
@@ -63,7 +61,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
 
         $actual = $links[3];
-        $expected = $this->expected_link('next', 2);
+        $expected = $this->expected_link('_next', 2);
         $this->assertEquals($expected, $actual);
     }
     public function test_last_page_of_two() {
@@ -72,7 +70,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $links = $pager->for_pages(array(1, 2));
 
         $actual = $links[0];
-        $expected = $this->expected_link('previous', 1);
+        $expected = $this->expected_link('_previous', 1);
         $this->assertEquals($expected, $actual);
 
         $actual = $links[1];
@@ -114,7 +112,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
 
         $actual = $links[10];
-        $expected = $this->expected_link('next', 2);
+        $expected = $this->expected_link('_next', 2);
         $this->assertEquals($expected, $actual);
     }
     public function test_last_page_of_nine() {
@@ -123,7 +121,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $links = $pager->for_pages(array(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
         $actual = $links[0];
-        $expected = $this->expected_link('previous', 8);
+        $expected = $this->expected_link('_previous', 8);
         $this->assertEquals($expected, $actual);
 
         $actual = $links[1];
@@ -173,7 +171,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
 
         $actual = $links[10];
-        $expected = $this->expected_link('next', 2);
+        $expected = $this->expected_link('_next', 2);
         $this->assertEquals($expected, $actual);
     }
     public function test_last_page_of_ten() {
@@ -182,7 +180,7 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         $links = $pager->for_pages(array(1, 'skip', 4, 5, 6, 7, 8, 9, 10));
 
         $actual = $links[0];
-        $expected = $this->expected_link('previous', 9);
+        $expected = $this->expected_link('_previous', 9);
         $this->assertEquals($expected, $actual);
 
         $actual = $links[1];

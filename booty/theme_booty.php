@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,21 +16,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * renderers to align Moodle's HTML with that expected by Bootstrap
  *
- * @package    theme_bootstrap_renderers
- * @copyright  2012
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   theme_booty
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('renderers/core_renderer.php');
-require_once('renderers/block_settings_renderer.php');
-require_once('renderers/core_backup_renderer.php');
-
-require_once('renderers/mod_forum_renderer.php');
-require_once('renderers/mod_choice_renderer.php');
-require_once('renderers/course_renderer.php');
-require_once('renderers/course_format_renderer.php');
-
-require_once('renderers/core_admin_renderer.php');
-
+$string['pluginname'] = 'Booty';
+$string['region-side-post'] = 'Right';
+$string['region-side-pre'] = 'Left';
+$string['choosereadme'] = '(Semi-)Auto-generated Bootstrap theme';

@@ -15,21 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * renderers to align Moodle's HTML with that expected by Bootstrap
+ * Tests for HTML utility functions creating labels, by which we mean
+ * Bootstrap style short text markers, rather than HTML form labels
  *
  * @package    theme_bootstrap_renderers
- * @copyright  2012
+ * @copyright  2012 
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('renderers/core_renderer.php');
-require_once('renderers/block_settings_renderer.php');
-require_once('renderers/core_backup_renderer.php');
 
-require_once('renderers/mod_forum_renderer.php');
-require_once('renderers/mod_choice_renderer.php');
-require_once('renderers/course_renderer.php');
-require_once('renderers/course_format_renderer.php');
+require_once('label.php');
 
-require_once('renderers/core_admin_renderer.php');
+class labelTest extends PHPUnit_Framework_TestCase {
 
+    public function test_label_with_yes_and_tick() {
+
+        $expected = '<span class="label label-success">_yes <i class=icon-ok></i></span>';
+        $actual = label::yes();
+
+        $this->assertSame($expected, $actual);
+    }
+    public function test_label_with_no_and_x() {
+
+        $expected = '<span class="label label-warning">_no <i class=icon-remove></i></span>';
+        $actual = label::no();
+
+        $this->assertSame($expected, $actual);
+    }
+
+}

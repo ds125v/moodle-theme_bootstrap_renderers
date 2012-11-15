@@ -4,7 +4,8 @@
  * adds them to the existing Moodle form CSS ids and classes.
  *
  * Which exact files are imported is controlled by setting the 
- * directory search path before calling this file.
+ * directory search path before calling this file allowing
+ * bootswatches or your own less variables to affect dispay.
  */
 
 .fitem {
@@ -148,7 +149,14 @@ input#id_cancel {
 }
 
 // login page
-
+form#guestlogin input[type=submit],
+form#signup input[type=submit],
+input#loginbtn {
+    .btn
+}
+input#loginbtn {
+    .btn-primary
+}
 .loginpanel  .form-label {
     width: 80px;
     padding-right: 20px;
@@ -171,4 +179,18 @@ input#id_cancel {
 .loginbox.twocolumns .signuppanel {
     width: 48%;
     float: right;
+}
+
+// Choice Module
+
+body.path-mod-choice form {
+    label {
+        display: inline-block;
+        padding-top: 4px;
+        padding-left: 4px;
+    }
+    input.button {
+        .btn;
+        .btn-primary
+    }
 }

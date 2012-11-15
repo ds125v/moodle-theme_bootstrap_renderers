@@ -15,21 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * renderers to align Moodle's HTML with that expected by Bootstrap
- *
+ * A class for creating progress bars
  * @package    theme_bootstrap_renderers
  * @copyright  2012
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('renderers/core_renderer.php');
-require_once('renderers/block_settings_renderer.php');
-require_once('renderers/core_backup_renderer.php');
+require_once('html.php');
+require_once('bootstrap.php');
+require_once('classes.php');
 
-require_once('renderers/mod_forum_renderer.php');
-require_once('renderers/mod_choice_renderer.php');
-require_once('renderers/course_renderer.php');
-require_once('renderers/course_format_renderer.php');
+class progress {
 
-require_once('renderers/core_admin_renderer.php');
-
+    public static function bar($percent) {
+        return "<div class=progress><div class=bar style=\"width: $percent%\"></div></div>";
+    }
+}

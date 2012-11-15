@@ -15,21 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * renderers to align Moodle's HTML with that expected by Bootstrap
- *
  * @package    theme_bootstrap_renderers
  * @copyright  2012
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('renderers/core_renderer.php');
-require_once('renderers/block_settings_renderer.php');
-require_once('renderers/core_backup_renderer.php');
+require_once('stubs.php');
+require_once('core_admin_renderer.php');
 
-require_once('renderers/mod_forum_renderer.php');
-require_once('renderers/mod_choice_renderer.php');
-require_once('renderers/course_renderer.php');
-require_once('renderers/course_format_renderer.php');
+class core_admin_renderer_test extends PHPUnit_Framework_TestCase {
 
-require_once('renderers/core_admin_renderer.php');
+    private $admin;
 
+    public function setUp() {
+        $this->admin = new theme_bootstrap_renderers_core_admin_renderer();
+    }
+    public function test_upgrade_reload() {
+
+        $expected = '<div><a href=http://www.example.com class=btn><i class=icon-refresh></i> _reload</a></div>';
+        $actual = $this->admin->upgrade_reload('http://www.example.com');
+
+        $this->assertSame($expected, $actual);
+    }
+}
