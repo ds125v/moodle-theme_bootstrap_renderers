@@ -45,9 +45,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     public function login_info() {
         global $USER, $CFG, $DB, $SESSION;
-		$mnet = null;
-		$loginfailures = null;
-		$real = null;
         if (during_initial_install()) {
             return '';
         }
@@ -97,6 +94,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         } else {
             $role_switch = null;
         }
+		$loginfailures = null;
         if (isset($SESSION->justloggedin)) {
             unset($SESSION->justloggedin);
             if (!empty($CFG->displayloginfailures) && !isguestuser()) {
@@ -112,8 +110,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                     }
                 }
             }
-        } else {
-            $loginfailures = null;
         }
         return bootsnipp::signed_in($user, $loginfailures, $mnet, $real, $role_switch, $logout);
     }
