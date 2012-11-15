@@ -61,13 +61,13 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
             $classes = '';
             $expanded = 'true';
             if (!$item->forceopen || (!$item->forceopen && $item->collapse) || ($item->children->count()==0  && $item->nodetype==navigation_node::NODETYPE_BRANCH)) {
-                $classes = classes::add($classes, 'collapsed');
+                $classes = classes::add_to($classes, 'collapsed');
                 if ($isbranch) {
                     $expanded = "false";
                 }
             }
             if ($item->isactive === true) {
-                $classes = classes::add($classes, 'active');
+                $classes = classes::add_to($classes, 'active');
             }
             $attributes = array('class' => $classes, 'aria-expanded'=> $expanded);
             $content .= $this->navigation_node($item);

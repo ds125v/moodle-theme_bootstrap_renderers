@@ -30,14 +30,14 @@ class labelTest extends PHPUnit_Framework_TestCase {
 
     public function test_label_with_yes_and_tick() {
 
-        $expected = '<span class="label label-success">yes <i class=icon-ok></i></span>';
+        $expected = '<span class="label label-success">_yes <i class=icon-ok></i></span>';
         $actual = label::yes();
 
         $this->assertSame($expected, $actual);
     }
     public function test_label_with_no_and_x() {
 
-        $expected = '<span class="label label-warning">no <i class=icon-remove></i></span>';
+        $expected = '<span class="label label-warning">_no <i class=icon-remove></i></span>';
         $actual = label::no();
 
         $this->assertSame($expected, $actual);

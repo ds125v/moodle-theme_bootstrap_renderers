@@ -15,33 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Testing stubs for Moodle global functions
- *
  * @package    theme_bootstrap_renderers
  * @copyright  2012
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define("DEBUG_DEVELOPER", "DEBUG_DEVELOPER");
-/**
- * get_string stub
- *
- * simply returns the string it is given. Possibly it should mark the
- * string is some way e.g. _likethis_ to make untranslated strings
- * stand out.
- *
- * TODO: extend for getting strings from modules
- *
- * @param string $string
- * @access public
- * @return string
- */
-function get_string($string) {
-    return '_'.$string;
-}
+require_once('stubs.php');
+require_once('core_admin_renderer.php');
 
-function debugging($string, $level) {
-    echo $string, ' ', $level;
-    die;
-}
+class core_admin_renderer_test extends PHPUnit_Framework_TestCase {
 
+    private $admin;
+
+    public function setUp() {
+        $this->admin = new theme_bootstrap_renderers_core_admin_renderer();
+    }
+    public function test_upgrade_reload() {
+
+        $expected = '<div><a href=http://www.example.com class=btn><i class=icon-refresh></i> _reload</a></div>';
+        $actual = $this->admin->upgrade_reload('http://www.example.com');
+
+        $this->assertSame($expected, $actual);
+    }
+}

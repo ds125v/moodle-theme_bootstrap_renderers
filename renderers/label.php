@@ -25,7 +25,6 @@
 
 
 require_once('bootstrap.php');
-require_once('stubs.php');
 
 class label {
     public static function make($type, $text) {

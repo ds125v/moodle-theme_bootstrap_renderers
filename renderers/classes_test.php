@@ -58,7 +58,7 @@ class classesTest extends PHPUnit_Framework_TestCase {
      */
     public function test_add($existing, $new, $expected) {
 
-        $actual = classes::add($existing, $new);
+        $actual = classes::add_to($existing, $new);
 
         $this->assertSame($expected, $actual);
     }
@@ -69,7 +69,7 @@ class classesTest extends PHPUnit_Framework_TestCase {
     public function test_add_to_array($existing, $new, $expected) {
 
         $attributes['class'] = $existing;
-        $actual = classes::add($attributes, $new);
+        $actual = classes::add_to($attributes, $new);
 
         $this->assertArrayHasKey('class', $actual);
         $this->assertSame($expected, $actual['class']);
@@ -81,10 +81,10 @@ class classesTest extends PHPUnit_Framework_TestCase {
     public function test_create_class_key_on_add_to_array($first, $second, $expected) {
 
         $attributes = array();
-        $one_added = classes::add($attributes, $first);
+        $one_added = classes::add_to($attributes, $first);
         $this->assertArrayHasKey('class', $one_added);
 
-        $two_added = classes::add($one_added, $second);
+        $two_added = classes::add_to($one_added, $second);
         $this->assertArrayHasKey('class', $two_added);
 
         $this->assertSame($expected, $two_added['class']);

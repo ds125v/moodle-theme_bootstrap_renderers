@@ -49,16 +49,16 @@
       <td class="None small"><div align="right"></div></td>
       <td class="None small"><div align="right">&nbsp;</div></td>
       <td class="None small"><acronym title="Change Risk Anti-Patterns (CRAP) Index">CRAP</acronym></td>
-      <td class="success big">       <div class="progress progress-success" style="width: 100px;">
-        <div class="bar" style="width: 100%;"></div>
+      <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
+        <div class="bar" style="width: 33.333333333333%;"></div>
        </div>
 </td>
-      <td class="success small"><div align="right">100.00%</div></td>
-      <td class="success small"><div align="right">1 / 1</div></td>
+      <td class="danger small"><div align="right">33.33%</div></td>
+      <td class="danger small"><div align="right">1 / 3</div></td>
      </tr>
 
      <tr>
-      <td class="success" colspan="4"><a href="#38">get_string($string)</a></td>
+      <td class="success" colspan="4"><a href="#39">get_string($string)</a></td>
       <td class="success big">       <div class="progress progress-success" style="width: 100px;">
         <div class="bar" style="width: 100%;"></div>
        </div>
@@ -72,6 +72,23 @@
 </td>
       <td class="success small"><div align="right">100.00%</div></td>
       <td class="success small"><div align="right">1 / 1</div></td>
+     </tr>
+
+     <tr>
+      <td class="danger" colspan="4"><a href="#43">debugging($string, $level)</a></td>
+      <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
+        <div class="bar" style="width: 0%;"></div>
+       </div>
+</td>
+      <td class="danger small"><div align="right">0.00%</div></td>
+      <td class="danger small"><div align="right">0 / 1</div></td>
+      <td class="danger small">0</td>
+      <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
+        <div class="bar" style="width: 0%;"></div>
+       </div>
+</td>
+      <td class="danger small"><div align="right">0.00%</div></td>
+      <td class="danger small"><div align="right">0 / 2</div></td>
      </tr>
 
 
@@ -103,22 +120,29 @@
      <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;@license&nbsp;&nbsp;&nbsp;&nbsp;http://www.gnu.org/copyleft/gpl.html&nbsp;GNU&nbsp;GPL&nbsp;v3&nbsp;or&nbsp;later</span></td></tr>
      <tr><td><div align="right"><a name="23"></a><a href="#23">23</a></div></td><td class="codeLine"><span class="comment">&nbsp;*/</span></td></tr>
      <tr><td><div align="right"><a name="24"></a><a href="#24">24</a></div></td><td class="codeLine"></td></tr>
-     <tr><td><div align="right"><a name="25"></a><a href="#25">25</a></div></td><td class="codeLine"><span class="comment">/**</span></td></tr>
-     <tr><td><div align="right"><a name="26"></a><a href="#26">26</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;get_string&nbsp;stub</span></td></tr>
-     <tr><td><div align="right"><a name="27"></a><a href="#27">27</a></div></td><td class="codeLine"><span class="comment">&nbsp;*</span></td></tr>
-     <tr><td><div align="right"><a name="28"></a><a href="#28">28</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;simply&nbsp;returns&nbsp;the&nbsp;string&nbsp;it&nbsp;is&nbsp;given.&nbsp;Possibly&nbsp;it&nbsp;should&nbsp;mark&nbsp;the</span></td></tr>
-     <tr><td><div align="right"><a name="29"></a><a href="#29">29</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;string&nbsp;is&nbsp;some&nbsp;way&nbsp;e.g.&nbsp;_likethis_&nbsp;to&nbsp;make&nbsp;untranslated&nbsp;strings</span></td></tr>
-     <tr><td><div align="right"><a name="30"></a><a href="#30">30</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;stand&nbsp;out.</span></td></tr>
-     <tr><td><div align="right"><a name="31"></a><a href="#31">31</a></div></td><td class="codeLine"><span class="comment">&nbsp;*</span></td></tr>
-     <tr><td><div align="right"><a name="32"></a><a href="#32">32</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;TODO:&nbsp;extend&nbsp;for&nbsp;getting&nbsp;strings&nbsp;from&nbsp;modules</span></td></tr>
-     <tr><td><div align="right"><a name="33"></a><a href="#33">33</a></div></td><td class="codeLine"><span class="comment">&nbsp;*</span></td></tr>
-     <tr><td><div align="right"><a name="34"></a><a href="#34">34</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;@param&nbsp;string&nbsp;$string&nbsp;</span></td></tr>
-     <tr><td><div align="right"><a name="35"></a><a href="#35">35</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;@access&nbsp;public</span></td></tr>
-     <tr><td><div align="right"><a name="36"></a><a href="#36">36</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;@return&nbsp;void</span></td></tr>
-     <tr><td><div align="right"><a name="37"></a><a href="#37">37</a></div></td><td class="codeLine"><span class="comment">&nbsp;*/</span></td></tr>
-     <tr><td><div align="right"><a name="38"></a><a href="#38">38</a></div></td><td class="codeLine"><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">get_string</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
-     <tr class="success popin" data-title="8 tests cover line 39" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pagerTest::test_first_page_of_two&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pagerTest::test_last_page_of_two&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pagerTest::test_first_page_of_nine&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pagerTest::test_last_page_of_nine&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pagerTest::test_first_page_of_ten&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pagerTest::test_last_page_of_ten&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;labelTest::test_label_with_yes_and_tick&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;labelTest::test_label_with_no_and_x&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom"><td><div align="right"><a name="39"></a><a href="#39">39</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">$string</span><span class="keyword">;</span></td></tr>
-     <tr><td><div align="right"><a name="40"></a><a href="#40">40</a></div></td><td class="codeLine"><span class="keyword">}</span></td></tr>
+     <tr><td><div align="right"><a name="25"></a><a href="#25">25</a></div></td><td class="codeLine"><span class="default">define</span><span class="keyword">(</span><span class="default">&quot;DEBUG_DEVELOPER&quot;</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">&quot;DEBUG_DEVELOPER&quot;</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="26"></a><a href="#26">26</a></div></td><td class="codeLine"><span class="comment">/**</span></td></tr>
+     <tr><td><div align="right"><a name="27"></a><a href="#27">27</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;get_string&nbsp;stub</span></td></tr>
+     <tr><td><div align="right"><a name="28"></a><a href="#28">28</a></div></td><td class="codeLine"><span class="comment">&nbsp;*</span></td></tr>
+     <tr><td><div align="right"><a name="29"></a><a href="#29">29</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;simply&nbsp;returns&nbsp;the&nbsp;string&nbsp;it&nbsp;is&nbsp;given.&nbsp;Possibly&nbsp;it&nbsp;should&nbsp;mark&nbsp;the</span></td></tr>
+     <tr><td><div align="right"><a name="30"></a><a href="#30">30</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;string&nbsp;is&nbsp;some&nbsp;way&nbsp;e.g.&nbsp;_likethis_&nbsp;to&nbsp;make&nbsp;untranslated&nbsp;strings</span></td></tr>
+     <tr><td><div align="right"><a name="31"></a><a href="#31">31</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;stand&nbsp;out.</span></td></tr>
+     <tr><td><div align="right"><a name="32"></a><a href="#32">32</a></div></td><td class="codeLine"><span class="comment">&nbsp;*</span></td></tr>
+     <tr><td><div align="right"><a name="33"></a><a href="#33">33</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;TODO:&nbsp;extend&nbsp;for&nbsp;getting&nbsp;strings&nbsp;from&nbsp;modules</span></td></tr>
+     <tr><td><div align="right"><a name="34"></a><a href="#34">34</a></div></td><td class="codeLine"><span class="comment">&nbsp;*</span></td></tr>
+     <tr><td><div align="right"><a name="35"></a><a href="#35">35</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;@param&nbsp;string&nbsp;$string</span></td></tr>
+     <tr><td><div align="right"><a name="36"></a><a href="#36">36</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;@access&nbsp;public</span></td></tr>
+     <tr><td><div align="right"><a name="37"></a><a href="#37">37</a></div></td><td class="codeLine"><span class="comment">&nbsp;*&nbsp;@return&nbsp;string</span></td></tr>
+     <tr><td><div align="right"><a name="38"></a><a href="#38">38</a></div></td><td class="codeLine"><span class="comment">&nbsp;*/</span></td></tr>
+     <tr><td><div align="right"><a name="39"></a><a href="#39">39</a></div></td><td class="codeLine"><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">get_string</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="success popin" data-title="9 tests cover line 40" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pager_test::test_first_page_of_two&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pager_test::test_last_page_of_two&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pager_test::test_first_page_of_nine&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pager_test::test_last_page_of_nine&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pager_test::test_first_page_of_ten&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;bootstrap_pager_test::test_last_page_of_ten&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;core_admin_renderer_test::test_upgrade_reload&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;labelTest::test_label_with_yes_and_tick&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;labelTest::test_label_with_no_and_x&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom"><td><div align="right"><a name="40"></a><a href="#40">40</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">'_'</span><span class="keyword">.</span><span class="default">$string</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="41"></a><a href="#41">41</a></div></td><td class="codeLine"><span class="keyword">}</span></td></tr>
+     <tr><td><div align="right"><a name="42"></a><a href="#42">42</a></div></td><td class="codeLine"></td></tr>
+     <tr><td><div align="right"><a name="43"></a><a href="#43">43</a></div></td><td class="codeLine"><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">debugging</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$level</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr class="danger"><td><div align="right"><a name="44"></a><a href="#44">44</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">echo</span><span class="default">&nbsp;</span><span class="default">$string</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">'&nbsp;'</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$level</span><span class="keyword">;</span></td></tr>
+     <tr class="danger"><td><div align="right"><a name="45"></a><a href="#45">45</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">die</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="46"></a><a href="#46">46</a></div></td><td class="codeLine"><span class="keyword">}</span></td></tr>
+     <tr><td><div align="right"><a name="47"></a><a href="#47">47</a></div></td><td class="codeLine"></td></tr>
 
     </tbody>
    </table>
@@ -130,7 +154,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.2</a> using <a href="http://www.php.net/" target="_top">PHP 5.3.10-1ubuntu3.4</a> and <a href="http://phpunit.de/">PHPUnit 3.7.1</a> at Wed Nov 14 12:41:08 UTC 2012.</small>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.2</a> using <a href="http://www.php.net/" target="_top">PHP 5.3.10-1ubuntu3.4</a> and <a href="http://phpunit.de/">PHPUnit 3.7.1</a> at Thu Nov 15 11:45:15 UTC 2012.</small>
     </p>
    </footer>
   </div>

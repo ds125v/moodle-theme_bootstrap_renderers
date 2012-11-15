@@ -24,7 +24,7 @@
 
 
 class classes {
-    public static function add($current, $new) {
+    public static function add_to($current, $new) {
         if (is_string($current)) {
             return self::add_classes_string($current, $new);
         }
