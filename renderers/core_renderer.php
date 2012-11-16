@@ -356,7 +356,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
 
-    public function doc_link($path, $text = '') {
+    public function doc_link($path, $text = '', $forcepopup=false) {
         $attributes['href'] = new moodle_url(get_docs_url($path));
         if ($text == '') {
             $linktext = bootstrap::icon_help();
