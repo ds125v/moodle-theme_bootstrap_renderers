@@ -203,7 +203,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         global $CFG;
 
         $output = $this->header();
-        $output .= html::p('', get_string('pluginchecknotice', 'core_plugin'));
+        $output .= html::p(get_string('pluginchecknotice', 'core_plugin'));
         if (empty($CFG->disableupdatenotifications)) {
             $output .= $this->single_button(new moodle_url($reloadurl, array('fetchupdates' => 1)), get_string('checkforupdates', 'core_plugin'));
             if ($timefetched = $checker->get_last_timefetched()) {
@@ -236,6 +236,9 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
      */
     protected function warning($message, $type = '') {
         if ($type == 'error') {
+            return bootstrap::alert_error($message);
+        }
+        if ($type == '') {
             return bootstrap::alert_error($message);
         }
         // what other types are there?
@@ -272,7 +275,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                          '<p>Copyright &copy; 1999 onwards, Martin Dougiamas '.
                          'and <a href="http://docs.moodle.org/dev/Credits">many other contributors</a>.</p>'.
                          '<p><a href="http://docs.moodle.org/dev/License">GNU Public License</a><p>';
-        return alert::info('alert alert-info copyright', $copyrighttext);
+        return bootstrap::alert_info($copyrighttext);
     }
 
     /**
@@ -412,6 +415,8 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                 $status = get_string('status_' . $statuscode, 'core_plugin');
                 if ($statuscode === 'upgrade') {
                     $status = label::info($status);
+                } else if ($statuscode === 'new') {
+                    $status = label::success($status);
                 }
 
                 $availableupdates = $plugin->available_updates();
@@ -511,12 +516,11 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         $requires = array();
 
         if (!empty($plugin->versionrequires)) {
-            if ($plugin->versionrequires <= $version) {
-                $class = 'requires-ok';
-            } else {
-                $class = 'requires-failed';
+            $required = get_string('moodleversion', 'core_plugin', $plugin->versionrequires);
+            if ($plugin->versionrequires > $version) {
+                $required  = label::important($required);
             }
-            $requires[] = html::li($class, get_string('moodleversion', 'core_plugin', $plugin->versionrequires));
+            $requires[] = html::li($required);
         }
 
         foreach ($plugin->get_other_required_plugins() as $component => $requiredversion) {
@@ -529,24 +533,22 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                 $ok = false;
             }
 
-            if ($ok) {
-                $class = 'requires-ok';
-            } else {
-                $class = 'requires-failed';
-            }
 
             if ($requiredversion != ANY_VERSION) {
-                $str = 'otherpluginversion';
+                $required = get_string('otherpluginversion', 'core_plugin', array('component' => $component, 'version' => $requiredversion));
             } else {
-                $str = 'otherplugin';
+                $required = get_string('otherplugin', 'core_plugin', array('component' => $component, 'version' => $requiredversion));
             }
-            $requires[] = html::li($class, get_string($str, 'core_plugin', array('component' => $component, 'version' => $requiredversion)));
+            if (!$ok) {
+                $required = label::important($required);
+            }
+            $requires[] = html::li($required);
         }
 
         if (!$requires) {
             return '';
         }
-        return html_writer::tag('ul', implode("\n", $requires));
+        return html::ul('unstyled', $requires);
     }
 
     /**
