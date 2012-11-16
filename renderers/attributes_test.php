@@ -63,6 +63,24 @@ class attribute_test extends PHPUnit_Framework_TestCase {
         $this->assertSame('', $actual);
 
     }
+    /**
+     * @expectedException coding_exception
+     **/
+    public function test_exception_if_attribute_name_has_spaces() {
+
+        $name = "no spaces allowed in name";
+        $value = "spaces in value are fine";
+        attributes::one($name, $value);
+    }
+    /**
+     * @expectedException coding_exception
+     **/
+    public function test_exception_if_value_is_an_array() {
+
+        $name = 'no-array-values';
+        $value = array('not', 'valid');
+        attributes::one($name, $value);
+    }
 
     public function test_output_for_attribute_empty_value() {
 

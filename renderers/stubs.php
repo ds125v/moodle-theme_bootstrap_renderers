@@ -23,6 +23,9 @@
  */
 
 define("DEBUG_DEVELOPER", "DEBUG_DEVELOPER");
+
+class coding_exception extends Exception {
+}
 /**
  * get_string stub
  *
@@ -42,6 +45,6 @@ function get_string($string) {
 
 function debugging($string, $level) {
     echo $string, ' ', $level;
-    die;
+    throw new coding_exception('debugging triggered in unit test');
 }
 

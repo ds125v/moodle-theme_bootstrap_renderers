@@ -23,6 +23,7 @@
  */
 
 
+require_once('stubs.php');
 require_once('classes.php');
 
 class classesTest extends PHPUnit_Framework_TestCase {
@@ -74,6 +75,31 @@ class classesTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('class', $actual);
         $this->assertSame($expected, $actual['class']);
     }
+    /**
+     * @expectedException coding_exception
+     **/
+    public function test_adding_to_non_string_or_array_throws_exception() {
+
+        $attributes['class'] = 'new';
+        classes::add_to(new stdClass(), $attributes);
+    }
+    /**
+     * @expectedException coding_exception
+     **/
+    public function test_replacing_a_non_string_or_array_throws_exception() {
+
+        $attributes['class'] = 'new';
+        classes::replace(new stdClass(), $attributes);
+    }
+    /**
+     * @expectedException coding_exception
+     **/
+    public function test_adding_a_non_string_throws_exception() {
+
+        $attributes['class'] = 'new';
+        classes::add_to($attributes, $attributes);
+    }
+
     /**
      * @dataProvider add
      * @depends test_add
