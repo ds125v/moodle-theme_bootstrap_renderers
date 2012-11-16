@@ -42,6 +42,14 @@ class bootstrap_pager_test extends PHPUnit_Framework_TestCase {
         return html::li('', html::a($attributes, $text));
     }
 
+    /**
+     * @expectedException coding_exception
+     **/
+    public function test_exception_for_page_zero() {
+
+        $pager = new bootstrap_pager('example.com?one=fish&two=fish', 1, 2);
+        $pager->for_pages(array(0, 1, 2));
+    }
     public function test_first_page_of_two() {
 
         $pager = new bootstrap_pager('example.com?one=fish&two=fish', 1, 2);

@@ -50,7 +50,7 @@ class bootstrap_pager {
     }
     private function for_page($page, $text=null) {
         if ($page === 0) {
-            die('paging links are numbered starting from 1');
+            throw new coding_exception('paging links are numbered starting from 1');
         }
         if ($page === 'skip') {
             return $this->skipped();
