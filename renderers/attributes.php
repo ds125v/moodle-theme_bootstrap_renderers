@@ -35,16 +35,13 @@ class attributes {
 
     public static function one($name, $value) {
         if (is_array($value)) {
-            debugging("Passed an array for the HTML attribute $name", DEBUG_DEVELOPER);
+            throw new coding_exception("Passed an array for the HTML attribute $name");
         }
         if (strpos($name, " ")!==false) {
-            debugging("Attribute names can't have spaces in them like \"$name\"", DEBUG_DEVELOPER);
+            throw new coding_exception("Attribute names can't have spaces in them like \"$name\"");
         }
         if ($value === null) {
             return '';
-        }
-        if ($value instanceof moodle_url) {
-            $value = $value->out();
         }
         if ($name === $value && in_array($name, self::$booleans)) {
             return $name;

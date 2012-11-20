@@ -35,10 +35,13 @@ class classes {
             $current['class'] =  self::add_classes_string($current['class'], $new);
             return $current;
         }
-        throw new coding_exception('The $current param to classes::add must be either a string or array of attributes.');
+        throw new coding_exception('The $current param to classes::add_to must be either a string of classnames or array of attributes.');
     }
 
     private static function add_classes_string($current, $new) {
+        if (!is_string($new)) {
+            throw new coding_exception('The $new param to classes::add_to must be a space seperated string of classnames');
+        }
         $current = explode(' ', $current);
         $new = explode( ' ', $new);
         $merged = array_unique(array_merge($current, $new));

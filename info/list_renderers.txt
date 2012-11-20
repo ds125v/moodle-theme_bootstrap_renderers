@@ -340,7 +340,7 @@ class core_renderer extends renderer_base {
     protected function render_single_select(single_select $select) {
     public function url_select(array $urls, $selected, $nothing = array('' => 'choosedots'), $formid = null) {
     protected function render_url_select(url_select $select) {
-    public function doc_link($path, $text = '') {
+    public function doc_link($path, $text = '', $forcepopup = false) {
     public function pix_icon($pix, $alt, $component='moodle', array $attributes = null) {
     protected function render_pix_icon(pix_icon $icon) {
     protected function render_pix_emoticon(pix_emoticon $emoticon) {

@@ -28,3 +28,8 @@ TODO #2 (stuff I'm secretly hoping someone else will do, to save me the bother)
 * restyle the TinyMCE editor interface using Bootstrap (this looks quite easy once you find where the CSS lives)
 * find a simpler editor that is Bootstrap aware and plug it into Moodle e.g. (bootstrap-wysihtml5)[http://jhollingworth.github.com/bootstrap-wysihtml5/] 
 * restyle the Moodle gadgets UI components (file picker, activity chooser etc.) with Bootstrap 
+
+Current Build Status
+--------------------
+
+[![Build Status](https://travis-ci.org/ds125v/moodle-theme_bootstrap_renderers.png)](https://travis-ci.org/ds125v/moodle-theme_bootstrap_renderers)
