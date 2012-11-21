@@ -28,8 +28,10 @@ class mod_choice_renderer_test extends PHPUnit_Framework_TestCase {
 
     public function test_first() {
 
+        $option1 = new stdClass;
         $option1->text = 'one';
         $option1->user = array('user1');
+        $option2 = new stdClass;
         $option2->text = 'none';
         $option2->user = array();
 
