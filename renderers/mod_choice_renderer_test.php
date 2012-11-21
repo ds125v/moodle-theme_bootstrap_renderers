@@ -34,6 +34,7 @@ class mod_choice_renderer_test extends PHPUnit_Framework_TestCase {
         $option2->user = array();
 
         $options = array($option1, $option2);
+        $choices = new stdClass;
         $choices->options = $options;
         $choices->numberofuser = 1;
         $actual = theme_bootstrap_renderers_mod_choice_renderer::results($choices);
