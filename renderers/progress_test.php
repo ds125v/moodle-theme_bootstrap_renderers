@@ -26,14 +26,14 @@ require_once('progress.php');
 class progressTest extends PHPUnit_Framework_TestCase {
     public function test_full_progress_bar() {
 
-        $expected = '<div class=progress><div class=bar style="width: 100%"></div></div>';
+        $expected = '<div class=progress><div class=bar style="width:100%"></div></div>';
         $actual = progress::bar(100);
 
         $this->assertSame($expected, $actual);
     }
     public function test_empty_progress_bar() {
 
-        $expected = '<div class=progress><div class=bar style="width: 0%"></div></div>';
+        $expected = '<div class=progress><div class=bar style="width:0%"></div></div>';
         $actual = progress::bar(0);
 
         $this->assertSame($expected, $actual);
