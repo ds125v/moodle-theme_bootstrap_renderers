@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -30,22 +29,8 @@
  */
 
 $THEME->name = 'booty';
-$THEME->parents = array('base');
-$THEME->sheets = array(
-    'core',     /** Must come first**/
-    'admin',
-    'blocks',
-    'calendar',
-    'course',
-    'user',
-    'dock',
-    'grade',
-    'message',
-    'modules',
-    'question',
-    'css3',      /** Sets up CSS 3 + browser specific styles **/
-    'booty',
-);
+$THEME->parents = array();
+$THEME->sheets = array( 'booty');
 $THEME->enable_dock = true;
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 $THEME->javascripts_footer = array('jquery', 'bootstrap');

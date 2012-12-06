@@ -31,12 +31,15 @@
 
 // Guppy colors
 @blue:                #005288;
+@blue20:             mix(@stone, @blue, 20%);
+@blue40:             mix(@stone, @blue, 40%);
+@blue60:             mix(@stone, @blue, 60%);
+@blue80:             mix(@stone, @blue, 80%);
 @stone:               #7f7467;
-@grayDarker:            mix(@stone, @black, 60%);;
-@grayDark:              mix(@stone, @black, 40%);;
-@gray:                  @stone;
-@grayLight:             mix(@stone, @white, 40%);
-@grayLighter:           mix(@stone, @white, 20%);
+@stone20:             mix(@stone, @white, 20%);
+@stone40:             mix(@stone, @white, 40%);
+@stone60:             mix(@stone, @white, 60%);
+@stone80:             mix(@stone, @white, 80%);
 
 // Scaffolding
 // -------------------------
@@ -52,9 +55,9 @@
 
 // Typography
 // -------------------------
-@sansFontFamily:        "Helvetica Neue", Helvetica, Arial, sans-serif;
-@serifFontFamily:       "Adobe Garamond", Georgia, "Times New Roman", Times, serif;
-@monoFontFamily:        Monaco, Menlo, Consolas, "Ubuntu Mono", "Courier New", monospace;
+@sansFontFamily:        "Swiss 721", "Neue Haas Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@serifFontFamily:       "Adobe Garamond", "Hoefler Text", "URW Palladio L", Palatino, "Palatino Linotype", Baskerville, "Bitstream Charter", Garamond, "Apple Garamond", Georgia, serif;
+@monoFontFamily:        Monaco, Menlo, Consolas, "DejaVu Sans Mono", "Courier New", monospace;
 
 @baseFontSize:          14px;
 @baseFontFamily:        @sansFontFamily;
@@ -92,8 +95,8 @@
 
 // Buttons
 // -------------------------
-@btnBackground:                     lighten(@stone, 10%);
-@btnBackgroundHighlight:            @stone;
+@btnBackground:                     @white;
+@btnBackgroundHighlight:            darken(@white, 10%);
 @btnBorder:                         #bbb;
 
 @btnPrimaryBackground:              lighten(@blue, 10%);
@@ -180,7 +183,7 @@
 
 // Wells
 // -------------------------
-@wellBackground:                  mix(@stone, @white, 20%);
+@wellBackground:                  #f5f5f5;
 
 
 // Navbar
