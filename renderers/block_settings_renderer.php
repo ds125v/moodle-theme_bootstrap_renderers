@@ -77,6 +77,7 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
             }
             if ($item->isactive === true) {
                 $liclasses[] = 'current_branch';
+                $liclasses[] = 'active';
             }
             $liattr = array('class' => join(' ',$liclasses)) + $liexpandable;
             // class attribute on the div item which only contains the item content
@@ -110,8 +111,11 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
     }
     private function rewrite_tree_node($node_html, $new_classes) {
         $opening_tag = strstr($node_html, ' ', true);
-        $existing_classes = 'extract with regex';
-        $new_classes = classes::add_to($new_classes, $existing_classes); 
+        $pattern = 'class="([^"]+)';
+        if (preg_match($pattern, $node_html, $matches)) {
+            $existing_classes = $matches[1];
+            $new_classes = classes::add_to($new_classes, $existing_classes);
+        }
 
         $node_html = substr($node_html, strlen($opening_tag));
         $node_html = substr($node_html, 0, -1 * strlen($opening_tag));
