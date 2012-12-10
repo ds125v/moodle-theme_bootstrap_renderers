@@ -31,7 +31,6 @@
 $THEME->name = 'booty';
 $THEME->parents = array();
 $THEME->sheets = array( 'booty');
-$THEME->enable_dock = true;
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 $THEME->javascripts_footer = array('jquery', 'bootstrap');
 $THEME->doctype = 'html5';

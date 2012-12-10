@@ -30,11 +30,11 @@ $themedir = '/var/www/themes/bootstrap_renderers';
 $less_variables = array(
     'swatch' => "'guppy'",
     'navbarMargin' => '40px',
-    'php_fontAwesomePath' => '"[pix:theme|font]"',
+    'php_fontAwesomePath' => '"[[pix:theme|font]]"',
     'iconColor' => 'inherit',
     'iconOpacity' => '1',
-    'php_iconSpritePath' => '"[pix:theme|glyphicons-halflings]"',
-    'php_iconWhiteSpritePath' => '"[pix:theme|glyphicons-halflings-white]"',
+    'php_iconSpritePath' => '"[[pix:theme|glyphicons-halflings]]"',
+    'php_iconWhiteSpritePath' => '"[[pix:theme|glyphicons-halflings-white]]"',
     'php_horizontalComponentOffset' => '200px',
 );
 $import_dirs[] = "$themedir/style/glyphicons";
