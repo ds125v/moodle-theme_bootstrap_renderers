@@ -31,15 +31,11 @@ require_once($CFG->dirroot . "/blocks/settings/renderer.php");
 class theme_bootstrap_renderers_block_settings_renderer extends block_settings_renderer {
 
     public function settings_tree(settings_navigation $navigation) {
-        $navs = array();
-        foreach ($navigation->children as $child) {
-            $navs[] = $this->navigation_node($child, false);
-        }
-        return implode("<li class=divider></li>", $navs);
-
+        $navs[] = $this->navigation_node($navigation, array('class' => 'block_tree list'));
+        $attributes = array('class' => 'block_tree_box', 'id' => $navigation->id); 
+        return html::li($attributes, implode("<li class=divider></li>", $navs));
     }
-
-    protected function navigation_node(navigation_node $node, $wrap = true) {
+    protected function disabled_navigation_node(navigation_node $node, $wrap = true) {
         $items = $node->children;
 
         if ($items->count()==0) {
@@ -58,12 +54,13 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
             }
             $content = $this->output->render($item);
 
-            $classes = '';
+            $classes = 'tree_item';
             $expanded = 'true';
             if (!$item->forceopen || (!$item->forceopen && $item->collapse) || ($item->children->count()==0  && $item->nodetype==navigation_node::NODETYPE_BRANCH)) {
                 $classes = classes::add_to($classes, 'collapsed');
                 if ($isbranch) {
                     $expanded = "false";
+                    $classes = classes::add_to($classes, 'branch');
                 }
             }
             if ($item->isactive === true) {
@@ -76,7 +73,7 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
         }
         $output = implode($lis);
         if ($wrap) {
-            return html::ul('nav nav-list', $output);
+            return html::ul('nav nav-list block_tree', $output);
         }
         return $output;
     }

@@ -1,0 +1,48 @@
+.block_settings  .block_tree {
+  margin: 0px;
+  p > a,
+  p > span {
+      display: block;
+      margin-left: -15px;
+      margin-right: -15px;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+      padding: 3px 15px;
+      &:hover {
+      text-decoration: none;
+      background-color: #eeeeee;
+      }
+  }
+  hr { margin: 5px 0; }
+  .tree_item {
+    padding-left: 15px;
+    &.branch {
+        background-position: 0 30%;
+    }
+    &.leaf {
+        padding-left: 0;
+    }
+  }
+  .current_branch .active_tree_node a {
+      color: #ffffff;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+      background-color: #0088cc;
+      .icon-white {
+          }
+
+  }
+}
+/*
+.block_settings  .block_tree .tree_item.branch {
+        background: green;
+        padding-left: 0px;
+}
+.block_settings  .block_tree li.collapsed .tree_item.branch {
+        background: red;
+}
+.block_settings  .block_tree .branch {
+    a,
+    span {
+        background: blue;
+    }
+}
+*/
