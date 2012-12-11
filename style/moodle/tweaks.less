@@ -20,15 +20,3 @@
         .close
     }
 }
-// replace required asterisk image with real asterisk
-// This looks better against dark-backgrounds.
-// TODO: check accessability
-.fdescription.required img,
-img.req{
-    display: none;
-}
-.fdescription.required:after,
-.fitem.required .fitemtitle label:after {
-    content: "*";
-    color: red;
-}

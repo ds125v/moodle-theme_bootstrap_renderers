@@ -26,7 +26,9 @@ div.form-defaultinfo,
 #page-mod-forum-search .c1 {
   .form-horizontal .controls;
 }
-
+.mform .fitem .felement.fstatic {
+    margin-left: 20px;
+}
 
 .formsettingheading {
   .form-horizontal .help-block
@@ -40,7 +42,10 @@ table#form td.submit,
   .form-horizontal .form-actions;
 }
 .fitem_fsubmit .felement.fsubmit {
-    margin-left: 20px;
+    margin-left: 0;
+}
+.mform .fitem.fitem_fsubmit .fitemtitle {
+    width: 0;
 }
 
 
@@ -146,6 +151,80 @@ input#id_cancel {
 }
 .user-enroller-panel .uep-search-results .user .options .enrol {
   .btn-mini
+}
+
+.fduration input, .fduration select, .fduration span,
+.fdate_selector select, .fdate_selector select:focus,
+#fgroup_id_firstaccess_grp select, #fgroup_id_firstaccess_grp select:focus,
+#fgroup_id_lastaccess_grp select, #fgroup_id_lastaccess_grp select:focus,
+#fgroup_id_timemodified_grp select, #fgroup_id_timemodified_grp select:focus,
+#fgroup_id_enableopengroup select, #fgroup_id_enableopengroup select:focus,
+#fgroup_id_enableclosegroup select, #fgroup_id_enableclosegroup select:focus,
+select.menufromday, select.menufromday:hover,
+select.menutoday, select.menutoday:hover,
+#turnitintool_style select#id_dtstart_day,
+#turnitintool_style select#id_dtdue_day,
+#turnitintool_style select#id_dtpost_day,
+select.menufrommonth, select.menufrommonth:hover,
+select.menutomonth, select.menutomonth:hover,
+#turnitintool_style select#id_dtstart_month,
+#turnitintool_style select#id_dtdue_month,
+#turnitintool_style select#id_dtpost_month,
+#turnitintool_style select#id_dtstart_year,
+select.menufromyear, select.menufromyear:hover,
+select.menutoyear, select.menutoyear:hover,
+#turnitintool_style select#id_dtdue_year,
+#turnitintool_style select#id_dtpost_year,
+#turnitintool_style select#id_dtstart_minute,
+select.menufromminute, select.menufromminute:hover,
+select.menutominute, select.menutominute:hover,
+#turnitintool_style select#id_dtdue_minute,
+#turnitintool_style select#id_dtpost_minute,
+select.menufromhour, select.menufromhour:hover,
+select.menutohour, select.menutohour:hover,
+#turnitintool_style select#id_dtstart_hour,
+#turnitintool_style select#id_dtdue_hour,
+#turnitintool_style select#id_dtpost_hour,
+.form-time select, .form-time select:focus,
+.fdate_time_selector select, .fdate_time_selector select:focus {
+  min-width: 60px !important; // !important to override turnitin style
+  width: 71px !important; // !important to override turnitin style
+}
+
+
+.mform div.fdescription.required {
+  text-align: left;
+  margin-left: @horizontalComponentOffset;
+}
+
+// replace required asterisk image with real asterisk
+// This looks better against dark-backgrounds.
+// TODO: check accessability
+.fdescription.required img,
+img.req{
+    display: none;
+}
+.fdescription.required:after,
+.fitem.required .fitemtitle label:before {
+    content: "*";
+    color: @errorText;
+}
+.mform .advancedbutton {float:right;}
+.felement.fstatic {
+  .uneditable-input;
+  width: auto;
+  min-width: 206px;
+}
+input#id_fullname,
+input#id_name,
+input#id_externalurl,
+input#id_setting_root_filename,
+textarea {
+  width: 420px !important;
+}
+
+div.fitemtitle span.helplink {
+  margin-right: -22px; /* shift help icon into middle gutter */
 }
 
 // login page
