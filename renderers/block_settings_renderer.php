@@ -37,8 +37,12 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
             $count++;
         }
         $navs = $this->navigation_node($navigation, array('class' => 'block_tree list nav nav-list'));
-        $attributes = array('class' => 'block_tree_box', 'id' => $navigation->id); 
-        return html::li($attributes, $navs. bootstrap::list_divider());
+        if ($navs === '') {
+            return '';
+        } else {
+            $attributes = array('class' => 'block_tree_box', 'id' => $navigation->id); 
+            return html::li($attributes, $navs . bootstrap::list_divider());
+        }
     }
     protected function navigation_node(navigation_node $node, $attrs=array('class'=>'nav nav-list')) {
         $items = $node->children;
