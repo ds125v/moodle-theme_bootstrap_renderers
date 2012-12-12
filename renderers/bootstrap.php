@@ -171,6 +171,7 @@ class bootstrap {
      * only because I've got nowhere else to put it.
      */
     public static function replace_moodle_icon($name) {
+        return false; // disables this function
         $icons = array(
             'add' => 'plus',
             'book' => 'book',
