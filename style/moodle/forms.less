@@ -121,6 +121,19 @@ input[type="checkbox"] + input[type="checkbox"] {
 .backup-restore .backup-section .backup-sub-section h3.subheader {
     legend
 }
+select + label.accesshide + select[id$="_hour"],
+table#form select + label + select.menufromhour,
+table#form select + label + select.menutohour {
+  margin-left: 61px; // space between date and time
+}
+
+#fgroup_id_firstaccess_grp span,
+#fgroup_id_lastaccess_grp span,
+#fgroup_id_timemodified_grp span {
+  display: inline-block;
+  width: 73px;
+}
+
 
 // buttons
 
@@ -131,6 +144,7 @@ button,
 input.form-submit,
 input#id_submitbutton,
 input#id_submitbutton2,
+input#id_previous,
 input#id_cancel {
   .btn
 }
@@ -215,6 +229,13 @@ img.req{
   width: auto;
   min-width: 206px;
 }
+select#id_category,
+form#switchcategory select,
+#page-course-editcategory #id_parent select,
+#fitem_id_parent select {
+  width: 100%;
+}
+
 input#id_fullname,
 input#id_name,
 input#id_externalurl,
