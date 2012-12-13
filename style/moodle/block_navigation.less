@@ -1,19 +1,27 @@
-.block_settings {
+.block_navigation {
   .block_tree {
       margin: 0;
       padding: 0;
       li { margin: 0;}
+      li.depth_2  ul,
       li ul { padding-left: 15px;}
   }
   .nav-list .nav-list .tree_item {
       margin: 0 -15px;
+      padding-left: 30px;
+      &.branch {
+          padding-left: 30px;
+      }
+  }
+  .nav-list .nav-list .nav-list .tree_item {
+      margin: 0 -30px;
       padding-left: 15px;
       &.branch {
           background-position: 15px center;
           padding-left: 30px;
       }
   }
-  .nav-list .nav-list .nav-list .tree_item {
+  .nav-list .nav-list .nav-list .nav-list .tree_item {
       margin: 0 -30px;
       padding-left: 30px;
       &.branch {
@@ -53,8 +61,12 @@
           padding-left: 105px;
       }
   }
-}
-.block_settings  li.divider {
-  // overriding moodle settings
-  margin: ((@baseLineHeight / 2) - 1) 1px; // 8px 1px
+  .nav-list .nav-list .nav-list .nav-list .nav-list .nav-list .nav-list .nav-list .tree_item {
+      margin: 0 -105px;
+      padding-left: 105px;
+      &.branch {
+          background-position: 105px center;
+          padding-left: 120px;
+      }
+  }
 }
