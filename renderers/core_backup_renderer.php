@@ -31,4 +31,7 @@ class theme_bootstrap_renderers_core_backup_renderer extends core_backup_rendere
            html::label('control-label', $label) .
            html::div('controls', $value));
     }
+    public function dependency_notification($message) {
+        return bootstrap::alert_error($message);
+    }
 }

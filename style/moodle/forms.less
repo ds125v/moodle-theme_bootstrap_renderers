@@ -24,23 +24,31 @@ div.form-defaultinfo,
 .mform .fitem .felement,
 .form-item .form-description,
 #page-mod-forum-search .c1 {
-  .form-horizontal .controls;
+    .form-horizontal .controls;
 }
 .mform .fitem .felement.fstatic {
     margin-left: 20px;
 }
 
 .formsettingheading {
-  .form-horizontal .help-block
+    .form-horizontal .help-block
 }
 
 table#form td.submit,
 .form-buttons,
 #fitem_id_submitbutton,
 .fp-content-center form + div,
-#group_id_buttonar {
-  .form-horizontal .form-actions;
+#fgroup_id_buttonar {
+    .form-actions;
+    padding-left: @horizontalComponentOffset; // add back the padding it would usually get from being inside a .form-horizontal
+    div.fitemtitle {
+        width: 0;
+    }
+    fieldset.felement.fgroup {
+        margin-left: 0; // remove double margin
+    }
 }
+
 .fitem_fsubmit .felement.fsubmit {
     margin-left: 0;
 }
@@ -68,7 +76,7 @@ div.felement.fcheckbox,
 .fdate_time_selector span,
 form#adminsettings .form-item .form-setting .form-password .unmask,
 .form-multicheckbox li { // containers for checkboxes
-  .checkbox
+    .checkbox
 }
 
 fieldset.felement.fgroup label, // labels round completion targets
@@ -94,9 +102,9 @@ input[type="checkbox"] + label { // labels just sitting after a checkbox
 .fdate_time_selector span > input[type="checkbox"],
 .fgroup span > input[type="checkbox"],
 .fduration span > input[type="checkbox"] { 
-// copied from .checkbox input[type="checkbox"] 
-  float: left;
-  margin-left: -18px;
+    // copied from .checkbox input[type="checkbox"] 
+    float: left;
+    margin-left: -18px;
 }
 
 .fcheckbox,
@@ -104,17 +112,17 @@ input[type="checkbox"] + label { // labels just sitting after a checkbox
 div.felement.fcheckbox,
 .form-checkbox,
 .form-multicheckbox {
-  .controls > .checkbox
+    .controls > .checkbox
 }
 input[type="checkbox"] + label + input[type="checkbox"],
 input[type="checkbox"] + input[type="checkbox"] {
-  .checkbox.inline + .checkbox.inline
+    .checkbox.inline + .checkbox.inline
 }
 
 
 
 .form-multicheckbox ul {
-  ul.unstyled
+    ul.unstyled
 }
 #adminsettings h3.main,
 .backup-section h2.header,
@@ -124,16 +132,21 @@ input[type="checkbox"] + input[type="checkbox"] {
 select + label.accesshide + select[id$="_hour"],
 table#form select + label + select.menufromhour,
 table#form select + label + select.menutohour {
-  margin-left: 61px; // space between date and time
+    margin-left: 61px; // space between date and time
 }
 
 #fgroup_id_firstaccess_grp span,
 #fgroup_id_lastaccess_grp span,
 #fgroup_id_timemodified_grp span {
-  display: inline-block;
-  width: 73px;
+    display: inline-block;
+    width: 73px;
 }
 
+// backup
+
+.path-backup .mform .grouped_settings {
+    .well
+}
 
 // buttons
 
@@ -146,25 +159,25 @@ input#id_submitbutton,
 input#id_submitbutton2,
 input#id_previous,
 input#id_cancel {
-  .btn
+    .btn
 }
 
 input.form-submit,
 input#id_submitbutton,
 input#id_submitbutton2,
 td.submit input {
-  .btn-primary
+    .btn-primary
 }
 input[id$="_clearbutton"]:active,
 td.submit input:active {
-  .btn-info.active
+    .btn-info.active
 }
 input[id$="_clearbutton"],
 input#id_cancel {
-  .btn-warning
+    .btn-warning
 }
 .user-enroller-panel .uep-search-results .user .options .enrol {
-  .btn-mini
+    .btn-mini
 }
 
 .fduration input, .fduration select, .fduration span,
@@ -201,14 +214,14 @@ select.menutohour, select.menutohour:hover,
 #turnitintool_style select#id_dtpost_hour,
 .form-time select, .form-time select:focus,
 .fdate_time_selector select, .fdate_time_selector select:focus {
-  min-width: 60px !important; // !important to override turnitin style
-  width: 71px !important; // !important to override turnitin style
+    min-width: 60px !important; // !important to override turnitin style
+    width: 71px !important; // !important to override turnitin style
 }
 
 
 .mform div.fdescription.required {
-  text-align: left;
-  margin-left: @horizontalComponentOffset;
+    text-align: left;
+    margin-left: @horizontalComponentOffset;
 }
 
 // replace required asterisk image with real asterisk
@@ -225,15 +238,15 @@ img.req{
 }
 .mform .advancedbutton {float:right;}
 .felement.fstatic {
-  .uneditable-input;
-  width: auto;
-  min-width: 206px;
+    .uneditable-input;
+    width: auto;
+    min-width: 206px;
 }
 select#id_category,
 form#switchcategory select,
 #page-course-editcategory #id_parent select,
 #fitem_id_parent select {
-  width: 100%;
+    width: 100%;
 }
 
 input#id_fullname,
@@ -241,11 +254,11 @@ input#id_name,
 input#id_externalurl,
 input#id_setting_root_filename,
 textarea {
-  width: 420px !important;
+    width: 420px !important;
 }
 
 div.fitemtitle span.helplink {
-  margin-right: -22px; /* shift help icon into middle gutter */
+    margin-right: -22px; /* shift help icon into middle gutter */
 }
 
 // login page
