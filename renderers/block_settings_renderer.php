@@ -115,7 +115,7 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
     }
     private function rewrite_tree_node($node_html, $new_classes) {
         $opening_tag = strstr($node_html, ' ', true);
-        $pattern = 'class="([^"]+)';
+        $pattern = '/class=\"([^"]+)/';
         if (preg_match($pattern, $node_html, $matches)) {
             $existing_classes = $matches[1];
             $new_classes = classes::add_to($new_classes, $existing_classes);
