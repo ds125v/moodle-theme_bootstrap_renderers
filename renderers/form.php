@@ -72,10 +72,14 @@ class form {
     public static function actions($text) {
         return html::div('form-actions', html::submit(array('class' => 'btn-primary', 'value' => $text)));
     }
-    public static function moodle_url($moodle_url, $contents) {
+    public static function moodle_url($moodle_url, $contents, $method='post') {
         $attributes['class'] = 'form-horizontal';
-        $attributes['method'] = 'post';
-        $attributes['action'] = $moodle_url->out_omit_querystring();
+        $attributes['method'] = $method;
+        if ($method === 'post') {
+            $attributes['action'] = $moodle_url->out_omit_querystring();
+        } else {
+            $attributes['action'] = $moodle_url->out_omit_querystring(true);
+        }
         $hidden_inputs = html::hidden_inputs($moodle_url->params());
         return html::form($attributes, $hidden_inputs . $contents);
     }

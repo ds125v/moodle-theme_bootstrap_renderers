@@ -158,14 +158,9 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     public function block(block_contents $bc, $region) {
-        // Trying to make each block a list, first item the header, second items controls,
-        // then if content is a list just join on and close the ul in the footer
-        // don't know if it'll work, Boostrap just expects simple lists.
-
-        // Rename class invisible to dimmed.
         $bc->attributes['class'] = classes::replace($bc->attributes['class'], array('invisible'=>'muted'));
 
-        $bc = clone($bc); // Avoid messing up the object passed in.
+        $bc = clone($bc);
         if (empty($bc->blockinstanceid) || !strip_tags($bc->title)) {
             $bc->collapsible = block_contents::NOT_HIDEABLE;
         }
@@ -184,53 +179,43 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
             $output = '';
             $skipdest = '';
         } else {
-            $output = html_writer::tag('a', get_string('skipa', 'access', $skiptitle),
-                array('href' => '#sb-' . $bc->skipid, 'class' => 'skip-block'));
-            $skipdest = html::span(array('id' => 'sb-' . $bc->skipid, 'class' => 'skip-block-to'), '');
+            $output = html::a(
+                array('href' => '#sb-' . $bc->skipid, 'class' => 'skip-block'),
+                get_string('skipa', 'access', $skiptitle));
+            $skipdest = html::span(array('id' => 'sb-' . $bc->skipid, 'class' => 'skip-block-to'));
         }
 
         $output .= html::div($bc->attributes, $this->block_header($bc) . $this->block_content($bc));
-
         $output .= $this->block_annotation($bc);
-
         $output .= $skipdest;
-
         $this->init_block_hider_js($bc);
         return $output;
     }
 
     protected function block_header(block_contents $bc) {
-        $output = html::ul_open('nav nav-list');
-
+        $output = '<ul class="nav nav-list">';
         if ($bc->title) {
             $output .= html::li('nav-header', $bc->title);
         }
-
         if ($bc->controls) {
-            $output .= html::li('',  $this->block_controls($bc->controls));
+            $output .= html::li($this->block_controls($bc->controls));
         }
-
         return $output;
     }
 
     protected function block_content(block_contents $bc) {
-        // Probably only working for lists at the moment.
-        $output = $bc->content;
-        $output .= $this->block_footer($bc);
-
         return $bc->content . $this->block_footer($bc);
     }
 
     protected function block_footer(block_contents $bc) {
-        $output = '';
         if ($bc->footer) {
-            $output .= html::li('', $bc->footer);
+            return html::li($bc->footer) . '</ul>';
+        } else {
+            return '</ul>';
         }
-        return "$output</ul>";
     }
 
     public function list_block_contents($icons, $items) {
-        // Currently just ditches icons rather than convert them.
         return html::li_implode($items);
     }
 
@@ -303,8 +288,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function render_single_button(single_button $button) {
-        // Just because it says "single_botton" doesn't mean it's going to be rendered on it's own
-        // but it does mean it gets it's own unique form and a div round it.
+        // Just because it says "single_botton" doesn't mean it's going to be rendered on its own
+        // but it does mean it gets its own unique form and a div round it.
 
         $attributes = array(
                 'title'    => $button->tooltip,
@@ -313,17 +298,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 'disabled' => $button->disabled ? 'disabled' : null,
             );
 
-        // Should look at button->class and translate to Bootstrap
-        // button types e.g. primary, info, success, warning, danger, inverse
-        // and sizes like large, small, mini, block-level, or link
-        // not sure how best to get a comprehensive list of button classes
-        // in moodle, so for now appending their class to tooltip
-        // maybe their id, type or value might work better?
-        //
-        // Found so far:
-        // .singlebutton -> .btn?
-        // .continuebutton -> .btn-primary?
-
         if ($button->actions) {
             $id = html_writer::random_id('single_button');
             $attributes['id'] = $id;
@@ -331,7 +305,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 $this->add_action_handler($action, $id);
             }
         }
-
         $output = html::submit($attributes);
 
         if ($button->method === 'post') {
@@ -353,6 +326,61 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
                 'id'     => $button->formid);
         return html::form($attributes, $output);
     }
+    protected function render_single_select(single_select $select) {
+        $select = clone($select);
+        if (empty($select->formid)) {
+            $select->formid = html_writer::random_id('single_select_f');
+        }
+
+        $params = $select->url->params();
+        if ($select->method === 'post') {
+            $params['sesskey'] = sesskey();
+        }
+        $output = html::hidden_inputs($params);
+
+        if (empty($select->attributes['id'])) {
+            $select->attributes['id'] = html_writer::random_id('single_select');
+        }
+        if ($select->disabled) {
+            $select->attributes['disabled'] = 'disabled';
+        }
+        if ($select->tooltip) {
+            $select->attributes['title'] = $select->tooltip;
+        }
+        if ($select->label) {
+            $attributes = $select->labelattributes;
+            $attributes['for'] = $select->attributes['id'];
+            $output .= html::label($attributes, $select->label);
+        }
+
+        if ($select->helpicon instanceof help_icon) {
+            $output .= $this->render($select->helpicon);
+        } else if ($select->helpicon instanceof old_help_icon) {
+            $output .= $this->render($select->helpicon);
+        }
+        $output .= html_writer::select($select->options, $select->name, $select->selected, $select->nothing, $select->attributes);
+
+        $go = html::submit(get_string('go'));
+        $output .= '<noscript>'.html::tag(array('style'=>'inline'), $go).'</noscript>';
+
+        $nothing = empty($select->nothing) ? false : key($select->nothing);
+        $this->page->requires->js_init_call('M.util.init_select_autosubmit', array($select->formid, $select->attributes['id'], $nothing));
+
+        $output = html::div($output);
+
+        if ($select->method === 'get') {
+            $url = $select->url->out_omit_querystring(true); // url without params, the anchor part allowed
+        } else {
+            $url = $select->url->out_omit_querystring();     // url without params, the anchor part not allowed
+        }
+        $form_attributes = array('method' => $select->method,
+                                'class' => 'form-inline',
+                                'action' => $url,
+                                'id'     => $select->formid);
+        $output = html::form($form_attributes, $output);
+
+        return html::div($select->class, $output);
+    }
 
 
     public function doc_link($path, $text = '', $forcepopup=false) {
@@ -366,15 +394,8 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function render_pix_icon(pix_icon $icon) {
-
         if (bootstrap::replace_moodle_icon($icon->pix) !== false) {
             return bootstrap::replace_moodle_icon($icon->pix);
-            // Currently throws away any attributes attached to
-            // the icon, like alt, which could be rendered
-            // using .hide-text image replacement technique.
-
-            // Also doesn't look at the $icon->component, so all mod
-            // icons for example look the same as pix == 'icon'.
         } else {
             return parent::render_pix_icon($icon);
         }
@@ -411,7 +432,6 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
     public function spacer(array $attributes = null, $br = false) {
         return bootstrap::icon_spacer();
-        // Don't bother outputting br's or attributes.
     }
 
     public function error_text($message) {

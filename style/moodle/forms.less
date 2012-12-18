@@ -303,6 +303,19 @@ body.path-mod-choice form {
     }
     input.button {
         .btn;
-        .btn-primary
+        .btn-primary;
     }
+}
+
+// blocks
+
+.block_login input#login_username,
+.block_search_forums input#searchform_search,
+.block_login input#login_password {
+    width: 95%;
+}
+// hack to workaround poorly marked up ellipsis
+.block_course_list > ul.nav-list > li:last-child,
+.block_news_items > ul.nav-list > li:last-child {
+    color: @wellBackground;
 }
