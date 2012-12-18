@@ -28,6 +28,10 @@ require_once('classes.php');
 class progress {
 
     public static function bar($percent) {
-        return "<div class=progress><div class=bar style=\"width: $percent%\"></div></div>";
+        return "<div class=progress><div class=bar style=\"width:$percent%\"></div></div>";
     }
+    public static function level($percent) {
+        return "<div class=progress style=\"width:20px;height:300px\"><div class=bar style=\"width:20px;height:$percent%\"></div></div>";
+    }
+
 }

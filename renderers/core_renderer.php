@@ -94,7 +94,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         } else {
             $role_switch = null;
         }
-		$loginfailures = null;
+        $loginfailures = null;
         if (isset($SESSION->justloggedin)) {
             unset($SESSION->justloggedin);
             if (!empty($CFG->displayloginfailures) && !isguestuser()) {

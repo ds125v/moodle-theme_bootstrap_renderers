@@ -31,7 +31,7 @@ function processor($css, $theme) {
     }
     return $css;
 }
-function less_compiler($theme) {
+function less_compiler($theme, $override=array()) {
     global $CFG;
 
     $swatch = $theme->settings->subtheme;
@@ -52,7 +52,7 @@ function less_compiler($theme) {
         $opacity_key = array_rand($opacities);
         $icon_opacity = $colors[$opacity_key];
 
-        $swatches = array('amelia', 'cerulean', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'spruce', 'superhero', 'united');
+        $swatches = array('amelia', 'cerulean', 'cosmo', 'cyborg', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'spruce', 'superhero', 'united');
         $swatch = $swatches[array_rand($swatches)];
 
         $responsive = rand(0, 1);
@@ -73,17 +73,16 @@ function less_compiler($theme) {
         $themewww = "$CFG->themewww/$current_theme";
     }
 
-    $less = new lessc;
-    $less->setVariables(array(
+    $less_variables = array(
         'swatch' => "'$swatch'",
         'navbarMargin' => $padding,
-        'php_fontAwesomePath' => "'$themewww/font'",
+        'php_fontAwesomePath' => "'$themewww/pix/font'",
         'iconColor' => $icon_color,
         'iconOpacity' => $icon_opacity,
         'php_iconSpritePath' => "'$themewww/pix/glyphicons-halflings.png'",
         'php_iconWhiteSpritePath' => "'$themewww/pix/glyphicons-halflings-white.png'",
         'php_horizontalComponentOffset' => '200px',
-    ));
+    );
 
     if ($awesome) {
         $import_dirs[] = "$themedir/style/font-awesome";
@@ -91,10 +90,18 @@ function less_compiler($theme) {
         $import_dirs[] = "$themedir/style/glyphicons";
     }
     $import_dirs[] = "$themedir/style";
-    $less->setImportDir($import_dirs);
 
-    $less_input = '';
-    $less_input .= '@import "bootstrap/less/bootstrap.less";';
+    $less_input = less_input($swatch, $responsive);
+
+    $output = compile($less_input, $less_variables, $import_dirs);
+
+    $search[] = 'fonts/';
+    $replace[] = $less_variables['php_fontAwesomePath'] . '/';
+    $output = str_replace($search, $replace, $output);
+    return $output;
+}
+function less_input($swatch, $responsive) {
+    $less_input = '@import "bootstrap/less/bootstrap.less";';
     $less_input .= '@media (min-width: 981px) {body.navbar-fixed-top-padding {padding-top: @navbarHeight + @navbarMargin}};';
     if ($responsive) {
         $less_input .= '@import "bootstrap/less/responsive.less";';
@@ -104,12 +111,12 @@ function less_compiler($theme) {
         $less_input .= '@import "@{swatch}/bootswatch.less";';
         $less_input .= '@import "bootstrap/less/utilities.less";';
     }
-
     $less_input .= '@import "moodle/moodle.less";';
-    $output = $less->compile($less_input);
-
-    $search[] = 'fonts/';
-    $replace[] = "$themewww/font/";
-    $output = str_replace($search, $replace, $output);
-    return $output;
+    return $less_input;
+}
+function compile($less_input, $less_variables, $import_dirs) {
+    $less = new lessc;
+    $less->setVariables($less_variables);
+    $less->setImportDir($import_dirs);
+    return $less->compile($less_input);
 }
