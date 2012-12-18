@@ -388,6 +388,26 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         return "<h2>$text $help</h2>";
     }
+    protected function render_help_icon(help_icon $helpicon) {
+        global $CFG;
+
+        $output = bootstrap::icon_help();
+        if (!empty($helpicon->linktext)) {
+            $output .= ' '.$helpicon->linktext;
+        }
+
+        $url = new moodle_url($CFG->httpswwwroot.'/help.php', array('component' => $helpicon->component, 'identifier' => $helpicon->identifier, 'lang'=>current_language()));
+
+        $title = get_string($helpicon->identifier, $helpicon->component);
+        $title = get_string('helpprefix2', '', trim($title, ". \t"));
+
+        $id = html_writer::random_id('helpicon');
+        $attributes = array('href'=>$url, 'title'=>$title, 'id' => $id);
+        $output = html::a($attributes, $output);
+
+        $this->page->requires->js_init_call('M.util.help_icon.add', array(array('id'=>$id, 'url'=>$url->out(false))));
+        return $output;
+    }
 
     public function spacer(array $attributes = null, $br = false) {
         return bootstrap::icon_spacer();
