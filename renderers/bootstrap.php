@@ -34,6 +34,13 @@ class bootstrap {
             return '';
         }
     }
+    public static function icon_white($name) {
+        if (isset($name) && $name != '') {
+            return "<i class=\"icon-$name icon-white\"></i>";
+        } else {
+            return '';
+        }
+    }
     public static function icon_help() {
         return self::icon('question-sign');
     }
@@ -114,32 +121,6 @@ class bootstrap {
     public static function breadcrumb($items) {
         $divider = html::span('divider', ' / ');
         return html::ul('breadcrumb', '<li>' . implode("$divider</li><li>", $items). '</li>');
-    }
-    public static function inline_search($action, $placeholder, $value, $submit_text) {
-        $form_attributes['class'] = 'form-search';
-        $form_attributes['method'] = 'get';
-        $form_attributes['action'] = $action;
-
-        $input_attributes['class'] = 'search-query';
-        $input_attributes['type'] = 'text';
-        $input_attributes['name'] = 'query';
-        $input_attributes['placeholder'] = $placeholder;
-        $input_attributes['value'] = $value;
-
-        return html::form($form_attributes, html::input($input_attributes) . html::submit(array('value'=>$submit_text)));
-    }
-    public static function inline_search_append($action, $placeholder, $value, $submit_text) {
-        $form_attributes['class'] = 'inline-form';
-        $form_attributes['method'] = 'get';
-        $form_attributes['action'] = $action;
-
-        $input_attributes['type'] = 'text';
-        $input_attributes['name'] = 'query';
-        $input_attributes['placeholder'] = $placeholder;
-        $input_attributes['value'] = $value;
-
-        return html::form($form_attributes,
-            html::div('input-append', html::input($input_attributes) . html::submit(array('value'=>$submit_text))));
     }
 
     public static function dropdown($text, $content) {

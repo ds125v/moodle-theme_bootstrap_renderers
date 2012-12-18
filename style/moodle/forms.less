@@ -38,8 +38,16 @@ table#form td.submit,
 .form-buttons,
 #fitem_id_submitbutton,
 .fp-content-center form + div,
-#group_id_buttonar {
-  .form-horizontal .form-actions;
+div.backup-section + form,
+#fgroup_id_buttonar {
+    .form-actions;
+    padding-left: @horizontalComponentOffset; // add back the padding it would usually get from being inside a .form-horizontal
+    div.fitemtitle {
+        width: 0;
+    }
+    fieldset.felement.fgroup {
+        margin-left: 0; // remove double margin
+    }
 }
 .fitem_fsubmit .felement.fsubmit {
     margin-left: 0;
@@ -228,6 +236,10 @@ img.req{
   .uneditable-input;
   width: auto;
   min-width: 206px;
+}
+.felement.error span.error {
+    color: @errorText;
+    // probably need more than just color
 }
 select#id_category,
 form#switchcategory select,

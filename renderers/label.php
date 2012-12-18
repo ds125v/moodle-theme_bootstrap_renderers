@@ -51,9 +51,9 @@ class label {
         return self::make('inverse', $text);
     }
     public static function yes() {
-        return self::success(get_string('yes') . ' ' . bootstrap::icon('ok'));
+        return self::success(get_string('yes') . ' ' . bootstrap::icon_white('ok'));
     }
     public static function no() {
-        return self::warning(get_string('no') . ' ' . bootstrap::icon('remove'));
+        return self::important(get_string('no') . ' ' . bootstrap::icon_white('remove'));
     }
 }

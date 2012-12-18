@@ -55,7 +55,13 @@ class html {
         }
     }
 
-
+    private static function guten_tag($texty, $tag, $attributes, $content = null) {
+        if ($texty === 1) {
+            return self::texty_tag($tag, $attributes, $content);
+        } else {
+            return self::classy_tag($tag, $attributes, $content);
+        }
+    }
     private static function classy_tag($tag, $attributes, $content = null) {
         if (is_string($attributes)) {
             if ($attributes === '') {
@@ -113,41 +119,36 @@ class html {
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
     public static function p($attributes, $content=null) {
-        if (func_num_args() === 1) {
-            return self::texty_tag('p', $attributes);
-        }
-        return self::classy_tag('p', $attributes, $content);
+        return self::guten_tag(func_num_args(), 'p', $attributes, $content);
     }
 
     public static function div($attributes, $content=null) {
-        if (func_num_args() === 1) {
-            return self::texty_tag('div', $attributes);
-        }
-        return self::classy_tag('div', $attributes, $content);
+        return self::guten_tag(func_num_args(), 'div', $attributes, $content);
     }
     public static function div_open($attributes) {
         return self::div($attributes, null);
     }
-
+    public static function fieldset($attributes, $content=null) {
+        return self::guten_tag(func_num_args(), 'fieldset', $attributes, $content);
+    }
     public static function span($attributes, $content=null) {
-        if (func_num_args() === 1) {
-            return self::texty_tag('span', $attributes);
-        }
-        return self::classy_tag('span', $attributes, $content);
+        return self::guten_tag(func_num_args(), 'span', $attributes, $content);
+    }
+    public static function small($attributes, $content=null) {
+        return self::guten_tag(func_num_args(), 'small', $attributes, $content);
+    }
+    public static function legend($attributes, $content=null) {
+        return self::guten_tag(func_num_args(), 'legend', $attributes, $content);
     }
     public static function table($attributes, $content=null) {
-        if (func_num_args() === 1) {
-            return self::texty_tag('table', $attributes);
-        }
-        return self::classy_tag('table', $attributes, $content);
+        return self::guten_tag(func_num_args(), 'table', $attributes, $content);
     }
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
     public static function h2($attributes, $content=null) {
-        if (func_num_args() === 1) {
-            return self::texty_tag('h2', $attributes);
-        }
-        return self::classy_tag('h2', $attributes, $content);
+        return self::guten_tag(func_num_args(), 'h2', $attributes, $content);
     }
-
     public static function abbr($attributes, $content) {
         return self::classy_tag('abbr', $attributes, $content);
     }
@@ -159,7 +160,10 @@ class html {
         return self::classy_tag('input', $attributes, $content);
     }
     public static function label($attributes, $content = null) {
-        return self::texty_tag('label', $attributes, $content);
+        if (func_num_args() === 1) {
+            return self::texty_tag('label', $attributes);
+        }
+        return self::classy_tag('label', $attributes, $content);
     }
     public static function checkbox($new_attributes, $label) {
         $attributes = array('type'=>'checkbox', 'value'=>1);
@@ -205,7 +209,8 @@ class html {
      */
     public static function li($attributes, $content=null) {
         if (func_num_args() === 1) {
-            return self::texty_tag('li', $attributes);
+            $content = $attributes;
+            return self::texty_tag('li', $content);
         }
         return self::classy_tag('li', $attributes, $content);
     }
