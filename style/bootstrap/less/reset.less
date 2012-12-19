@@ -1,10 +1,10 @@
 //
-// Modals
+// Reset CSS
 // Adapted from http://github.com/necolas/normalize.css
 // --------------------------------------------------
 
 
-// Display in IE6-9 and FF3
+// HTML elements <IE9
 // -------------------------
 
 article,
@@ -20,15 +20,10 @@ section {
   display: block;
 }
 
-// Display block in IE6-9 and FF3
-// -------------------------
-
 audio,
 canvas,
 video {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
 }
 
 // Prevents modern browsers from displaying 'audio' without controls
@@ -79,7 +74,7 @@ sub {
 img {
   /* Responsive images (ensure images don't scale beyond their parents) */
   max-width: 100%; /* Part 1: Set a maxium relative to the parent */
-  width: auto\9; /* IE7-8 need help adjusting responsive images */
+  width: auto\9; /* IE8 need help adjusting responsive images */
   height: auto; /* Part 2: Scale the height according to the width, otherwise you get stretching */
 
   vertical-align: middle;
@@ -107,13 +102,7 @@ textarea {
 }
 button,
 input {
-  *overflow: visible; // Inner spacing ie IE6/7
-  line-height: normal; // FF3/4 have !important on line-height in UA stylesheet
-}
-button::-moz-focus-inner,
-input::-moz-focus-inner { // Inner padding and border oddities in FF3/4
-  padding: 0;
-  border: 0;
+  line-height: normal;
 }
 button,
 html input[type="button"], // Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio` and `video` controls.

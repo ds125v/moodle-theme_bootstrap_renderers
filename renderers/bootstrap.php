@@ -119,8 +119,7 @@ class bootstrap {
         return html::div('pagination pagination-centered', html::ul('', $items));
     }
     public static function breadcrumb($items) {
-        $divider = html::span('divider', ' / ');
-        return html::ul('breadcrumb', '<li>' . implode("$divider</li><li>", $items). '</li>');
+        return html::ul('breadcrumb', $items);
     }
 
     public static function dropdown($text, $content) {

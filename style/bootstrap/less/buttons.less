@@ -9,20 +9,17 @@
 // Core
 .btn {
   display: inline-block;
-  .ie7-inline-block();
-  padding: 4px 12px;
+  padding: 6px 12px;
   margin-bottom: 0; // For input.btn
-  font-size: @baseFontSize;
-  line-height: @baseLineHeight;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  .buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
-  border: 1px solid @btnBorder;
-  *border: 0; // Remove the border to prevent IE7's black border on input:focus
-  border-bottom-color: darken(@btnBorder, 10%);
-  .border-radius(@baseBorderRadius);
-  .ie7-restore-left-whitespace(); // Give IE7 some love
+  .buttonBackground(@btn-background, @btn-background-highlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
+  border: 1px solid @btn-border;
+  border-bottom-color: darken(@btn-border, 10%);
+  border-radius: @border-radius-base;
   .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
 
   // Hover state
@@ -61,38 +58,41 @@
 }
 
 
-
 // Button Sizes
-// --------------------------------------------------
+// -------------------------
 
 // Large
 .btn-large {
-  padding: @paddingLarge;
-  font-size: @fontSizeLarge;
-  .border-radius(@borderRadiusLarge);
-}
-.btn-large [class^="icon-"],
-.btn-large [class*=" icon-"] {
-  margin-top: 2px;
+  padding: @padding-large;
+  font-size: @font-size-large;
+  border-radius: @border-radius-large;
 }
 
 // Small
 .btn-small {
-  padding: @paddingSmall;
-  font-size: @fontSizeSmall;
-  .border-radius(@borderRadiusSmall);
+  padding: @padding-small;
+  font-size: @font-size-small;
+  border-radius: @border-radius-small;
 }
-.btn-small [class^="icon-"],
-.btn-small [class*=" icon-"] {
-  margin-top: 0;
+.btn-mini [class^="icon-"],
+.btn-mini [class*=" icon-"] {
+  margin-top: -1px;
 }
 
 // Mini
 .btn-mini {
-  padding: @paddingMini;
-  font-size: @fontSizeMini;
-  .border-radius(@borderRadiusSmall);
+  padding: @padding-mini;
+  font-size: @font-size-mini;
+  border-radius: @border-radius-small;
 }
+
+
+// Icons in buttons
+// -------------------------
+
+.btn [class^="glyphicon-"]::before       { vertical-align: -2px; }
+.btn-small [class^="glyphicon-"]::before,
+.btn-mini [class^="glyphicon-"]::before  { vertical-align: -1px; }
 
 
 // Block button
@@ -143,59 +143,29 @@ input[type="button"] {
   border-color: rgba(0,0,0,.15) rgba(0,0,0,.15) rgba(0,0,0,.25);
 }
 .btn-primary {
-  .buttonBackground(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
+  .buttonBackground(@btn-backround-primary, @btn-backround-primary-highlight);
 }
 // Warning appears are orange
 .btn-warning {
-  .buttonBackground(@btnWarningBackground, @btnWarningBackgroundHighlight);
+  .buttonBackground(@btn-backround-warning, @btn-backround-warning-highlight);
 }
 // Danger and error appear as red
 .btn-danger {
-  .buttonBackground(@btnDangerBackground, @btnDangerBackgroundHighlight);
+  .buttonBackground(@btn-backround-danger, @btn-backround-danger-highlight);
 }
 // Success appears as green
 .btn-success {
-  .buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
+  .buttonBackground(@btn-backround-success, @btn-backround-success-highlight);
 }
 // Info appears as a neutral blue
 .btn-info {
-  .buttonBackground(@btnInfoBackground, @btnInfoBackgroundHighlight);
+  .buttonBackground(@btn-backround-info, @btn-backround-info-highlight);
 }
 // Inverse appears as dark gray
 .btn-inverse {
-  .buttonBackground(@btnInverseBackground, @btnInverseBackgroundHighlight);
+  .buttonBackground(@btn-backround-inverse, @btn-backround-inverse-highlight);
 }
 
-
-// Cross-browser Jank
-// --------------------------------------------------
-
-button.btn,
-input[type="submit"].btn {
-
-  // Firefox 3.6 only I believe
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-  }
-
-  // IE7 has some default padding on button controls
-  *padding-top: 3px;
-  *padding-bottom: 3px;
-
-  &.btn-large {
-    *padding-top: 7px;
-    *padding-bottom: 7px;
-  }
-  &.btn-small {
-    *padding-top: 3px;
-    *padding-bottom: 3px;
-  }
-  &.btn-mini {
-    *padding-top: 1px;
-    *padding-bottom: 1px;
-  }
-}
 
 
 // Link buttons
@@ -212,11 +182,11 @@ input[type="submit"].btn {
 .btn-link {
   border-color: transparent;
   cursor: pointer;
-  color: @linkColor;
-  .border-radius(0);
+  color: @link-color;
+  border-radius: 0;
 }
 .btn-link:hover {
-  color: @linkColorHover;
+  color: @link-color-hover;
   text-decoration: underline;
   background-color: transparent;
 }
