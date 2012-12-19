@@ -178,7 +178,7 @@ class bootstrap {
             'i/users' => 'user',
             'spacer' => 'spacer',
             't/add' => 'plus',
-            't/copy' => 'copy', // Only in font awesome.
+            't/copy' => 'plus-sign',
             't/delete' => 'remove',
             't/down' => 'arrow-down',
             't/edit' => 'edit',
