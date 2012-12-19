@@ -30,7 +30,7 @@ require_once($CFG->dirroot . "/blocks/navigation/renderer.php");
 
 class theme_bootstrap_renderers_block_navigation_renderer extends block_navigation_renderer {
 
-    protected function navigation_node($items, $attrs=array('class'=>'nav nav-list'), $expansionlimit=null, array $options = array(), $depth=1) {
+    protected function navigation_node($items, $attrs=array('class'=>'nav nav-pills nav-stacked'), $expansionlimit=null, array $options = array(), $depth=1) {
 
         // exit if empty, we don't want an empty ul element
         if (count($items)==0) {
@@ -127,7 +127,7 @@ class theme_bootstrap_renderers_block_navigation_renderer extends block_navigati
             }
             $content = $this->rewrite_tree_node ($content, $divclasses);
             if ($isexpandable) {
-                $content .= $this->navigation_node($item->children, array('class'=>'nav nav-list'), $expansionlimit, $options, $depth+1);
+                $content .= $this->navigation_node($item->children, array('class'=>'nav nav-pills nav-stacked'), $expansionlimit, $options, $depth+1);
             }
             if (!empty($item->preceedwithhr) && $item->preceedwithhr===true) {
                 $content = bootstrap::list_divider() . $content;
@@ -146,7 +146,7 @@ class theme_bootstrap_renderers_block_navigation_renderer extends block_navigati
 
     public function navigation_tree(global_navigation $navigation, $expansionlimit, array $options = array()) {
         $navigation->add_class('navigation_node');
-        $content = $this->navigation_node(array($navigation), array('class'=>'block_tree list nav nav-list'), $expansionlimit, $options);
+        $content = $this->navigation_node(array($navigation), array('class'=>'block_tree list nav nav-pills nav-stacked'), $expansionlimit, $options);
         if (!isset($navigation->id) && !is_numeric($navigation->id) && !empty($content)) {
             $attributes = array('class' => 'block_tree_box', 'id' => $navigation->id); 
             $content = html::li($attributes, $content);

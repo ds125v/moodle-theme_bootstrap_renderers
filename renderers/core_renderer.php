@@ -193,7 +193,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     }
 
     protected function block_header(block_contents $bc) {
-        $output = '<ul class="nav nav-list">';
+        $output = '<ul class="nav nav-pills nav-stacked">';
         if ($bc->title) {
             $output .= html::li('nav-header', $bc->title);
         }

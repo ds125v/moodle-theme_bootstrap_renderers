@@ -36,7 +36,7 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
             $child->preceedwithhr = ($count!==0);
             $count++;
         }
-        $navs = $this->navigation_node($navigation, array('class' => 'block_tree list nav nav-list'));
+        $navs = $this->navigation_node($navigation, array('class' => 'block_tree list nav nav-pills nav-stacked'));
         if ($navs === '') {
             return '';
         } else {
@@ -44,7 +44,7 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
             return html::li($attributes, $navs . bootstrap::list_divider());
         }
     }
-    protected function navigation_node(navigation_node $node, $attrs=array('class'=>'nav nav-list')) {
+    protected function navigation_node(navigation_node $node, $attrs=array('class'=>'nav nav-pills nav-stacked')) {
         $items = $node->children;
 
         // exit if empty, we don't want an empty ul element
@@ -163,7 +163,7 @@ class theme_bootstrap_renderers_block_settings_renderer extends block_settings_r
         }
         $output = implode($lis);
         if ($wrap) {
-            return html::ul('nav nav-list block_tree', $output);
+            return html::ul('nav nav-pills nav-stacked block_tree', $output);
         }
         return $output;
     }
