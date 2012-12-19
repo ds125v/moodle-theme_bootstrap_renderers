@@ -29,7 +29,7 @@ class bootstrap {
 
     public static function icon($name) {
         if (isset($name) && $name != '') {
-            return "<i class=icon-$name></i>";
+            return "<i class=glyphicon-$name></i>";
         } else {
             return '';
         }

@@ -36,7 +36,6 @@ function less_compiler($theme, $override=array()) {
 
     $swatch = $theme->settings->subtheme;
     $responsive = $theme->settings->responsive;
-    $awesome = $theme->settings->awesome;
     // TODO: add setting for padding between breadcrumb and fixed navbar.
     $extra_padding = 0;
     $padding = 0;
@@ -56,13 +55,12 @@ function less_compiler($theme, $override=array()) {
         $swatch = $swatches[array_rand($swatches)];
 
         $responsive = rand(0, 1);
-        $awesome = rand(0, 1);
         $extra_padding = rand(0, 1);
         if ($extra_padding == 1) {
             $padding = 20;
         }
     }
-    $cache_name = md5(serialize(array($swatch, $responsive, $awesome, $extra_padding, $icon_color, $icon_opacity)));
+    $cache_name = md5(serialize(array($swatch, $responsive, $extra_padding, $icon_color, $icon_opacity)));
     $current_theme = current_theme();
     $cachedir = "$CFG->cachedir/theme/$current_theme";
     $cachefile = "$cachedir/$cache_name.css";
@@ -76,7 +74,6 @@ function less_compiler($theme, $override=array()) {
     $less_variables = array(
         'swatch' => "'$swatch'",
         'navbarMargin' => $padding,
-        'php_fontAwesomePath' => "'$themewww/pix/font'",
         'iconColor' => $icon_color,
         'iconOpacity' => $icon_opacity,
         'php_iconSpritePath' => "'$themewww/pix/glyphicons-halflings.png'",
@@ -84,19 +81,14 @@ function less_compiler($theme, $override=array()) {
         'php_horizontalComponentOffset' => '200px',
     );
 
-    if ($awesome) {
-        $import_dirs[] = "$themedir/style/font-awesome";
-    } else {
-        $import_dirs[] = "$themedir/style/glyphicons";
-    }
     $import_dirs[] = "$themedir/style";
 
     $less_input = less_input($swatch, $responsive);
 
     $output = compile($less_input, $less_variables, $import_dirs);
 
-    $search[] = 'fonts/';
-    $replace[] = $less_variables['php_fontAwesomePath'] . '/';
+    $search[] = '../fonts/';
+    $replace[] = "$themewww/pix/font/";
     $output = str_replace($search, $replace, $output);
     return $output;
 }
