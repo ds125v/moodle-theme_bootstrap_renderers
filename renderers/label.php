@@ -51,9 +51,12 @@ class label {
         return self::make('inverse', $text);
     }
     public static function yes() {
-        return self::success(get_string('yes') . ' ' . bootstrap::icon_white('ok'));
+        return self::success(bootstrap::icon('ok') .' '. get_string('yes'));
     }
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
     public static function no() {
-        return self::important(get_string('no') . ' ' . bootstrap::icon_white('remove'));
+        return self::important(bootstrap::icon('remove') . ' ' . get_string('no'));
     }
 }

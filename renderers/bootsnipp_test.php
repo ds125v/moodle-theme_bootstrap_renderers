@@ -39,12 +39,12 @@ class bootsnippTest extends PHPUnit_Framework_TestCase {
         $this->assertSelectCount('ul.pull-right li ul li' , 3,  $actual);
         $this->assertSelectCount('ul.pull-right li ul li a' , 2,  $actual);
 
-        $this->assertSelectCount('ul.pull-right li ul li a i.icon-user', 1,  $actual);
+        $this->assertSelectCount('ul.pull-right li ul li a i.glyphicon-user', 1,  $actual);
         $this->assertSelectEquals('ul.pull-right li ul li a', 'Login', 1,  $actual);
 
         $this->assertSelectCount('ul.pull-right li ul li.divider' , 1,  $actual);
 
-        $this->assertSelectCount('ul.pull-right li ul li a i.icon-off', 1,  $actual);
+        $this->assertSelectCount('ul.pull-right li ul li a i.glyphicon-off', 1,  $actual);
         $this->assertSelectEquals('ul.pull-right li ul li a', 'Logout', 1,  $actual);
     }
     public function test_signed_in() {
@@ -60,12 +60,12 @@ class bootsnippTest extends PHPUnit_Framework_TestCase {
         $this->assertSelectCount('ul.pull-right li ul li' , 3,  $actual);
         $this->assertSelectCount('ul.pull-right li ul li a' , 2,  $actual);
 
-        $this->assertSelectCount('ul.pull-right li ul li a i.icon-user', 1,  $actual);
+        $this->assertSelectCount('ul.pull-right li ul li a i.glyphicon-user', 1,  $actual);
         $this->assertSelectEquals('ul.pull-right li ul li a', 'Profile', 1,  $actual);
 
         $this->assertSelectCount('ul.pull-right li ul li.divider' , 1,  $actual);
 
-        $this->assertSelectCount('ul.pull-right li ul li a i.icon-off', 1,  $actual);
+        $this->assertSelectCount('ul.pull-right li ul li a i.glyphicon-off', 1,  $actual);
         $this->assertSelectEquals('ul.pull-right li ul li a', 'Logout', 1,  $actual);
     }
 

@@ -32,7 +32,7 @@ class core_admin_renderer_test extends PHPUnit_Framework_TestCase {
     }
     public function test_upgrade_reload() {
 
-        $expected = '<div><a href=http://www.example.com class=btn><i class=icon-refresh></i> _reload</a></div>';
+        $expected = '<div><a href=http://www.example.com class=btn><i class=glyphicon-refresh></i> _reload</a></div>';
         $actual = $this->admin->upgrade_reload('http://www.example.com');
 
         $this->assertSame($expected, $actual);

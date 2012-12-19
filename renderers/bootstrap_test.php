@@ -51,13 +51,13 @@ class bootstrapTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($expected, $actual);
     }
     public function test_icon_string() {
-        $expected = '<i class=icon-string></i>';
+        $expected = '<i class=glyphicon-string></i>';
         $actual = bootstrap::icon('string');
 
         $this->assertSame($expected, $actual);
     }
     public function test_icon_hyphenated_string() {
-        $expected = '<i class=icon-hyphenated-string></i>';
+        $expected = '<i class=glyphicon-hyphenated-string></i>';
         $actual = bootstrap::icon('hyphenated-string');
 
         $this->assertSame($expected, $actual);

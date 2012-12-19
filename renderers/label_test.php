@@ -28,16 +28,16 @@ require_once('label.php');
 
 class labelTest extends PHPUnit_Framework_TestCase {
 
-    public function test_label_with_yes_and_tick() {
+    public function test_label_with_tick_and_yes() {
 
-        $expected = '<span class="label label-success">_yes <i class="icon-ok icon-white"></i></span>';
+        $expected = '<span class="label label-success"><i class=glyphicon-ok></i> _yes</span>';
         $actual = label::yes();
 
         $this->assertSame($expected, $actual);
     }
-    public function test_label_with_no_and_x() {
+    public function test_label_with_x_and_no() {
 
-        $expected = '<span class="label label-important">_no <i class="icon-remove icon-white"></i></span>';
+        $expected = '<span class="label label-important"><i class=glyphicon-remove></i> _no</span>';
         $actual = label::no();
 
         $this->assertSame($expected, $actual);
