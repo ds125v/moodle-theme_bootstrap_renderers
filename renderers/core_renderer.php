@@ -361,7 +361,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         $output .= html_writer::select($select->options, $select->name, $select->selected, $select->nothing, $select->attributes);
 
         $go = html::submit(get_string('go'));
-        $output .= '<noscript>'.html::tag(array('style'=>'inline'), $go).'</noscript>';
+        $output .= '<noscript>'.html::div(array('style'=>'inline'), $go).'</noscript>';
 
         $nothing = empty($select->nothing) ? false : key($select->nothing);
         $this->page->requires->js_init_call('M.util.init_select_autosubmit', array($select->formid, $select->attributes['id'], $nothing));
