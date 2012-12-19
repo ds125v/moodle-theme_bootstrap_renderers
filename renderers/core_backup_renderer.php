@@ -372,7 +372,4 @@ class theme_bootstrap_renderers_core_backup_renderer extends core_backup_rendere
         $output .= html_writer::empty_tag('input', array('type'=>'submit', 'name'=>'searchcourses', 'value'=>get_string('search')));
         return $output;
     }
-    public function dependency_notification($message) {
-        return bootstrap::alert_error($message);
-    }
 }
