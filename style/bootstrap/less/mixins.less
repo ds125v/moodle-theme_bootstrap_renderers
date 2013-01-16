@@ -3,20 +3,24 @@
 // --------------------------------------------------
 
 
-// UTILITY MIXINS
-// --------------------------------------------------
+// Utilities
+// -------------------------
 
 // Clearfix
-// --------
-// For clearing floats like a boss h5bp.com/q
-.clearfix() {
+// Source: http://nicolasgallagher.com/micro-clearfix-hack/
+//
+// For modern browsers
+// 1. The space content is one way to avoid an Opera bug when the
+//    contenteditable attribute is included anywhere else in the document.
+//    Otherwise it causes space to appear at the top and bottom of elements
+//    that are clearfixed.
+// 2. The use of `table` rather than `block` is only necessary if using
+//    `:before` to contain the top-margins of child elements.
+.clear_float() {
   &:before,
   &:after {
-    display: table;
-    content: "";
-    // Fixes Opera/contenteditable bug:
-    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
-    line-height: 0;
+    content: " "; /* 1 */
+    display: table; /* 2 */
   }
   &:after {
     clear: both;
@@ -24,7 +28,6 @@
 }
 
 // Webkit-style focus
-// ------------------
 .tab-focus() {
   // Default
   outline: thin dotted #333;
@@ -34,7 +37,6 @@
 }
 
 // Center-align a block level element
-// ----------------------------------
 .center-block() {
   display: block;
   margin-left: auto;
@@ -42,7 +44,6 @@
 }
 
 // Sizing shortcuts
-// -------------------------
 .size(@width, @height) {
   width: @width;
   height: @height;
@@ -52,7 +53,6 @@
 }
 
 // Placeholder text
-// -------------------------
 .placeholder(@color: @input-color-placeholder) {
   &:-moz-placeholder {
     color: @color;
@@ -66,7 +66,6 @@
 }
 
 // Text overflow
-// -------------------------
 // Requires inline-block or block for proper styling
 .text-overflow() {
   overflow: hidden;
@@ -75,7 +74,6 @@
 }
 
 // CSS image replacement
-// -------------------------
 // Source: https://github.com/h5bp/html5-boilerplate/commit/aa0396eae757
 .hide-text() {
   font: 0/0 a;
@@ -124,33 +122,14 @@
 // FORMS
 // --------------------------------------------------
 
-// Block level inputs
-.input-block-level() {
-  display: block;
-  width: 100%;
-}
-
-
-
-// Mixin for form field states
 .formFieldState(@text-color: #555, @border-color: #ccc, @background-color: #f5f5f5) {
-  // Set the text color
-  .control-label,
-  .help-block,
-  .help-inline {
+  // Color the label text
+  .control-label {
     color: @text-color;
   }
-  // Style inputs accordingly
-  .checkbox,
-  .radio,
-  input,
-  select,
-  textarea {
-    color: @text-color;
-  }
-  input,
-  select,
-  textarea {
+  // Set the border and box shadow on specific inputs to match
+  .input-with-feedback {
+    padding-right: 32px; // to account for the feedback icon
     border-color: @border-color;
     .box-shadow(inset 0 1px 1px rgba(0,0,0,.075)); // Redeclare so transitions work
     &:focus {
@@ -158,13 +137,6 @@
       @shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px lighten(@border-color, 20%);
       .box-shadow(@shadow);
     }
-  }
-  // Give a small background color for input-prepend/-append
-  .input-prepend .add-on,
-  .input-append .add-on {
-    color: @text-color;
-    background-color: @background-color;
-    border-color: @text-color;
   }
 }
 
@@ -209,6 +181,12 @@
      -moz-transition-delay: @transition-delay;
        -o-transition-delay: @transition-delay;
           transition-delay: @transition-delay;
+}
+.transition-duration(@transition-duration) {
+  -webkit-transition-duration: @transition-duration;
+     -moz-transition-duration: @transition-duration;
+       -o-transition-duration: @transition-duration;
+          transition-duration: @transition-duration;
 }
 
 // Transformations
@@ -340,7 +318,7 @@
     filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",argb(@startColor),argb(@endColor))); // IE9 and down
   }
   .vertical(@startColor: #555, @endColor: #333) {
-    background-color: mix(@startColor, @endColor, 60%);
+    background-color: @endColor;
     background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
     background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
@@ -407,24 +385,25 @@
 
 // Button backgrounds
 // ------------------
-.buttonBackground(@startColor, @endColor, @text-color: #fff, @textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
+.buttonBackground(@background-start, @background-end, @text-color: #fff, @text-shadow: 0 -1px 0 rgba(0,0,0,.25)) {
   color: @text-color;
-  text-shadow: @textShadow;
-  #gradient > .vertical(@startColor, @endColor);
-  border-color: @endColor @endColor darken(@endColor, 15%);
-  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
-  .reset-filter();
+  text-shadow: @text-shadow;
+  #gradient > .vertical(@background-start, @background-end);
+  border-color: darken(@background-end, 7.5%);
 
-  // in these cases the gradient won't cover the background, so we override
-  &:hover, &:active, &.active, &.disabled, &[disabled] {
-    color: @text-color;
-    background-color: @endColor;
-  }
-
-  // IE8 can't handle box-shadow to show active, so we darken a bit ourselves
+  &:hover,
   &:active,
   &.active {
-    background-color: darken(@endColor, 10%) e("\9");
+    color: @text-color;
+    background-color: @background-end;
+    background-position: 0 -15px;
+  }
+  &:active,
+  &.active,
+  &[disabled],
+  &.disabled,
+  fieldset[disabled] & {
+    background-image: none;
   }
 }
 
