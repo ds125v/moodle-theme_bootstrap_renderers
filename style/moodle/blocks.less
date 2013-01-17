@@ -1,0 +1,40 @@
+.jsenabled .block_navigation .block_tree .collapsed .tree_item.branch,
+.jsenabled .block_settings .block_tree .collapsed .tree_item.branch,
+.block_settings .block_tree .tree_item.branch,
+.block_navigation .block_tree .tree_item.branch {
+    background-image: none;
+}
+
+.block_settings .block_tree,
+.block_navigation .block_tree{
+    li a  i {
+        margin-right: 0.5em;
+    }
+    a.tree_item.branch:before {
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        line-height: 1;
+        content: "\e159";
+        margin-right: 0.5em;
+    }
+    li.collapsed a.tree_item.branch:before {
+        content: "\e158";
+    }
+    .active_tree_node {
+        font-weight: normal;
+    }
+    .tree_item {
+        padding-left: 12px;
+        margin: 2px 0 0 0;
+    }
+}
+
+.block_navigation .block_tree a.navigation_node {
+   &.tree_item.branch:before {
+        content: "\e080";
+        padding-left: 12px;
+    }
+}
+.block_navigation li.block_tree_box > ul.block_tree {
+    margin: 0;
+}
