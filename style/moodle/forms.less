@@ -9,12 +9,25 @@
  */
 
 .fitem {
-    .form-horizontal .control-group
+    position: relative;
+    margin-bottom: @line-height-base;
+    .clearfix();
+
+    input,
+    select,
+    textarea,
+    .uneditable-input {
+      margin-bottom: 0;
+    }
 }
 .form-label,
 .mform .fitem div.fitemtitle {
-    .form-horizontal .control-label
+    float: left;
+    width: @component-offset-horizontal - 20;
+    padding-top: 6px;
+    text-align: right;
 }
+
 div.form-defaultinfo,
 .form-label span.form-shortname {
     small;
@@ -23,15 +36,16 @@ div.form-defaultinfo,
 .form-setting,
 .mform .fitem .felement,
 .form-item .form-description,
+div.form-input,
 #page-mod-forum-search .c1 {
-    .form-horizontal .controls;
+    margin-left: @component-offset-horizontal;
 }
 .mform .fitem .felement.fstatic {
     margin-left: 20px;
 }
 
 .formsettingheading {
-    .form-horizontal .help-block
+    .help-block
 }
 
 table#form td.submit,
@@ -41,7 +55,7 @@ table#form td.submit,
 div.backup-section + form,
 #fgroup_id_buttonar {
     .form-actions;
-    padding-left: @horizontalComponentOffset; // add back the padding it would usually get from being inside a .form-horizontal
+    padding-left: @component-offset-horizontal; // add back the padding it would usually get from being inside a .form-horizontal
     div.fitemtitle {
         width: 0;
     }
@@ -61,7 +75,7 @@ div.backup-section + form,
 input[type="password"],
 input[type="text"] {
     /* Corrects some YUI settings. */
-    width: 206px;
+    width: 100%;
 }
 .form-checkbox,
 .fcheckbox span,
@@ -219,10 +233,12 @@ select.menutohour, select.menutohour:hover,
     width: 71px !important; // !important to override turnitin style
 }
 
-
+div.rememberpass,
+div.subcontent.loginsub .desc,
+div.subcontent.guestsub,
 .mform div.fdescription.required {
     text-align: left;
-    margin-left: @horizontalComponentOffset;
+    margin-left: @component-offset-horizontal;
 }
 
 // replace required asterisk image with real asterisk
@@ -234,17 +250,17 @@ img.req{
 }
 .fdescription.required:after,
 .fitem.required .fitemtitle label:before {
-    content: "*";
-    color: @errorText;
+    content: "* ";
+    color: @state-error-text;
 }
 .mform .advancedbutton {float:right;}
 .felement.fstatic {
     .uneditable-input;
     width: auto;
-    min-width: 206px;
+    min-width: 40%;
 }
 .felement.error span.error {
-    color: @errorText;
+    color: @state-error-text;
     // probably need more than just color
 }
 select#id_category,
@@ -259,7 +275,7 @@ input#id_name,
 input#id_externalurl,
 input#id_setting_root_filename,
 textarea {
-    width: 420px !important;
+    width: 100%;
 }
 
 div.fitemtitle span.helplink {
@@ -275,13 +291,8 @@ input#loginbtn {
 input#loginbtn {
     .btn-primary
 }
-.loginpanel  .form-label {
-    width: 80px;
-    padding-right: 20px;
-}
 .loginpanel  #loginbtn {
     display: block;
-    margin-left: 100px;
 }
 .loginbox.onecolumn {
     width: 50%;
@@ -323,5 +334,60 @@ body.path-mod-choice form {
 // hack to workaround poorly marked up ellipsis
 .block_course_list > ul.nav-list > li:last-child,
 .block_news_items > ul.nav-list > li:last-child {
-    color: @wellBackground;
+    color: @well-background;
+}
+
+@media (max-width: 480px) {
+
+  // Remove the horizontal form styles
+     .form-label,
+     .mform .fitem div.fitemtitle {
+      float: none;
+      width: auto;
+      padding-top: 0;
+      text-align: left;
+    }
+    // Move over all input controls and content
+    div.rememberpass,
+    div.subcontent.loginsub .desc,
+    div.subcontent.guestsub,
+    .mform div.fdescription.required,
+    .form-setting,
+    .mform .fitem .felement,
+    .form-item .form-description,
+    div.form-input,
+    #page-mod-forum-search .c1 {
+      margin-left: 0;
+    }
+    // Move the options list down to align with labels
+    .control-list {
+      padding-top: 0; // has to be padding because margin collaspes
+    }
+    // Move over buttons in .form-actions to align with .controls
+    .form-actions {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+.loginbox.onecolumn {
+    width: 100%;
+    margin: auto;
+}
+.loginbox.twocolumns {
+    width: 100%;
+}
+.loginbox.twocolumns .loginpanel {
+    width: 100%;
+    float: left;
+}
+.loginbox.twocolumns .signuppanel {
+    width: 100%;
+    float: left;
+}
+.fitem.required .fitemtitle label:after {
+    content: "*";
+    color: @state-error-text;
+}
+.fitem.required .fitemtitle label:before {
+    content: none;
+}
 }
