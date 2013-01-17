@@ -55,11 +55,9 @@ $favicon_url = $OUTPUT->pix_url('favicon', 'theme');
 
 $navbar_fixed = $PAGE->theme->settings->fixed;
 $navbar_inverse = $PAGE->theme->settings->navbarinvert;
-$fluid = $PAGE->theme->settings->fluid;
 
 if ($PAGE->theme->settings->subtheme === 'random') {
     $navbar_inverse = rand(0, 1);
-    $fluid = rand(0, 1);
 }
 
 if ($navbar_fixed == 1) {
@@ -72,11 +70,6 @@ if ($navbar_inverse == 1) {
     $navbar_inverse = 'navbar-inverse';
 } else {
     $navbar_inverse = '';
-}
-if ($fluid == 1) {
-    $fluid = '-fluid';
-} else {
-    $fluid = '';
 }
 
 $header = '';
@@ -112,11 +105,11 @@ echo $OUTPUT->doctype() ?>
 
 <body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
 <?php echo $OUTPUT->standard_top_of_body_html() ?>
-<div class=container<?php echo $fluid ?>>
+<div class=container>
 
 <div class="navbar <?php echo $navbar_inverse . ' ' . $navbar_fixed ?>">
     <div class=navbar-inner>
-        <div class=container<?php echo $fluid ?>>
+        <div class=container>
             <a class="btn btn-navbar" data-toggle=collapse data-target=".nav-collapse">
                 <span class=icon-bar></span>
                 <span class=icon-bar></span>
@@ -134,8 +127,8 @@ echo $OUTPUT->doctype() ?>
 </div>
 <?php echo $header; ?>
 
-<div class=container<?php echo $fluid ?>>
-<div id="page-content" class=row<?php echo $fluid ?>>
+<div class=container>
+<div id="page-content" class=row>
 
 <?php if ($hassidepre) : ?>
     <?php if ($hassidepre AND $hassidepost) : ?>
