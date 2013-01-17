@@ -36,34 +36,8 @@ function less_compiler($theme, $override=array()) {
 
     $swatch = $theme->settings->subtheme;
     $responsive = $theme->settings->responsive;
-    // TODO: add setting for padding between breadcrumb and fixed navbar.
-    $extra_padding = 0;
-    $padding = 0;
-    $icon_color = 'inherit';
-    $icon_opacity = 1;
 
-    if ($swatch == 'random') {
-        $colors = array('inherit', 'red', 'yellow', 'pink', 'purple', 'orange', 'blue', 'green');
-        $color_key = array_rand($colors);
-        $icon_color = $colors[$color_key];
-
-        $opacities = array( 0.2, 0.4, 0.6, 0.8, 1);
-        $opacity_key = array_rand($opacities);
-        $icon_opacity = $colors[$opacity_key];
-
-        $swatches = array('amelia', 'cerulean', 'cosmo', 'cyborg', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'spruce', 'superhero', 'united');
-        $swatch = $swatches[array_rand($swatches)];
-
-        $responsive = rand(0, 1);
-        $extra_padding = rand(0, 1);
-        if ($extra_padding == 1) {
-            $padding = 20;
-        }
-    }
-    $cache_name = md5(serialize(array($swatch, $responsive, $extra_padding, $icon_color, $icon_opacity)));
     $current_theme = current_theme();
-    $cachedir = "$CFG->cachedir/theme/$current_theme";
-    $cachefile = "$cachedir/$cache_name.css";
 
     $themedir = $theme->dir;
     $themewww = $current_theme;
@@ -71,19 +45,9 @@ function less_compiler($theme, $override=array()) {
         $themewww = "$CFG->themewww/$current_theme";
     }
 
-    $less_variables = array(
-        'swatch' => "'$swatch'",
-        'navbarMargin' => $padding,
-        'iconColor' => $icon_color,
-        'iconOpacity' => $icon_opacity,
-        'php_iconSpritePath' => "'$themewww/pix/glyphicons-halflings.png'",
-        'php_iconWhiteSpritePath' => "'$themewww/pix/glyphicons-halflings-white.png'",
-        'php_horizontalComponentOffset' => '200px',
-    );
-
     $import_dirs[] = "$themedir/style";
 
-    $less_input = less_input($swatch, $responsive);
+    $less_input = less_input($swatch);
 
     $output = compile($less_input, $less_variables, $import_dirs);
 
@@ -92,12 +56,8 @@ function less_compiler($theme, $override=array()) {
     $output = str_replace($search, $replace, $output);
     return $output;
 }
-function less_input($swatch, $responsive) {
+function less_input($swatch) {
     $less_input = '@import "bootstrap/less/bootstrap.less";';
-    $less_input .= '@media (min-width: 981px) {body.navbar-fixed-top-padding {padding-top: @navbarHeight + @navbarMargin}};';
-    if ($responsive) {
-        $less_input .= '@import "bootstrap/less/responsive.less";';
-    }
     if ($swatch != 'bootstrap') {
         $less_input .= '@import "@{swatch}/variables.less";';
         $less_input .= '@import "@{swatch}/bootswatch.less";';

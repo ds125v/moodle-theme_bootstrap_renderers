@@ -28,7 +28,8 @@ defined('MOODLE_INTERNAL') || die;
 if ($ADMIN->fulltree) {
 
     $themes = array(
-        'random' => 'Random',
+        'bootstrap' => 'Bootstrap',
+        /*'random' => 'Random',
         'amelia' => 'Amelia',
         'bootstrap' => 'Bootstrap',
         'cerulean' => 'Cerulean',
@@ -43,23 +44,16 @@ if ($ADMIN->fulltree) {
         'spruce' => 'Spruce',
         'superhero' => 'Superhero',
         'united' => 'United',
+        */
     );
 
     // Sub Theme Dropdown.
     $name = 'theme_bootstrap_renderers/subtheme';
     $title = get_string('subtheme', 'theme_bootstrap_renderers');
     $description = get_string('subthemedesc', 'theme_bootstrap_renderers');
-    $default = 'random';
+    $default = 'bootstrap';
     $choices = $themes;
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
-    $settings->add($setting);
-
-    // Fluid Layout.
-    $name = 'theme_bootstrap_renderers/fluid';
-    $title = get_string('fluid', 'theme_bootstrap_renderers');
-    $description = get_string('fluiddesc', 'theme_bootstrap_renderers');
-    $default = '1';
-    $setting = new admin_setting_configcheckbox($name, $title, $description, $default);
     $settings->add($setting);
 
     // Responsive Layout.
