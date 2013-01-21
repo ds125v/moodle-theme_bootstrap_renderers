@@ -253,7 +253,7 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
         $output = $this->render($continue);
         $output = strstr($output, '</form>', true); // Cut off final </form> tag.
-        $output = "<p>$message</p><p>$output $cancel</form></p>";
+        $output = "<p>$message</p>$output $cancel</form>";
         return bootstrap::alert_default($output);
     }
     private function make_button($button, $text, $method='get') {
