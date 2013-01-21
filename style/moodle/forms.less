@@ -27,6 +27,9 @@
     padding-top: 6px;
     text-align: right;
 }
+.form-label span.form-shortname {
+    display: block;
+}
 
 div.form-defaultinfo,
 .form-label span.form-shortname {
@@ -43,7 +46,7 @@ div.form-input,
 .mform .fitem .felement.fstatic {
     margin-left: 20px;
 }
-
+.form-description,
 .formsettingheading {
     .help-block
 }
@@ -233,7 +236,13 @@ select.menutohour, select.menutohour:hover,
     width: 71px !important; // !important to override turnitin style
 }
 
+.loginpanel h2 {
+    text-align: right;
+}
+
 div.rememberpass,
+div.forgetpass,
+div.loginerrors,
 div.subcontent.loginsub .desc,
 div.subcontent.guestsub,
 .mform div.fdescription.required {
@@ -337,7 +346,7 @@ body.path-mod-choice form {
     color: @well-background;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
 
   // Remove the horizontal form styles
      .form-label,
@@ -348,7 +357,12 @@ body.path-mod-choice form {
       text-align: left;
     }
     // Move over all input controls and content
+    .loginpanel h2 {
+        text-align: left;
+    }
     div.rememberpass,
+    div.forgetpass,
+    div.loginerrors,
     div.subcontent.loginsub .desc,
     div.subcontent.guestsub,
     .mform div.fdescription.required,
@@ -364,6 +378,12 @@ body.path-mod-choice form {
       padding-top: 0; // has to be padding because margin collaspes
     }
     // Move over buttons in .form-actions to align with .controls
+    table#form td.submit,
+    .form-buttons,
+    #fitem_id_submitbutton,
+    .fp-content-center form + div,
+    div.backup-section + form,
+    #fgroup_id_buttonar,
     .form-actions {
       padding-left: 10px;
       padding-right: 10px;
@@ -389,5 +409,8 @@ body.path-mod-choice form {
 }
 .fitem.required .fitemtitle label:before {
     content: none;
+}
+.form-label span.form-shortname {
+    display: inline-block;
 }
 }
