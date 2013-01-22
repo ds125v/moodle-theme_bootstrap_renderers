@@ -8,6 +8,7 @@ Currently aiming to have something usable by end-users by this summer (June 2013
 TODO #1 (stuff I'm in the process of doing)
 ----
 
+* go through every finished renderer.php to check for changes and updates to the core renderer in the 2.3 -> 2.4/5 transition and update as appropriate
 * go through every renderer.php in Moodle (starting with outputrenderers.php) and rewrite to match Bootstrap expectations (see [list_renderers.txt](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/info/list_renderers.txt))
 * file an enhancement request about classes in Moodle that clash with Bootstrap (see [/styles/undo.css](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/style/undo.css))
 * figure out how to switch off CSS coming from modules (current plan: delete almost all non-bootstrap ids and classes), maybe can be done in the pre-processor?
