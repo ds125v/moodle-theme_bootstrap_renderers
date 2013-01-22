@@ -1,5 +1,5 @@
 /* some very targetted corrections to roll back nameclashes between
- * Moodle and Bootstrap like .row, .label, .content, .controls
+ * Moodle and Bootstrap like .row, .content, .controls
  *
  * Mostly relies on these styles being more specific than the Bootstrap
  * ones in order to overule them.
@@ -26,25 +26,6 @@ html {
 }
 body {
     min-height: 100%;
-}
-
-/* .label vs .label
- */
-
-li.activity.label,
-.file-picker td.label,
-.userprofile th.label {
-  background: inherit;
-  color: inherit;
-  border: inherit;
-  text-shadow: none;
-  padding: 4px 8px;
-  white-space: normal;
-  display: table-cell;
-}
-.file-picker td.label,
-.userprofile table.list tr th.label {
-  text-align: right;
 }
 
 // Some of this dialog is sized in ems so a different font size
