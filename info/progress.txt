@@ -1,7 +1,16 @@
+renderers/block_navigation_renderer.php
+class theme_bootstrap_renderers_block_navigation_renderer extends block_navigation_renderer {
+    protected function navigation_node($items, $attrs=array('class'=>'nav nav-pills nav-stacked'), $expansionlimit=null, array $options = array(), $depth=1) {
+    public function navigation_tree(global_navigation $navigation, $expansionlimit, array $options = array()) {
+    private function rewrite_tree_node($node_html, $new_classes) {
+    public function search_form(moodle_url $formtarget, $searchvalue) {
+
 renderers/block_settings_renderer.php
 class theme_bootstrap_renderers_block_settings_renderer extends block_settings_renderer {
     public function settings_tree(settings_navigation $navigation) {
-    protected function navigation_node(navigation_node $node, $wrap = true) {
+    protected function navigation_node(navigation_node $node, $attrs=array('class'=>'nav nav-pills nav-stacked')) {
+    private function rewrite_tree_node($node_html, $new_classes) {
+    protected function disabled_navigation_node(navigation_node $node, $wrap = true) {
     public function search_form(moodle_url $formtarget, $searchvalue) {
 
 renderers/core_admin_renderer.php
@@ -28,7 +37,28 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
 
 renderers/core_backup_renderer.php
 class theme_bootstrap_renderers_core_backup_renderer extends core_backup_renderer {
+    public function progress_bar(array $items) {
     protected function backup_detail_pair($label, $value) {
+    protected function backup_detail_input($label, $type, $name, $value, array $attributes=array(), $description=null) {
+    protected function backup_detail_radio($label, $name, $value, $checked=false, $description=null) {
+    protected function backup_detail_display($label, $value) {
+    protected function backup_detail_item($label, $value) {
+    protected function backup_detail_yes_no($label, $value) {
+    protected function backup_detail_extra_info($label, $value, $extra) {
+    public function dependency_notification($message) {
+    protected function backup_details_list($details) {
+    protected function backup_settings($details) {
+    protected function backup_course_details($details) {
+    protected function backup_course_sections($details) {
+    public function backup_details($details, $nextstageurl) {
+    protected function restore_to_new_course($categories) {
+    protected function restore_to_current_course() {
+    protected function restore_to_existing_course($courses, $wholecourse) {
+    public function course_selector(moodle_url $nextstageurl, $wholecourse = true, restore_category_search $categories = null, restore_course_search $courses=null, $currentcourse = null) {
+    public function render_backup_files_viewer(backup_files_viewer $viewer) {
+    public function render_restore_course_search(restore_course_search $component) {
+    public function render_import_course_search(import_course_search $component) {
+    public function render_restore_category_search(restore_category_search $component) {
 
 renderers/core_renderer.php
 class theme_bootstrap_renderers_core_renderer extends core_renderer {
@@ -47,9 +77,11 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
     private function make_button($button, $text, $method='get') {
     private function make_button_link($button, $text) {
     protected function render_single_button(single_button $button) {
+    protected function render_single_select(single_select $select) {
     public function doc_link($path, $text = '', $forcepopup=false) {
     protected function render_pix_icon(pix_icon $icon) {
     public function heading_with_help($text, $helpidentifier, $component = 'moodle', $icon = '', $iconalt = '') {
+    protected function render_help_icon(help_icon $helpicon) {
     public function spacer(array $attributes = null, $br = false) {
     public function error_text($message) {
     public function notification($message, $classes = 'notifyproblem') {
