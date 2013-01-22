@@ -50,6 +50,9 @@ class bootstrap {
     }
 
 
+    public static function button($text) {
+        return "<button class=btn type=button>$text</button>";
+    }
     public static function badge($type, $text) {
         if ($type != '') {
             $type = ' badge-' . $type;

@@ -53,7 +53,7 @@ class form {
         $input_attributes['value'] = $value;
 
         return html::form($form_attributes,
-            html::div('input-append', html::input($input_attributes) . html::submit(array('value'=>$submit_text))));
+            html::div('input-group', html::input($input_attributes) . html::span('input-group-btn', bootstrap::button($submit_text))));
     }
     public static function uneditable($text) {
         return html::span('uneditable-input', $text);
