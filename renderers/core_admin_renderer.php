@@ -563,7 +563,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         if (!$requires) {
             return '';
         }
-        return html::ul('unstyled', $requires);
+        return html::ul('list-unstyled', $requires);
     }
 
     public function plugins_overview_panel(plugin_manager $pluginman, array $options = array()) {
