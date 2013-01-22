@@ -3,6 +3,8 @@
  *
  * Mostly relies on these styles being more specific than the Bootstrap
  * ones in order to overule them.
+ *
+ * current development of this moved to style/undo.less
  */
 
 /* YUI vs tables
@@ -40,7 +42,6 @@ li.activity.label,
   text-shadow: none;
   padding: 4px 8px;
   white-space: normal;
-  display: table-cell;
 }
 .file-picker td.label,
 .userprofile table.list tr th.label {
