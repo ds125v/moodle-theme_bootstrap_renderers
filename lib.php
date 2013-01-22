@@ -49,6 +49,7 @@ function less_compiler($theme, $override=array()) {
 
     $less_input = less_input($swatch);
 
+    $less_variables = array();
     $output = compile($less_input, $less_variables, $import_dirs);
 
     $search[] = '../fonts/';
