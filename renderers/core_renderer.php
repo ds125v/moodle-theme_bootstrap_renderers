@@ -382,13 +382,21 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
 
 
     public function doc_link($path, $text = '', $forcepopup=false) {
-        $attributes['href'] = new moodle_url(get_docs_url($path));
-        if ($text == '') {
-            $linktext = bootstrap::icon_help();
-        } else {
-            $linktext = bootstrap::icon_help().' '.$text;
+        global $CFG;
+
+        $icon = $this->pix_icon('docs', $text, 'moodle', array('class'=>'iconhelp icon-pre'));
+
+        $url = new moodle_url(get_docs_url($path));
+
+        $attributes = array('href'=>$url);
+        if (!empty($CFG->doctonewwindow) || $forcepopup) {
+            $attributes['class'] = 'helplinkpopup';
         }
-        return html::a($attributes, $linktext);
+
+        if ($text != '') {
+            $text = " $text";
+        }
+        return html::a($attributes, $icon.$text);
     }
 
     protected function render_pix_icon(pix_icon $icon) {
@@ -411,20 +419,24 @@ class theme_bootstrap_renderers_core_renderer extends core_renderer {
         global $CFG;
 
         $output = bootstrap::icon_help();
+
         if (!empty($helpicon->linktext)) {
             $output .= ' '.$helpicon->linktext;
         }
+        $title = '';
+        if (empty($helpicon->linktext)) {
+            $title = get_string('helpprefix2', '', trim($title, ". \t"));
+        } else {
+            $title = get_string('helpwiththis');
+        }
 
         $url = new moodle_url($CFG->httpswwwroot.'/help.php', array('component' => $helpicon->component, 'identifier' => $helpicon->identifier, 'lang'=>current_language()));
-
-        $title = get_string($helpicon->identifier, $helpicon->component);
-        $title = get_string('helpprefix2', '', trim($title, ". \t"));
-
-        $id = html_writer::random_id('helpicon');
-        $attributes = array('href'=>$url, 'title'=>$title, 'id' => $id);
+        $attributes = array('href'=>$url, 'title'=>$title, 'aria-haspopup' => 'true', 'class' => 'tooltip');
         $output = html::a($attributes, $output);
 
-        $this->page->requires->js_init_call('M.util.help_icon.add', array(array('id'=>$id, 'url'=>$url->out(false))));
+        $this->page->requires->js_init_call('M.util.help_icon.setup');
+        $this->page->requires->string_for_js('close', 'form');
+
         return $output;
     }
 
