@@ -566,13 +566,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         return html::ul('unstyled', $requires);
     }
 
-    /**
-     * Prints an overview about the plugins - number of installed, number of extensions etc.
-     *
-     * @param plugin_manager $pluginman provides information about the plugins
-     * @return string as usually
-     */
-    public function plugins_overview_panel(plugin_manager $pluginman) {
+    public function plugins_overview_panel(plugin_manager $pluginman, array $options = array()) {
         global $CFG;
 
         $plugininfo = $pluginman->get_plugins();
@@ -598,27 +592,84 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
         }
 
         $info = array();
-        $info[] = html::span('info total', get_string('numtotal', 'core_plugin', $numtotal));
-        $info[] = html::span('info disabled', get_string('numdisabled', 'core_plugin', $numdisabled));
-        $info[] = html::span('info extension', get_string('numextension', 'core_plugin', $numextension));
-        if ($numupdatable > 0) {
-            $info[] = html::span('info updatable', get_string('numupdatable', 'core_plugin', $numupdatable));
+        $filter = array();
+        $somefilteractive = false;
+        $info[] = html_writer::tag('span', get_string('numtotal', 'core_plugin', $numtotal), array('class' => 'info total'));
+        $info[] = html_writer::tag('span', get_string('numdisabled', 'core_plugin', $numdisabled), array('class' => 'info disabled'));
+        $info[] = html_writer::tag('span', get_string('numextension', 'core_plugin', $numextension), array('class' => 'info extension'));
+        if ($numextension > 0) {
+            if (empty($options['contribonly'])) {
+                $filter[] = html_writer::link(
+                    new moodle_url($this->page->url, array('contribonly' => 1)),
+                    get_string('filtercontribonly', 'core_plugin'),
+                    array('class' => 'filter-item show-contribonly')
+                );
+            } else {
+                $filter[] = html_writer::tag('span', get_string('filtercontribonlyactive', 'core_plugin'),
+                    array('class' => 'filter-item active show-contribonly'));
+                $somefilteractive = true;
+            }
         }
-        return $this->output->box(implode(html::span('separator', ' '), $info), '', 'plugins-overview-panel');
+        if ($numupdatable > 0) {
+            $info[] = html_writer::tag('span', get_string('numupdatable', 'core_plugin', $numupdatable), array('class' => 'info updatable'));
+            if (empty($options['updatesonly'])) {
+                $filter[] = html_writer::link(
+                    new moodle_url($this->page->url, array('updatesonly' => 1)),
+                    get_string('filterupdatesonly', 'core_plugin'),
+                    array('class' => 'filter-item show-updatesonly')
+                );
+            } else {
+                $filter[] = html_writer::tag('span', get_string('filterupdatesonlyactive', 'core_plugin'),
+                    array('class' => 'filter-item active show-updatesonly'));
+                $somefilteractive = true;
+            }
+        }
+        if ($somefilteractive) {
+            $filter[] = html_writer::link($this->page->url, get_string('filterall', 'core_plugin'), array('class' => 'filter-item show-all'));
+        }
+
+        $output  = $this->output->box(implode(html_writer::tag('span', ' ', array('class' => 'separator')), $info), '', 'plugins-overview-panel');
+
+        if (!empty($filter)) {
+            $output .= $this->output->box(implode(html_writer::tag('span', ' ', array('class' => 'separator')), $filter), '', 'plugins-overview-filter');
+        }
+
+        return $output;
     }
 
-    /**
-     * Displays all known plugins and links to manage them
-     *
-     * This default implementation renders all plugins into one big table.
-     *
-     * @param plugin_manager $pluginman provides information about the plugins.
-     * @return string HTML code
-     */
-    public function plugins_control_panel(plugin_manager $pluginman) {
+    public function plugins_control_panel(plugin_manager $pluginman, array $options = array()) {
         global $CFG;
 
         $plugininfo = $pluginman->get_plugins();
+
+        // Filter the list of plugins according the options.
+        if (!empty($options['updatesonly'])) {
+            $updateable = array();
+            foreach ($plugininfo as $plugintype => $pluginnames) {
+                foreach ($pluginnames as $pluginname => $pluginfo) {
+                    if (!empty($pluginfo->availableupdates)) {
+                        foreach ($pluginfo->availableupdates as $pluginavailableupdate) {
+                            if ($pluginavailableupdate->version > $pluginfo->versiondisk) {
+                                $updateable[$plugintype][$pluginname] = $pluginfo;
+                            }
+                        }
+                    }
+                }
+            }
+            $plugininfo = $updateable;
+        }
+
+        if (!empty($options['contribonly'])) {
+            $contribs = array();
+            foreach ($plugininfo as $plugintype => $pluginnames) {
+                foreach ($pluginnames as $pluginname => $pluginfo) {
+                    if (!$pluginfo->is_standard()) {
+                        $contribs[$plugintype][$pluginname] = $pluginfo;
+                    }
+                }
+            }
+            $plugininfo = $contribs;
+        }
 
         if (empty($plugininfo)) {
             return '';
@@ -632,7 +683,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
             get_string('version', 'core_plugin'),
             get_string('availability', 'core_plugin'),
             get_string('actions', 'core_plugin'),
-            get_string('notes', 'core_plugin'),
+            get_string('notes','core_plugin'),
         );
         $table->colclasses = array(
             'pluginname', 'source', 'version', 'availability', 'actions', 'notes'
@@ -661,9 +712,9 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                 $row->attributes['class'] = 'type-' . $plugin->type . ' name-' . $plugin->type . '_' . $plugin->name;
 
                 if ($this->page->theme->resolve_image_location('icon', $plugin->type . '_' . $plugin->name)) {
-                    $icon = $this->output->pix_icon('icon', '', $plugin->type . '_' . $plugin->name, array('class' => 'smallicon pluginicon'));
+                    $icon = $this->output->pix_icon('icon', '', $plugin->type . '_' . $plugin->name, array('class' => 'icon pluginicon'));
                 } else {
-                    $icon = $this->output->pix_icon('spacer', '', 'moodle', array('class' => 'smallicon pluginicon noicon'));
+                    $icon = $this->output->pix_icon('spacer', '', 'moodle', array('class' => 'icon pluginicon noicon'));
                 }
                 if ($plugin->get_status() === plugin_manager::PLUGIN_STATUS_MISSING) {
                     $msg = html_writer::tag('span', get_string('status_missing', 'core_plugin'), array('class' => 'notifyproblem'));
@@ -671,7 +722,7 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                 } else {
                     $msg = '';
                 }
-                $pluginname  = html_writer::tag('div', $icon . ' ' . $plugin->displayname . ' ' . $msg, array('class' => 'displayname')).
+                $pluginname  = html_writer::tag('div', $icon . '' . $plugin->displayname . ' ' . $msg, array('class' => 'displayname')).
                                html_writer::tag('div', $plugin->component, array('class' => 'componentname'));
                 $pluginname  = new html_table_cell($pluginname);
 
@@ -690,12 +741,10 @@ class theme_bootstrap_renderers_core_admin_renderer extends core_admin_renderer 
                     $availability = new html_table_cell('');
                 } else if ($isenabled) {
                     $row->attributes['class'] .= ' enabled';
-                    $icon = $this->output->pix_icon('i/hide', get_string('pluginenabled', 'core_plugin'));
-                    $availability = new html_table_cell($icon . ' ' . get_string('pluginenabled', 'core_plugin'));
+                    $availability = new html_table_cell(get_string('pluginenabled', 'core_plugin'));
                 } else {
                     $row->attributes['class'] .= ' disabled';
-                    $icon = $this->output->pix_icon('i/show', get_string('plugindisabled', 'core_plugin'));
-                    $availability = new html_table_cell($icon . ' ' . get_string('plugindisabled', 'core_plugin'));
+                    $availability = new html_table_cell(get_string('plugindisabled', 'core_plugin'));
                 }
 
                 $actions = array();
