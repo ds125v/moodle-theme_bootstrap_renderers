@@ -5,7 +5,7 @@ A developer theme for working on Moodle 2.4/5 renderers that output Bootstrap 3 
 
 Currently aiming to have something usable by end-users by this summer (June 2013). If you want something with the Bootstrap look to use right now check out the Bootstrap theme by Bas Brands](http://basbrands.nl/2012/10/01/moodle-bootstrap-theme/).
 
-TODO #1 (stuff I'm in the process of doing)
+TODO #1 (stuff I'm in the process of doing, but would welcome help with)
 ----
 
 * go through every finished renderer.php to check for changes and updates to the core renderer in the 2.3 -> 2.4/5 transition and update as appropriate (2.4 done)
@@ -16,6 +16,7 @@ TODO #1 (stuff I'm in the process of doing)
 * write up testing and contribution guidelines (just started [testing.txt](https://github.com/ds125v/moodle-theme_bootstrap_renderers/blob/master/info/testing.txt))
 * create an appropriate editor.css file for TinyMCE from Bootstrap css.
 * see if we can pass any Selenium/Behat tests Moodle has, and investigate running them on Travis CI.
+* add option for CDN hosting of JQuery and Bootstrap (with local fallback).
 
 TODO #2 (stuff I'm secretly hoping someone else will do, to save me the bother)
 ----------------
