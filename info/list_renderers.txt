@@ -13,8 +13,9 @@ class core_admin_renderer extends plugin_renderer_base {
     public function upgrade_confirm_page($strnewversion, $maturity) {
     public function upgrade_environment_page($release, $envstatus, $environment_results) {
     public function upgrade_plugin_check_page(plugin_manager $pluginman, available_update_checker $checker,
+    public function upgrade_plugin_confirm_deploy_page(available_update_deployer $deployer, array $data) {
     public function admin_notifications_page($maturity, $insecuredataroot, $errorsdisplayed,
-    public function plugin_management_page(plugin_manager $pluginman, available_update_checker $checker) {
+    public function plugin_management_page(plugin_manager $pluginman, available_update_checker $checker, array $options = array()) {
     public function environment_check_page($versions, $version, $envstatus, $environment_results) {
     protected function warning($message, $type = 'warning') {
     protected function insecure_dataroot_warning($insecuredataroot) {
@@ -32,8 +33,8 @@ class core_admin_renderer extends plugin_renderer_base {
     protected function release_notes_link() {
     public function plugins_check_table(plugin_manager $pluginman, $version, array $options = array()) {
     protected function required_column(plugininfo_base $plugin, plugin_manager $pluginman, $version) {
-    public function plugins_overview_panel(plugin_manager $pluginman) {
-    public function plugins_control_panel(plugin_manager $pluginman) {
+    public function plugins_overview_panel(plugin_manager $pluginman, array $options = array()) {
+    public function plugins_control_panel(plugin_manager $pluginman, array $options = array()) {
     protected function plugin_available_update_info(available_update_info $updateinfo) {
     public function environment_check_table($result, $environment_results) {
 
@@ -98,6 +99,17 @@ class block_community_renderer extends plugin_renderer_base {
     public function next_button($data) {
     public function course_list($courses, $huburl, $contextcourseid) {
 
+blocks/course_overview/renderer.php
+class block_course_overview_renderer extends plugin_renderer_base {
+    public function course_overview($courses, $overviews) {
+    protected function activity_display($cid, $overview) {
+    public function editing_bar_head($max = 0) {
+    public function hidden_courses($total) {
+    protected function collapsible_region($contents, $classes, $id, $caption, $userpref = '', $default = false) {
+    protected function collapsible_region_start($classes, $id, $caption, $userpref = '', $default = false) {
+    protected function collapsible_region_end() {
+    public function welcome_area($msgcount) {
+
 blocks/navigation/renderer.php
 class block_navigation_renderer extends plugin_renderer_base {
     public function navigation_tree(global_navigation $navigation, $expansionlimit, array $options = array()) {
@@ -117,6 +129,19 @@ class block_settings_renderer extends plugin_renderer_base {
     protected function navigation_node(navigation_node $node, $attrs=array()) {
     public function search_form(moodle_url $formtarget, $searchvalue) {
 
+blog/renderer.php
+class core_blog_renderer extends plugin_renderer_base {
+    public function render_blog_entry(blog_entry $entry) {
+    public function render_blog_entry_attachment(blog_entry_attachment $attachment) {
+
+cache/renderer.php
+class core_cache_renderer extends plugin_renderer_base {
+    public function store_instance_summariers(array $stores, array $plugins) {
+    public function store_plugin_summaries(array $plugins) {
+    public function definition_summaries(array $definitions, array $actions) {
+    public function mode_mappings($applicationstore, $sessionstore, $requeststore, moodle_url $editurl) {
+    public function lock_summaries(array $locks) {
+
 calendar/renderer.php
 class core_calendar_renderer extends plugin_renderer_base {
     public function basic_export_form($allowthisweek, $allownextweek, $allownextmonth, $userid, $authtoken) {
@@ -132,6 +157,8 @@ class core_calendar_renderer extends plugin_renderer_base {
     protected function filter_selection_table(calendar_information $calendar, moodle_url $returnurl = null) {
     public function show_upcoming_events(calendar_information $calendar, $futuredays, $maxevents, moodle_url $returnurl = null) {
     protected function course_filter_selector(moodle_url $returnurl, $label=null) {
+    public function subscription_details($courseid, $subscriptions, $importresults = '') {
+    protected function subscription_action_form($subscription, $courseid) {
 
 course/format/renderer.php
 abstract class format_section_renderer_base extends plugin_renderer_base {
@@ -155,7 +182,6 @@ abstract class format_section_renderer_base extends plugin_renderer_base {
     public function print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection) {
     public function print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused) {
     protected function format_summary_text($section) {
-    protected function is_section_current($section, $course) {
 
 course/format/topics/renderer.php
 class format_topics_renderer extends format_section_renderer_base {
@@ -169,7 +195,6 @@ class format_weeks_renderer extends format_section_renderer_base {
     protected function start_section_list() {
     protected function end_section_list() {
     protected function page_title() {
-    protected function is_section_current($section, $course) {
 
 course/publish/renderer.php
 class core_publish_renderer extends plugin_renderer_base {
@@ -183,6 +208,7 @@ class core_publish_renderer extends plugin_renderer_base {
 course/renderer.php
 class core_course_renderer extends plugin_renderer_base {
     public function __construct(moodle_page $page, $target) {
+    public function course_info_box(stdClass $course) {
     public function course_category_tree(array $structure) {
     protected function course_category_tree_category(stdClass $category, $depth=1) {
     public function course_modchooser($modules, $course) {
@@ -312,13 +338,17 @@ class core_renderer extends renderer_base {
     public function standard_footer_html() {
     public function main_content() {
     public function standard_end_of_body_html() {
-    public function login_info() {
+    public function login_info($withlinks = null) {
     public function home_link() {
     public function redirect_message($encodedurl, $message, $delay, $debugdisableredirect) {
     public function header() {
     protected function render_page_layout($layoutfile) {
     public function footer() {
     public function container_end_all($shouldbenone = false) {
+    public function course_content_header($onlyifnotcalledbefore = false) {
+    public function course_content_footer($onlyifnotcalledbefore = false) {
+    public function course_header() {
+    public function course_footer() {
     public function lang_menu() {
     public function block_controls($controls) {
     public function block(block_contents $bc, $region) {
@@ -411,9 +441,9 @@ class core_message_renderer extends plugin_renderer_base {
     public function manage_defaultmessageoutputs($processors, $providers, $preferences) {
     public function manage_messagingoptions($processors, $providers, $preferences, $defaultpreferences, $notificationsdisabled = false) {
 
-mod/adobeconnect/renderer.php
-class mod_adobeconnect_renderer extends plugin_renderer_base {
-    public function display_meeting_detail ($meetingdetail, $cmid, $groupid = 0) {
+mod/assign/feedback/file/renderer.php
+class assignfeedback_file_renderer extends plugin_renderer_base {
+    public function render_assignfeedback_file_import_summary($summary) {
 
 mod/assign/renderer.php
 class mod_assign_renderer extends plugin_renderer_base {
@@ -445,6 +475,11 @@ class assignment_files implements renderable {
     public function __construct($context, $itemid, $filearea='submission') {
     public function preprocess($dir, $filearea) {
 
+mod/chat/renderer.php
+class mod_chat_renderer extends plugin_renderer_base {
+    protected function render_event_message(event_message $eventmessage) {
+    protected function render_user_message(user_message $usermessage) {
+
 mod/choice/renderer.php
 class mod_choice_renderer extends plugin_renderer_base {
     public function display_options($options, $coursemoduleid, $vertical = false) {
@@ -473,7 +508,7 @@ class mod_forum_renderer extends plugin_renderer_base {
 
 mod/lesson/renderer.php
 class mod_lesson_renderer extends plugin_renderer_base {
-    public function header($lesson, $cm, $currenttab = '', $extraeditbuttons = false, $lessonpageid = null) {
+    public function header($lesson, $cm, $currenttab = '', $extraeditbuttons = false, $lessonpageid = null, $extrapagetitle = null) {
     public function footer() {
     public function lesson_inaccessible($message) {
     public function login_prompt(lesson $lesson, $failedattempt = false) {
@@ -502,7 +537,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
     public function review_summary_table($summarydata, $page) {
     public function questions(quiz_attempt $attemptobj, $reviewing, $slots, $page, $showall,
     public function review_form($page, $showall, $displayoptions, $content, $attemptobj) {
-    public function finish_review_link($url) {
+    public function finish_review_link(quiz_attempt $attemptobj) {
     public function review_next_navigation(quiz_attempt $attemptobj, $page, $lastpage) {
     public function countdown_timer(quiz_attempt $attemptobj, $timenow) {
     public function restart_preview_button($url) {
@@ -513,7 +548,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
     public function attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id,
     public function quiz_notices($messages) {
     public function attempt_form($attemptobj, $page, $slots, $id, $nextpage) {
-    public function initialise_timer($timerstartvalue) {
+    public function initialise_timer($timerstartvalue, $ispreview) {
     public function close_attempt_popup($url, $message = '') {
     public function access_messages($messages) {
     public function summary_page($attemptobj, $displayoptions) {
@@ -579,6 +614,7 @@ class mod_workshop_renderer extends plugin_renderer_base {
     protected function render_workshop_example_assessment(workshop_example_assessment $assessment) {
     protected function render_workshop_example_reference_assessment(workshop_example_reference_assessment $assessment) {
     public function perpage_selector($current=10) {
+    protected function render_workshop_final_grades(workshop_final_grades $grades) {
     protected function helper_submission_attachments($submissionid, $format = 'html') {
     protected function helper_user_plan_tasks(array $tasks) {
     protected function helper_sortable_heading($text, $sortid=null, $sortby=null, $sorthow=null) {
@@ -591,12 +627,13 @@ question/behaviour/adaptive/renderer.php
 class qbehaviour_adaptive_renderer extends qbehaviour_renderer {
     public function controls(question_attempt $qa, question_display_options $options) {
     public function feedback(question_attempt $qa, question_display_options $options) {
-    protected function penalty_info(question_attempt $qa, $mark,
+    public function render_adaptive_marks(qbehaviour_adaptive_mark_details $details, question_display_options $options) {
+    protected function grading_details(qbehaviour_adaptive_mark_details $details, question_display_options $options) {
     protected function disregarded_info() {
 
 question/behaviour/adaptivenopenalty/renderer.php
 class qbehaviour_adaptivenopenalty_renderer extends qbehaviour_adaptive_renderer {
-    protected function penalty_info(question_attempt $qa, $mark,
+    protected function penalty_info(qbehaviour_adaptive_mark_details $details, question_display_options $options) {
     protected function disregarded_info() {
 
 question/behaviour/deferredcbm/renderer.php
@@ -647,17 +684,6 @@ question/renderer.php
 class core_question_bank_renderer extends plugin_renderer_base {
     public function qtype_icon($qtype) {
 
-question/type/ddmarker/renderer.php
-class qtype_ddmarker_renderer extends qtype_ddtoimage_renderer_base {
-    public function formulation_and_controls(question_attempt $qa,
-    protected function hidden_field_choice(question_attempt $qa, $choiceno, $infinite, $value = null) {
-    protected function hint(question_attempt $qa, question_hint $hint)  {
-class qtype_ddmarker_list_renderer extends plugin_renderer_base {
-    public function render_qtype_ddmarker_list(qtype_ddmarker_list_item $top) {
-    public function render_qtype_ddmarker_list_item(qtype_ddmarker_list_item $listitem) {
-    public function item(qtype_ddmarker_list_item $item) {
-    protected function children(qtype_ddmarker_list_item $item) {
-
 question/type/description/renderer.php
 class qtype_description_renderer extends qtype_renderer {
     public function formulation_and_controls(question_attempt $qa,
@@ -693,10 +719,6 @@ class qtype_essay_format_plain_renderer extends plugin_renderer_base {
     public function response_area_input($name, $qa, $step, $lines, $context) {
 class qtype_essay_format_monospaced_renderer extends qtype_essay_format_plain_renderer {
     protected function class_name() {
-
-question/type/gapselect/renderer.php
-class qtype_gapselect_renderer extends qtype_elements_embedded_in_question_text_renderer {
-    protected function embedded_element(question_attempt $qa, $place,
 
 question/type/match/renderer.php
 class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
@@ -758,22 +780,6 @@ class qtype_numerical_renderer extends qtype_renderer {
     public function formulation_and_controls(question_attempt $qa,
     public function specific_feedback(question_attempt $qa) {
     public function correct_response(question_attempt $qa) {
-
-question/type/pmatch/renderer.php
-class qtype_pmatch_renderer extends qtype_renderer {
-    public function formulation_and_controls(question_attempt $qa,
-    public function specific_feedback(question_attempt $qa) {
-    public function correct_response(question_attempt $qa) {
-
-question/type/pmatchjme/renderer.php
-class qtype_pmatchjme_renderer extends qtype_pmatch_renderer {
-    public function formulation_and_controls(question_attempt $qa,
-    protected function require_js($toreplaceid, question_attempt $qa, $readonly, $correctness) {
-    protected function hidden_fields(question_attempt $qa) {
-    protected function hidden_field_for_qt_var(question_attempt $qa, $varname) {
-    protected function fraction_for_last_response(question_attempt $qa) {
-    protected function get_last_response(question_attempt $qa) {
-    public function specific_feedback(question_attempt $qa) {
 
 question/type/shortanswer/renderer.php
 class qtype_shortanswer_renderer extends qtype_renderer {
