@@ -26,6 +26,11 @@ $THEME->parents = array(); // Has to be present, even if empty.
 $THEME->sheets = array('less_compiler');
 $THEME->editor_sheets = array('editor');
 
+$THEME->plugins_exclude_sheets = array('block' => array('settings', 'navigation'));
+// Above is ones that have been looked at and any useful CSS salvaged, but we
+// remove the all with the setting below anyway.
+$THEME->plugins_exclude_sheets = true;
+
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 $THEME->csspostprocess = 'processor';
 
