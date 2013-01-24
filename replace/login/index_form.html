@@ -1,0 +1,122 @@
+<?php
+if ($show_instructions) {
+    $columns = 'span6';
+} else {
+    $columns = 'span6 offset3';
+}
+
+if (!empty($CFG->loginpasswordautocomplete)) {
+    $autocomplete = 'autocomplete="off"';
+} else {
+    $autocomplete = '';
+}
+?>
+
+<div class=row>
+    <div class="<?php echo $columns?>">
+<?php
+  if (($CFG->registerauth == 'email') || !empty($CFG->registerauth)) { ?>
+      <div class="skiplinks"><a class="skip" href="signup.php"><?php print_string("tocreatenewaccount"); ?></a></div>
+<?php
+  } ?>
+  <form action="<?php echo $CFG->httpswwwroot; ?>/login/index.php" class=form-horizontal id=login method=post <?php echo $autocomplete; ?> >
+      <legend><?php echo print_string("login");?></legend>
+            <div class=control-group>
+                <div class=controls>
+                    <span class="help-inline pull-right"><?php echo get_string("cookiesenabled") .' '. $OUTPUT->help_icon('cookiesenabled');?></span>
+                </div>
+            </div>
+        <?php
+        if (!empty($errormsg)) { ?>
+            <div class="control-group has-error">
+                <div class=controls>
+                    <span class=text-error><?php echo $errormsg; ?></span>
+                </div>
+            </div>
+          <?php } ?>
+            <div class=control-group>
+                <label class=control-label for="username"><?php print_string("username") ?></label>
+                <div class=controls>
+                  <input type=text name=username id=username size=15 value="<?php p($frm->username) ?>">
+                </div>
+            </div>
+            <div class=control-group>
+                <label class=control-label for=password><?php print_string("password") ?></label>
+                <div class=controls>
+                  <input type=password name=password id=password size=15 value="" <?php echo $autocomplete; ?> />
+                  <?php if (isset($CFG->rememberusername) and $CFG->rememberusername == 2) { ?>
+                  <div class=checkbox>
+                      <label>
+                        <input type=checkbox name=rememberusername id=rememberusername value=1 <?php if ($frm->username) {echo 'checked';} ?>>
+                        <?php print_string('rememberusername', 'admin') ?>
+                      </label>
+                 </div>
+                  <?php } ?>
+              </div>
+            </div>
+            <div class=control-group>
+                <div class=controls>
+                  <input type=submit id=loginbtn value="<?php print_string("login") ?>" />
+                </div>
+            </div>
+            <div class=control-group>
+                <div class=controls>
+                    <p class=pull-right><a href="forgot_password.php"><?php print_string("forgotten") ?></a></p>
+                </div>
+            </div>
+        </form>
+
+<?php if ($CFG->guestloginbutton and !isguestuser()) {  ?>
+        <form action=index.php class=form-horizontal method=post id=guestlogin>
+            <legend><?php print_string("loginguest") ?></legend>
+            <div class=control-group>
+                <div class=controls>
+                    <span class=help-inline><?php print_string("someallowguest") ?></span>
+                </div>
+            </div>
+            <input type=hidden name=username value=guest>
+            <input type=hidden name=password value=guest>
+            <div class=control-group>
+                <div class=controls>
+                    <input type=submit value="<?php print_string("loginguest") ?>" />
+                </div>
+            </div>
+        </form>
+<?php } ?>
+     </div>
+<?php if ($show_instructions) { ?>
+    <div class=span6>
+<?php     if (is_enabled_auth('none')) { // instructions override the rest for security reasons
+              print_string("loginstepsnone");
+          } else if ($CFG->registerauth == 'email') { ?>
+                <form action=signup.php method=get id=signup>
+                <legend><?php print_string("startsignup") ?></legend>
+              <?php if (!empty($CFG->auth_instructions)) {
+                  echo format_text($CFG->auth_instructions);
+              } else {
+                  print_string("loginsteps", "", "signup.php");
+              } ?>
+              <p><input type=submit value="<?php print_string("startsignup") ?>"></p>
+                   </form>
+<?php     } else if (!empty($CFG->registerauth)) {
+              echo format_text($CFG->auth_instructions); ?>
+                <form action=signup.php class=form-horizontal method=get id=signup>
+                <legend><?php print_string("startsignup") ?></legend>
+                        <input type=submit value="<?php print_string("startsignup") ?>">
+                </form>
+<?php     } else {
+              echo format_text($CFG->auth_instructions);
+          } ?>
+    </div>
+<?php } ?>
+<?php if (!empty($potentialidps)) { ?>
+    <div class="subcontent potentialidps">
+        <h6><?php print_string('potentialidps', 'auth'); ?></h6>
+        <div class="potentialidplist">
+<?php foreach ($potentialidps as $idp) {
+    echo  '<div class="potentialidp"><a href="' . $idp['url']->out() . '" title="' . $idp['name'] . '">' . $OUTPUT->render($idp['icon'], $idp['name']) . $idp['name'] . '</a></div>';
+} ?>
+        </div>
+    </div>
+<?php } ?>
+</div>
