@@ -119,7 +119,7 @@ class bootstrap {
         return html::ul('unstyled', $items);
     }
     public static function pagination($items) {
-        return html::div('pagination pagination-centered', html::ul('', $items));
+        return html::ul('pagination', $items);
     }
     public static function breadcrumb($items) {
         return html::ul('breadcrumb', $items);
@@ -179,6 +179,7 @@ class bootstrap {
             'i/roles' => 'user',
             'i/settings' => 'cog',
             'i/show' => 'eye-close',
+            'i/switchrole' => 'user',
             'i/user' => 'user',
             'i/users' => 'user',
             'spacer' => 'spacer',
