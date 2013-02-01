@@ -72,7 +72,7 @@ $THEME->layouts = array(
     'frametop' => $basic + array('options' => array('nofooter'=>true)),
     'frontpage' => $normal,
     'incourse' => $normal,
-    'login' => $basic,
+    'login' => array('file' => 'login.php') + $basic,
     'maintenance' => $plain,
     'mydashboard' => $normal,
     'mypublic' => $normal,
