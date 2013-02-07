@@ -58,11 +58,11 @@ function less_compiler($theme, $override=array()) {
     return $output;
 }
 function less_input($swatch) {
-    $less_input = '@import "bootstrap/less/bootstrap.less";';
+    $less_input = '@import "bootstrap/bootstrap.less";';
     if ($swatch != 'bootstrap') {
         $less_input .= '@import "@{swatch}/variables.less";';
         $less_input .= '@import "@{swatch}/bootswatch.less";';
-        $less_input .= '@import "bootstrap/less/utilities.less";';
+        $less_input .= '@import "bootstrap/utilities.less";';
     }
     $less_input .= '@import "moodle/moodle.less";';
     return $less_input;
