@@ -54,16 +54,6 @@ class theme_bootstrap_renderers_mod_choice_renderer extends mod_choice_renderer 
         return $results;
 
     }
-    public static function results_as_rows($votes) {
-        foreach ($votes as $result) {
-            $row = array($result['text']);
-            $row[] = $result['votes'];
-            $row[] = format_float($result['percent'], 1) . '%';
-            $row[] = progress::bar($result['percent']);
-            $rows[] = $row;
-        }
-        return $rows;
-    }
     public static function results_as_columns($results) {
         $header[] = get_string('choiceoptions', 'choice');
         $votes[] = get_string('numberofuser', 'choice');
@@ -89,19 +79,14 @@ class theme_bootstrap_renderers_mod_choice_renderer extends mod_choice_renderer 
         return $html;
     }
     public function display_publish_anonymous_horizontal($choices) {
-
-        $attributes['class'] = 'table table-striped table-condensed';
-        $attributes['summary'] = get_string('responsesto', 'choice', format_string($choices->name));
-
-        $options_th = get_string('choiceoptions', 'choice');
-        $votes_th = get_string('numberofuser', 'choice');
-        $percent_th = get_string('numberofuserinpercentage', 'choice');
-        $graph_th = get_string('responsesresultgraphheader', 'choice');
-
-        $headers = array($options_th, $votes_th, $percent_th, $graph_th);
-        $results = self::results($choices);
-        $html = html::h2(get_string("responses", "choice"));
-        $html .= table::simple($attributes, $headers, self::results_as_rows($results));
-        return $html;
+        $header = html::h3(get_string('responsesto', 'choice', format_string($choices->name)));
+        $colors = array('', 'success', 'warning', 'danger', 'info');
+        foreach (self::results($choices) as $position => $result) {
+            $out = html::h4(array('style' => 'display:inline'), $result['text']);
+            $out .= html::span('pull-right', $result['votes'] . ' ' . html::small( '(' . format_float($result['percent'], 1) . '%)'));
+            $out .= progress::bar($result['percent'], $colors[$position % count($colors)]);
+            $rows[] = $out;
+        }
+        return $header . html::div('choice-results', implode($rows));
     }
 }

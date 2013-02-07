@@ -27,8 +27,12 @@ require_once('classes.php');
 
 class progress {
 
-    public static function bar($percent) {
-        return "<div class=progress><div class=bar style=\"width:$percent%\"></div></div>";
+    public static function bar($percent, $type = '') {
+        if ($type != '') {
+            $type = ' progress-' . $type;
+        }
+        //return "<div class=\"progress$type\"><div class=bar style=\"width:$percent%\"></div></div>";
+        return html::div("progress$type", html::div(array( 'class' => 'bar', 'style' => "width:$percent%")));
     }
     public static function level($percent) {
         return "<div class=progress style=\"width:20px;height:300px\"><div class=bar style=\"width:20px;height:$percent%\"></div></div>";

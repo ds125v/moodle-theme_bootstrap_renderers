@@ -40,6 +40,7 @@ div.form-defaultinfo,
 .mform .fitem .felement,
 .form-item .form-description,
 div.form-input,
+div.form-buttons input.form-submit,
 #page-mod-forum-search .c1 {
     margin-left: @component-offset-horizontal;
 }
@@ -169,6 +170,7 @@ table#form select + label + select.menutohour {
 .path-admin .roleassigntable #buttonscell #remove input,
 input[id$="_clearbutton"],
 button,
+input.showadvancedbtn,
 input.form-submit,
 input#id_submitbutton,
 input#id_submitbutton2,
@@ -190,6 +192,9 @@ td.submit input:active {
 input[id$="_clearbutton"],
 input#id_cancel {
     .btn-warning
+}
+input.showadvancedbtn {
+    .btn-small
 }
 .user-enroller-panel .uep-search-results .user .options .enrol {
     .btn-mini
@@ -259,7 +264,16 @@ img.req{
     content: "* ";
     color: @state-error-text;
 }
-.mform .advancedbutton {float:right;}
+.mform .advancedbutton {
+    margin-top: -50px;
+    margin-bottom: 50px;
+}
+
+.mform .advancedbutton img,
+.mform .advancedbutton input {
+    float: right;
+}
+
 .felement.fstatic {
     .uneditable-input;
     width: auto;

@@ -38,13 +38,13 @@ li.activity.label,
   color: inherit;
   border: inherit;
   text-shadow: none;
-  padding: 4px 8px;
   white-space: normal;
-  display: table-cell;
 }
 .file-picker td.label,
 .userprofile table.list tr th.label {
+  padding: 4px 8px;
   text-align: right;
+  display: table-cell;
 }
 
 // Some of this dialog is sized in ems so a different font size
@@ -154,3 +154,5 @@ div.c1.btn {
  * it becomes near unuseable. 
  */
 
+/* some of the img stuff makes Feedbacks graph lines square, no idea why */
+body#page-mod-feedback-analysis  table.generalbox td > img  {height: 5px}

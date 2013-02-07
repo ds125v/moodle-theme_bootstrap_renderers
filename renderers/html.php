@@ -112,8 +112,7 @@ class html {
         return self::tag('a', $attributes, $content);
     }
     public static function link($href, $content) {
-        $attributes['href'] = $href;
-        return self::classy_tag('a', $attributes, $content);
+        return self::classy_tag('a', array('href' => $href), $content);
     }
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
@@ -134,6 +133,9 @@ class html {
     public static function span($attributes, $content=null) {
         return self::guten_tag(func_num_args(), 'span', $attributes, $content);
     }
+    public static function strong($attributes, $content=null) {
+        return self::guten_tag(func_num_args(), 'strong', $attributes, $content);
+    }
     public static function small($attributes, $content=null) {
         return self::guten_tag(func_num_args(), 'small', $attributes, $content);
     }
@@ -146,8 +148,32 @@ class html {
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
      */
+    public static function h1($attributes, $content=null) {
+        return self::guten_tag(func_num_args(), 'h1', $attributes, $content);
+    }
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
     public static function h2($attributes, $content=null) {
         return self::guten_tag(func_num_args(), 'h2', $attributes, $content);
+    }
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
+    public static function h3($attributes, $content=null) {
+        return self::guten_tag(func_num_args(), 'h3', $attributes, $content);
+    }
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
+    public static function h4($attributes, $content=null) {
+        return self::guten_tag(func_num_args(), 'h4', $attributes, $content);
+    }
+    /**
+     * @SuppressWarnings(PHPMD.ShortMethodName)
+     */
+    public static function img($attributes) {
+        return self::classy_tag('img', $attributes);
     }
     public static function abbr($attributes, $content) {
         return self::classy_tag('abbr', $attributes, $content);

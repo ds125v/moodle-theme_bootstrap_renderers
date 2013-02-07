@@ -83,4 +83,10 @@ class form {
         $hidden_inputs = html::hidden_inputs($moodle_url->params());
         return html::form($attributes, $hidden_inputs . $contents);
     }
+    public static function checkbox($label, $value) {
+        return "<div class=checkbox><label><input type=checkbox value=\"$value\"> $label</label></div>";
+    }
+    public static function radio($name, $id, $label, $value) {
+        return "<div class=radio><label><input id=$id name=\"$name\" type=radio value=\"$value\"> $label</label></div>";
+    }
 }

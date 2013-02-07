@@ -23,14 +23,20 @@
  */
 
 require_once('renderers/core_renderer.php');
+
+require_once('renderers/core_admin_renderer.php');
+require_once('renderers/core_backup_renderer.php');
+
 require_once('renderers/block_settings_renderer.php');
 require_once('renderers/block_navigation_renderer.php');
-require_once('renderers/core_backup_renderer.php');
+require_once('renderers/block_course_overview_renderer.php');
 
 require_once('renderers/mod_forum_renderer.php');
 require_once('renderers/mod_choice_renderer.php');
-require_once('renderers/course_renderer.php');
-require_once('renderers/course_format_renderer.php');
 
-require_once('renderers/core_admin_renderer.php');
+require_once('renderers/course_renderer.php');
+require_once('renderers/course_format_topics_renderer.php');
+
+require_once('renderers/files_renderer.php');
+
 

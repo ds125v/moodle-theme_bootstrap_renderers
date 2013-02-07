@@ -85,10 +85,13 @@ class bootstrap {
             $type = ' alert-' . $type;
         }
         if ($close === true) {
-            $button = '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-            $text = $button.$text;
+            $text = self::close_button('alert').$text;
         }
         return "<div class=\"alert$type\">$text</div>";
+    }
+    public static function close_button($target) {
+        return '<button type="button" class="' . $target .
+            '" data-dismiss="alert" aria-hidden="true">&times;</button>';
     }
     public static function alert_default($text, $close=false) {
         return self::alert('', $text, $close);
@@ -143,7 +146,7 @@ class bootstrap {
     public static function list_divider() {
         return html::li(array('class'=>'divider'));
     }
-    public static function icon_link($href, $icon, $text) {
+    public static function icon_link($href, $icon, $text = null) {
         return html::a($href, self::icon($icon) . " $text");
     }
     public static function li_icon_link($href, $icon, $text) {
@@ -161,6 +164,7 @@ class bootstrap {
             'docs' => 'question-sign',
             'generate' => 'gift',
             'i/backup' => 'download',
+            't/backup' => 'download',
             'i/checkpermissions' => 'user',
             'i/edit' => 'pencil',
             'i/filter' => 'filter',
@@ -171,10 +175,11 @@ class bootstrap {
             'i/info' => 'info',
             'i/move_2d' => 'move',
             'i/navigationitem' => 'chevron-right',
-            'i/publish' => 'publish',
+            'i/publish' => 'globe',
             'i/reload' => 'refresh',
             'i/report' => 'list-alt',
             'i/restore' => 'upload',
+            't/restore' => 'upload',
             'i/return' => 'repeat',
             'i/roles' => 'user',
             'i/settings' => 'cog',
