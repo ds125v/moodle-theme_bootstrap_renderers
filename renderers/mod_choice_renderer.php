@@ -35,6 +35,54 @@ if (isset($CFG)) {
 
 class theme_bootstrap_renderers_mod_choice_renderer extends mod_choice_renderer {
 
+    public function display_options($options, $coursemoduleid, $vertical = false) {
+        $target = new moodle_url('/mod/choice/view.php');
+        $attributes = array('method' => 'POST', 'action' => $target);
+
+        $html = html_writer::start_tag('form', $attributes);
+
+        $availableoption = count($options['options']);
+        $choicecount = 0;
+        foreach ($options['options'] as $option) {
+            $choicecount++;
+            $labeltext = $option->text;
+            $full = false;
+            $selected = false;
+            if (!empty($option->attributes->disabled)) {
+                $labeltext .= ' ' . get_string('full', 'choice');
+                $full = true;
+                $availableoption--;
+            }
+            if (!empty($option->attributes->checked)) {
+                $selected = true;
+            }
+            if ($vertical != false) {
+                $html .= form::inline_radio('answer', "choice_$choicecount", $labeltext, $option->attributes->value, $selected, $full);
+            } else {
+                $html .= form::radio('answer', "choice_$choicecount", $labeltext, $option->attributes->value, $selected, $full);
+            }
+        }
+        $html .= html::hidden_inputs(array('sesskey' => sesskey(), 'id' => $coursemoduleid));
+
+        if (!empty($options['hascapability']) && ($options['hascapability'])) {
+            if ($availableoption < 1) {
+               $html .= bootstrap::alert(get_string('choicefull', 'choice'));
+            } else {
+                $html .= html::div('form-actions', html::submit(array('class' => 'btn-primary', 'value' => get_string('savemychoice','choice'))));
+            }
+            if (!empty($options['allowupdate']) && ($options['allowupdate'])) {
+                $url = new moodle_url('view.php', array('id'=>$coursemoduleid, 'action'=>'delchoice', 'sesskey'=>sesskey()));
+                $html .= html::link($url, get_string('removemychoice','choice'));
+            }
+        } else {
+            $html .= bootstrap::alert_info(get_string('havetologin', 'choice'));
+        }
+
+        $html .= html_writer::end_tag('ul');
+        $html .= html_writer::end_tag('form');
+
+        return $html;
+    }
     public static function results($choices) {
         ksort($choices->options);
         $total_votes = $choices->numberofuser;

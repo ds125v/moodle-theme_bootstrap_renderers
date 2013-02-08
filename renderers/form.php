@@ -86,7 +86,23 @@ class form {
     public static function checkbox($label, $value) {
         return "<div class=checkbox><label><input type=checkbox value=\"$value\"> $label</label></div>";
     }
-    public static function radio($name, $id, $label, $value) {
-        return "<div class=radio><label><input id=$id name=\"$name\" type=radio value=\"$value\"> $label</label></div>";
+    public static function inline_radio($name, $id, $label, $value, $checked = false, $disabled = false) {
+        return self::radio($name, $id, $label, $value, $checked, $disabled, true);
+    }
+    public static function radio($name, $id, $label, $value, $checked = false, $disabled = false, $inline = '') {
+        $attributes['type'] = 'radio';
+        $attributes['name'] = $name;
+        $attributes['id'] = $id;
+        $attributes['value'] = $value;
+        if ($checked === true) {
+            $attributes['checked'] = 'checked';
+        }
+        if ($disabled === true) {
+            $attributes['disabled'] = 'disabled';
+        }
+        if ($inline !== '') {
+            return html::label('radio-inline', html::input($attributes) . " $label");
+        }
+        return html::div('radio', html::label($inline, html::input($attributes) . " $label"));
     }
 }
