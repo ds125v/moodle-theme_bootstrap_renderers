@@ -116,7 +116,7 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
 
         // non javascript file manager
         $html .= '<noscript>';
-        $html .= "<div><object type='text/html' data='".$fm->get_nonjsurl()."' height='160' width='600' style='border:1px solid #000'></object></div>";
+        $html .= "<div><object type='text/html' data='".$fm->get_nonjsurl()."' height='160' width='600'></object></div>";
         $html .= '</noscript>';
 
 
@@ -244,7 +244,7 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
         <div class="fp-filename"></div>
     </div>
     </a>
-    <a class="fp-contextmenu" href="#">'.$this->pix_icon('i/menu', '▶').'</a>
+    <a class="fp-contextmenu" href="#"><i class=glyphicon-question-sign></i></a>
 </div>';
     }
 
@@ -270,7 +270,7 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
     <span class="fp-reficons2"></span>
     <span class="fp-filename"></span>
     </a>
-    <a class="fp-contextmenu" href="#" onclick="return false;">'.$this->pix_icon('i/menu', '▶').'</a>
+    <a class="fp-contextmenu" href="#" onclick="return false;"><i class=glyphicon-question-sign></i></a>
 </span>';
     }
 
@@ -290,13 +290,18 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
     private function fm_js_template_mkdir() {
         return '
 <div class=modal>
+    <div class=modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <!-- TODO: make close button functional -->
+        <h3>'.get_string('makeafolder').'</h3>
+    </div>
     <div class=modal-body>
         <label>' . get_string('newfoldername', 'repository') . '</label>
         <input type="text" />
     </div>
     <div class="modal-footer">
-    <button class="fp-dlg-butcancel btn btn-warning">'.get_string('cancel').'</button>
-    <button class="fp-dlg-butcreate btn btn-primary">'.get_string('makeafolder').'</button>
+        <button class="fp-dlg-butcancel btn btn-warning">'.get_string('cancel').'</button>
+        <button class="fp-dlg-butcreate btn btn-primary">'.get_string('makeafolder').'</button>
     </div>
 </div>';
     }
@@ -356,15 +361,32 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
         $strloading  = get_string('loading', 'repository');
         $icon_progress = $this->pix_icon('i/loading_small', $strloading).'';
         return '
-<div class="filemanager fp-select">
+<div class="filemanager fp-select modal">
     <div class="fp-select-loading"> <img src="'.$this->pix_url('i/loading_small').'" /> </div>
+    <div class=modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <!-- TODO: make close button functional -->
+        <h3>File info window</h3>
+    </div>
+    <div class="fp-info">
+        <p class="fp-thumbnail"></p>
+        <div class="fp-fileinfo">
+            <small class="fp-datemodified">'.get_string('lastmodified', 'moodle').': <span class="fp-value"></span></small>
+            <small class="fp-datecreated">'.get_string('datecreated', 'repository').': <span class="fp-value"></span></small>
+            <small class="fp-size">'.get_string('size', 'repository').': <span class="fp-value"></span></small>
+            <small class="fp-dimensions">'.get_string('dimensions', 'repository').': <span class="fp-value"></span></small>
+        </div>
+    </div>
     <form class=form-horizontal>
     <fieldset>
+    <div class=control-group>
+    <div class=controls>
         <button class="fp-file-download btn btn-mini">'.get_string('download').'</button>
         <button class="fp-file-delete btn btn-mini btn-danger">'.get_string('delete').'</button>
         <button class="fp-file-setmain btn btn-mini">'.get_string('setmainfile', 'repository').'</button>
         <button class="fp-file-zip btn btn-mini">'.get_string('zip', 'editor').'</button>
         <button class="fp-file-unzip btn btn-mini">'.get_string('unzip').'</button>
+        </div></div>
     </fieldset>
             <div class="control-group fp-saveas"><label class=control-label>'.get_string('name', 'moodle').'</label>
             <div class="controls"><input type="text"></div></div>
@@ -378,20 +400,11 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
             <div class="controls"><span class="fp-originloading">'.$icon_progress.' '.$strloading.'</span><span class="fp-value"></span></div></div>
             <div class="control-group fp-reflist"><label class=control-label>'.get_string('referenceslist', 'repository').'</label>
             <div class="controls"><p class="fp-refcount"></p><span class="fp-reflistloading">'.$icon_progress.' '.$strloading.'</span><ul class="fp-value"></ul></div></div>
-        <div class="fp-select-buttons form-actions">
+        <div class="fp-select-buttons form-actions modal-footer">
             <button class="fp-file-update btn btn-primary">'.get_string('update', 'moodle').'</button>
             <button class="fp-file-cancel btn btn-warning">'.get_string('cancel').'</button>
         </div>
     </form>
-    <div class="fp-info">
-        <p class="fp-thumbnail"></p>
-        <div class="fp-fileinfo">
-            <small class="fp-datemodified">'.get_string('lastmodified', 'moodle').': <span class="fp-value"></span></small>
-            <small class="fp-datecreated">'.get_string('datecreated', 'repository').': <span class="fp-value"></span></small>
-            <small class="fp-size">'.get_string('size', 'repository').': <span class="fp-value"></span></small>
-            <small class="fp-dimensions">'.get_string('dimensions', 'repository').': <span class="fp-value"></span></small>
-        </div>
-    </div>
 </div>';
     }
 
@@ -505,10 +518,16 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
      */
     private function fp_js_template_generallayout() {
         return '
-<div class="file-picker fp-generallayout">
+<div class="file-picker fp-generallayout modal">
+    <div class=modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <!-- TODO: make close button functional -->
+        <h3>Repository File Picker</h3>
+    </div>
+    <div class=modal-body>
     <div class="fp-repo-area">
-        <ul class="fp-list">
-            <li class="fp-repo"><a href="#"><img class="fp-repo-icon" width="16" height="16" />&nbsp;<span class="fp-repo-name"></span></a></li>
+        <ul class="fp-list nav nav-list">
+            <li class="fp-repo"><a href="#"><img class="fp-repo-icon"><span class="fp-repo-name"></span></a></li>
         </ul>
     </div>
     <div class="fp-repo-items">
@@ -535,6 +554,7 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
             </div>
         </div>
         <div class="fp-content"></div>
+    </div>
     </div>
 </div>';
     }
@@ -758,7 +778,7 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
      */
     private function fp_js_template_error() {
         return '<div class="fp-content-error modal fade">
-        <div class=modal-header>Error</div>
+        <div class=modal-header><h3>Error</h3></div>
         <div class=modal-body>
                 <div class="fp-error"></div>
         </div>
@@ -781,11 +801,14 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
     private function fp_js_template_message() {
         return '
 <div class="file-picker fp-msg modal fade">
+    <div class=modal-header>
+        <h3>Example text</h3>
+    </div>
     <div class=modal-body>
-    <p class="fp-msg-text"></p>
+        <p class="fp-msg-text"></p>
     </div>
     <div class=modal-footer>
-    <button class="fp-msg-butok btn btn-primary">'.get_string('ok').'</button>
+        <button class="fp-msg-butok btn btn-primary">'.get_string('ok').'</button>
     </div>
 </div>';
     }
@@ -808,8 +831,11 @@ class theme_bootstrap_renderers_core_files_renderer extends core_files_renderer 
     private function fp_js_template_processexistingfile() {
         return '
 <div class="file-picker fp-dlg modal">
+    <div class=modal-header>
+        <h3>Example text</h3>
+    </div>
     <div class=modal-body>
-    <p class="fp-dlg-text"></p>
+        <p class="fp-dlg-text"></p>
     </div>
     <div class=modal-footer>
         <button class="fp-dlg-butoverwrite btn btn-danger">'.get_string('overwrite', 'repository').'</button>
