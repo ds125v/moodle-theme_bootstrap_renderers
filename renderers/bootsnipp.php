@@ -16,7 +16,7 @@
 
 /**
  * Mid-level functional chunks built on Bootstrap Inspired by the
- * examples from the site Bootsnipps.com
+ * examples from the site Bootsnipp.com
  *
  * @package    theme_bootstrap_renderers
  * @copyright  2012
